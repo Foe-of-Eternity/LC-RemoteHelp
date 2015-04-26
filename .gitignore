@@ -1,0 +1,13 @@
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.user
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+win-event-log/MSG00409.bin
+win-event-log/MessageProvider.h
+win-event-log/MessageProvider.rc
