@@ -23,7 +23,6 @@
 //
 
 #include "util/winhdr.h"
-#include "win-system/Registry.h"
 #include "TcpDispatcherConnectionDialog.h"
 #include "util/StringParser.h"
 #include "tvnserver-app/NamingDefs.h"
@@ -31,10 +30,6 @@
 
 TcpDispatcherConnectionDialog::TcpDispatcherConnectionDialog()
 : BaseDialog(IDD_DISPATCHER_CONN),
-  m_connHistoryKey(Registry::getCurrentUserKey(),
-                   RegistryPaths::DISPATCHER_CONN_HISTORY_PATH,
-                   true),
-  m_connHistory(&m_connHistoryKey, 16),
   m_connectionId(0)
 {
 }
@@ -77,13 +72,6 @@ BOOL TcpDispatcherConnectionDialog::onInitDialog()
 {
   initControls();
 
-  // Load connection history.
-  m_connHistory.load();
-
-  for (size_t i = 0; i < m_connHistory.getHostCount(); i++) {
-    m_connectStringCB.addItem(m_connHistory.getHost(i));
-  }
-
   m_connectStringCB.setSelectedItem(0);
   m_connectStringCB.setFocus();
 
@@ -124,11 +112,6 @@ void TcpDispatcherConnectionDialog::onOkButtonClick()
   if (!StringParser::parseUInt(connectionIdStr.getString(), &m_connectionId)) {
     MessageBox(0, _T("Invalid ID"), _T("Error"), MB_ICONERROR);
   } else {
-    // Modify connection history.
-    m_connHistory.addHost(m_connectString.getString());
-    m_connHistory.save();
-    m_connHistory.truncate();
-
     kill(IDOK);
   }
 

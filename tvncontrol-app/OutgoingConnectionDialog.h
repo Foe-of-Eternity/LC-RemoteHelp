@@ -79,16 +79,7 @@ protected:
   bool m_isViewOnly;
 
   /**
-   * Connection history registry key.
-   */
-  RegistryKey m_connHistoryKey;
-  /**
-   * Connection history container.
-   */
-  ConnectionHistory m_connHistory;
-
-  /**
-   * Combo box with connection history.
+   * "Hostname" combo box.
    */
   ComboBox m_connectStringCB;
   /**

@@ -25,18 +25,12 @@
 #include "util/winhdr.h"
 #include "tvnserver-app/NamingDefs.h"
 
-#include "win-system/Registry.h"
-
 #include "OutgoingConnectionDialog.h"
 
 #include "tvnserver/resource.h"
 
 OutgoingConnectionDialog::OutgoingConnectionDialog()
-: BaseDialog(IDD_OUTGOING_CONN),
-  m_connHistoryKey(Registry::getCurrentUserKey(),
-                   RegistryPaths::SERVER_REVERSE_CONN_HISTORY_PATH,
-                   true),
-  m_connHistory(&m_connHistoryKey, 16)
+: BaseDialog(IDD_OUTGOING_CONN)
 {
 }
 
@@ -67,14 +61,6 @@ BOOL OutgoingConnectionDialog::onInitDialog()
   initControls();
 
   m_viewOnlyCB.check(false);
-
-  // Load connection history.
-
-  m_connHistory.load();
-
-  for (size_t i = 0; i < m_connHistory.getHostCount(); i++) {
-    m_connectStringCB.addItem(m_connHistory.getHost(i));
-  }
 
   m_connectStringCB.setSelectedItem(0);
   m_connectStringCB.setFocus();
@@ -110,12 +96,6 @@ void OutgoingConnectionDialog::onOkButtonClick()
   m_connectStringCB.getText(&m_connectString);
 
   m_isViewOnly = m_viewOnlyCB.isChecked();
-
-  // Modify connection history.
-
-  m_connHistory.addHost(m_connectString.getString());
-  m_connHistory.save();
-  m_connHistory.truncate();
 
   kill(IDOK);
 }

@@ -66,18 +66,6 @@ protected:
   StringStorage m_keyword;
   UINT32 m_connectionId;
 
-  /**
-   * Connection history registry key.
-   */
-  RegistryKey m_connHistoryKey;
-  /**
-   * Connection history container.
-   */
-  ConnectionHistory m_connHistory;
-
-  /**
-   * Combo box with connection history.
-   */
   ComboBox m_connectStringCB;
   ComboBox m_dispatcherNameCB;
   ComboBox m_keywordCB;
