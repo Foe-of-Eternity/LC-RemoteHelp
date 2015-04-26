@@ -27,7 +27,7 @@
 #include "ControlAuthDialog.h"
 #include "ControlProto.h"
 #include "server-config-lib/Configurator.h"
-#include "config-lib/RegistrySettingsManager.h"
+#include "config-lib/IniFileSettingsManager.h"
 #include "util/VncPassCrypt.h"
 #include "util/AnsiStringStorage.h"
 #include "tvnserver-app/NamingDefs.h"
@@ -87,7 +87,7 @@ void ControlMessage::checkRetCode()
     if (m_passwordFile.getLength() != 0) {
       authFromFile();
     } else if (m_getPassFromConfigEnabled) {
-      authFromRegistry();
+      authFromIniFile();
     } else {
       ControlAuthDialog authDialog;
 
@@ -127,10 +127,9 @@ void ControlMessage::authFromFile()
   send();
 }
 
-void ControlMessage::authFromRegistry()
+void ControlMessage::authFromIniFile()
 {
-  HKEY rootKey = m_forService ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
-  RegistrySettingsManager sm(rootKey, RegistryPaths::SERVER_PATH, 0);
+  IniFileSettingsManager sm(IniFilePaths::SERVER_PATH, IniFileKeys::SERVER_CONFIG);
 
   unsigned char hidePassword[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   unsigned char plainPassword[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };

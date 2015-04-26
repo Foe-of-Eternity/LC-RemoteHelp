@@ -24,7 +24,7 @@
 
 #include "win-system/Environment.h"
 #include "wsconfig-lib/TvnLogFilename.h"
-#include "config-lib/RegistrySettingsManager.h"
+#include "config-lib/IniFileSettingsManager.h"
 
 #include "win-system/Registry.h"
 #include "win-system/RegistryKey.h"
@@ -91,13 +91,7 @@ bool Configurator::load(bool forService)
 {
   bool isOk = false;
 
-  HKEY rootKey = forService ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
-
-  SECURITY_ATTRIBUTES *sa = 0;
-  if (forService && m_regSA != 0) {
-    sa = m_regSA->getServiceSA();
-  }
-  RegistrySettingsManager sm(rootKey, RegistryPaths::SERVER_PATH, sa);
+  IniFileSettingsManager sm(IniFilePaths::SERVER_PATH, IniFileKeys::SERVER_CONFIG);
 
   isOk = load(&sm);
 
@@ -110,13 +104,7 @@ bool Configurator::save(bool forService)
 {
   bool isOk = false;
 
-  HKEY rootKey = forService ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
-
-  SECURITY_ATTRIBUTES *sa = 0;
-  if (forService && m_regSA != 0) {
-    sa = m_regSA->getServiceSA();
-  }
-  RegistrySettingsManager sm(rootKey, RegistryPaths::SERVER_PATH, sa);
+  IniFileSettingsManager sm(IniFilePaths::SERVER_PATH, IniFileKeys::SERVER_CONFIG);
 
   isOk = save(&sm);
 

@@ -126,7 +126,7 @@ bool IniFileSettingsManager::getBoolean(const TCHAR *name, bool *value)
   if (!getInt(name, &intVal)) {
     return false;
   }
-  *value = intVal == 1;
+  *value = intVal != 0;
   return true;
 }
 
@@ -150,17 +150,12 @@ bool IniFileSettingsManager::setUINT(const TCHAR *name, UINT value)
 
 bool IniFileSettingsManager::getInt(const TCHAR *name, int *value)
 {
-  // We really cannot determinate result of GetPrivateProfileInt,
-  // so use this trick, if returning value is defVal, than key does not
-  // exists and method must return false.
-  // FIXME: This trick will not work in some cases
-  UINT defVal = 0xABCDEF;
-  UINT ret = GetPrivateProfileInt(m_appName.getString(), name, defVal,
-                                  m_pathToFile.getString());
-  if (ret == defVal) {
+  if (!keyExist(name)) {
     return false;
   }
 
+  UINT ret = GetPrivateProfileInt(m_appName.getString(), name, 0,
+                                  m_pathToFile.getString());
   *value = (int)ret;
 
   return true;
@@ -184,18 +179,44 @@ bool IniFileSettingsManager::setByte(const TCHAR *name, char value)
   return setInt(name, value);
 }
 
-// FIXME: Stub
 bool IniFileSettingsManager::getBinaryData(const TCHAR *name, void *value, size_t *size)
 {
-  _ASSERT(FALSE);
-  return false;
+  StringStorage storage;
+  StringStorage hexbyte;
+  size_t len;
+  unsigned int i;
+
+  if (!getString(name, &storage)) {
+    return false;
+  }
+
+  len = storage.getLength();
+  for (i = 0; (i < len / 2) && (i < *size); i++) {
+    storage.getSubstring(&hexbyte, i * 2, i * 2 + 1);
+    ((byte *)value)[i] = (byte)_tcstoul(hexbyte.getString(), 0, 16);
+  }
+  *size = i;
+
+  return true;
 }
 
-// FIXME: Stub
 bool IniFileSettingsManager::setBinaryData(const TCHAR *name, const void *value, size_t size)
 {
-  _ASSERT(FALSE);
-  return false;
+  StringStorage storage;
+  TCHAR hexbyte[3];
+  unsigned int i;
+
+  if (value == NULL) {
+    return false;
+  }
+
+  for (i = 0; i < size; i++) {
+    _stprintf_s(hexbyte, _T("%02X"), ((byte *)value)[i]);
+    storage.appendString(hexbyte);
+  }
+
+  return WritePrivateProfileString(m_appName.getString(), name,
+    storage.getString(), m_pathToFile.getString()) == TRUE;
 }
 
 void IniFileSettingsManager::getPrivateProfileString(const TCHAR *name,

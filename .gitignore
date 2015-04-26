@@ -1,4 +1,5 @@
 *.aps
+*.ini
 *.opensdf
 *.sdf
 *.suo

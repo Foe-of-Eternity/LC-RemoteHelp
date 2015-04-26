@@ -30,11 +30,9 @@ const TCHAR NamingDefs::MIRROR_DRIVER_MESSAGE_WINDOW_CLASS_NAME[] =
 const TCHAR ProductNames::PRODUCT_NAME[] = _T("TightVNC");
 const TCHAR ProductNames::SERVER_PRODUCT_NAME[] = _T("TightVNC Server");
 
-const TCHAR RegistryPaths::SERVER_PATH[] = _T("Software\\TightVNC\\Server");
-const TCHAR RegistryPaths::SERVER_REVERSE_CONN_HISTORY_PATH[] =
-  _T("Software\\TightVNC\\Control\\ReverseConnectionHistory");
-const TCHAR RegistryPaths::DISPATCHER_CONN_HISTORY_PATH[] =
-  _T("Software\\TightVNC\\Control\\DispatcherConnectionHistory");
+const TCHAR IniFilePaths::SERVER_PATH[] = _T(".\\tvnserver.ini");
+
+const TCHAR IniFileKeys::SERVER_CONFIG[] = _T("config");
 
 const TCHAR WindowNames::WINDOW_CLASS_NAME[] =
   _T("TvnWindowsApplicationClass");

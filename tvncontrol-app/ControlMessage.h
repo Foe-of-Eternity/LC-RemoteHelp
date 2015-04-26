@@ -97,8 +97,8 @@ private:
   // Perform auth with a specified password file.
   void authFromFile();
 
-  // Perform auth with a specified password file.
-  void authFromRegistry();
+  // Perform auth with ini file.
+  void authFromIniFile();
 
 private:
   /**
