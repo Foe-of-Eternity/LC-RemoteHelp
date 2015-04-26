@@ -294,7 +294,6 @@
     <ClCompile Include="ControlAppAuthenticator.cpp" />
     <ClCompile Include="ControlClient.cpp" />
     <ClCompile Include="ControlServer.cpp" />
-    <ClCompile Include="CrashHook.cpp" />
     <ClCompile Include="DesktopServerApplication.cpp" />
     <ClCompile Include="DesktopServerCommandLine.cpp" />
     <ClCompile Include="ExtraRfbServers.cpp" />
@@ -325,7 +324,6 @@
     <ClInclude Include="ControlAppAuthenticator.h" />
     <ClInclude Include="ControlClient.h" />
     <ClInclude Include="ControlServer.h" />
-    <ClInclude Include="CrashHook.h" />
     <ClInclude Include="DesktopServerApplication.h" />
     <ClInclude Include="DesktopServerCommandLine.h" />
     <ClInclude Include="ExtraRfbServers.h" />

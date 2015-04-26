@@ -41,7 +41,6 @@
 #include "tvncontrol-app/ControlCommandLine.h"
 
 #include "tvnserver/resource.h"
-#include "tvnserver-app/CrashHook.h"
 #include "tvnserver-app/NamingDefs.h"
 
 #include "tvnserver-app/WinEventLogWriter.h"
@@ -50,12 +49,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                        LPTSTR lpCmdLine, int nCmdShow)
 {
   LogWriter preLog(0);
-
-  // Life time of the sysLog must be greater than a TvnService object
-  // because the crashHook uses it but fully functional usage possible
-  // only after the TvnService object start.
   WinEventLogWriter winEventLogWriter(&preLog);
-  CrashHook crashHook(&winEventLogWriter);
 
   ResourceLoader resourceLoaderSingleton(hInstance);
 
@@ -102,7 +96,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   if (firstKey.isEqualTo(TvnService::SERVICE_COMMAND_LINE_KEY)) {
     TvnService tvnService(&winEventLogWriter, &winEventLogWriter);
     try {
-      crashHook.setHklmRoot();
       tvnService.run();
     } catch (Exception &) {
       return 1;
@@ -115,7 +108,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
              firstKey.isEqualTo(ControlCommandLine::CONTROL_SERVICE) ||
              firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION) ||
              firstKey.isEqualTo(ControlCommandLine::CHECK_SERVICE_PASSWORDS)) {
-    crashHook.setGuiEnabled();
     try {
       ControlApplication tvnControl(hInstance,
         WindowNames::WINDOW_CLASS_NAME,
@@ -130,7 +122,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
   } else if (firstKey.isEqualTo(AdditionalActionApplication::LOCK_WORKSTATION_KEY) ||
     firstKey.isEqualTo(AdditionalActionApplication::LOGOUT_KEY)) {
-    crashHook.setGuiEnabled();
     try {
       AdditionalActionApplication actionApp(hInstance,
         WindowNames::WINDOW_CLASS_NAME,
@@ -141,7 +132,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
   } else if (firstKey.isEqualTo(DesktopServerCommandLine::DESKTOP_SERVER_KEY)) {
     try {
-      crashHook.setHklmRoot();
       WinCommandLineArgs args(lpCmdLine);
       DesktopServerApplication desktopServerApp(hInstance,
         WindowNames::WINDOW_CLASS_NAME,
@@ -153,7 +143,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       return 1;
     }
   } else if (firstKey.isEqualTo(QueryConnectionCommandLine::QUERY_CONNECTION)) {
-    crashHook.setGuiEnabled();
     try {
       QueryConnectionApplication app(hInstance,
         WindowNames::WINDOW_CLASS_NAME,
@@ -167,7 +156,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
              firstKey.isEqualTo(ServiceControlCommandLine::REINSTALL_SERVICE) ||
              firstKey.isEqualTo(ServiceControlCommandLine::START_SERVICE) ||
              firstKey.isEqualTo(ServiceControlCommandLine::STOP_SERVICE)) {
-    crashHook.setGuiEnabled();
     ServiceControlApplication tvnsc(hInstance,
       WindowNames::WINDOW_CLASS_NAME,
       lpCmdLine);
@@ -175,7 +163,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   }
 
   // No additional applications, run TightVNC server as single application.
-  crashHook.setGuiEnabled();
   TvnServerApplication tvnServer(hInstance,
     WindowNames::WINDOW_CLASS_NAME,
     lpCmdLine, &winEventLogWriter);
