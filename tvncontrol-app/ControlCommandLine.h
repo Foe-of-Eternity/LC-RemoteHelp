@@ -43,12 +43,6 @@ public:
   static const TCHAR DISCONNECT_ALL[];
   static const TCHAR CONNECT[];
   static const TCHAR SHUTDOWN[];
-  static const TCHAR SHARE_PRIMARY[];
-  static const TCHAR SHARE_RECT[];
-  static const TCHAR SHARE_DISPLAY[];
-  static const TCHAR SHARE_WINDOW[];
-  static const TCHAR SHARE_FULL[];
-  static const TCHAR SHARE_APP[];
 
   static const TCHAR SET_CONTROL_PASSWORD[];
   static const TCHAR SET_PRIMARY_VNC_PASSWORD[];
@@ -80,37 +74,17 @@ public:
   bool hasDontElevateFlag();
   bool isSlave();
 
-  bool hasSharePrimaryFlag();
-  bool hasShareRect();
-  bool hasShareDisplay();
-  bool hasShareWindow();
-  bool hasShareFull();
-  bool hasShareApp();
-  unsigned char getShareDisplayNumber();
-  void getShareWindowName(StringStorage *out);
-  Rect getShareRect();
-  unsigned int getSharedAppProcessId();
-
   const TCHAR *getPrimaryVncPassword() const;
   const TCHAR *getControlPassword() const;
 
   bool isCommandSpecified();
 
 private:
-  void parseRectCoordinates(const StringStorage *strCoord);
-  void parseDisplayNumber(const StringStorage *strDispNumber);
-  void parseProcessId(const StringStorage *str);
-
   StringStorage m_vncPassword;
   StringStorage m_controlPassword;
 
   StringStorage m_connectHostName;
   StringStorage m_passwordFile;
-
-  Rect m_shareRect;
-  unsigned char m_displayNumber;
-  StringStorage m_windowHeaderName;
-  unsigned int m_sharedAppProcessId;
 };
 
 #endif

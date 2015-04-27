@@ -78,8 +78,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeInt8(m_localInputPriority ? 1 : 0);
   output->writeUInt32(m_localInputPriorityTimeout);
 
-  m_portMappings.serialize(output);
-
   _ASSERT((UINT32)m_videoClassNames.size() == m_videoClassNames.size());
   output->writeUInt32((UINT32)m_videoClassNames.size());
   for (size_t i = 0; i < m_videoClassNames.size(); i++) {
@@ -123,8 +121,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_blockLocalInput = input->readInt8() == 1;
   m_localInputPriority = input->readInt8() == 1;
   m_localInputPriorityTimeout = input->readUInt32();
-
-  m_portMappings.deserialize(input);
 
   m_videoClassNames.clear();
   size_t count = input->readUInt32();
@@ -502,11 +498,6 @@ bool ServerConfig::isBlockingLocalInput()
 {
   AutoLock lock(&m_objectCS);
   return m_blockLocalInput;
-}
-
-PortMappingContainer *ServerConfig::getPortMappingContainer()
-{
-  return &m_portMappings;
 }
 
 StringVector *ServerConfig::getVideoClassNames()

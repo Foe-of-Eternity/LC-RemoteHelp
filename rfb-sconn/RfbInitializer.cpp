@@ -141,8 +141,6 @@ void RfbInitializer::doAuth(UINT32 authType)
   } else {
     throw Exception(_T(""));
   }
-  // Perform additional work via a listener.
-  m_extAuthListener->onCheckAccessControl(m_client);
   // Send authentication result.
   if (m_minorVerNum >= 8 || authType != AuthDefs::NONE) {
     m_output->writeUInt32(0); // FIXME: Use a named constant instead of 0.

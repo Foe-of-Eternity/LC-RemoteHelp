@@ -49,12 +49,6 @@ const UINT32 ControlClient::REQUIRES_AUTH[] = { ControlProto::ADD_CLIENT_MSG_ID,
                                                 ControlProto::GET_CONFIG_MSG_ID,
                                                 ControlProto::SET_CONFIG_MSG_ID,
                                                 ControlProto::SHUTDOWN_SERVER_MSG_ID,
-                                                ControlProto::SHARE_PRIMARY_MSG_ID,
-                                                ControlProto::SHARE_DISPLAY_MSG_ID,
-                                                ControlProto::SHARE_WINDOW_MSG_ID,
-                                                ControlProto::SHARE_RECT_MSG_ID,
-                                                ControlProto::SHARE_APP_MSG_ID,
-                                                ControlProto::SHARE_FULL_MSG_ID,
                                                 ControlProto::CONNECT_TO_TCPDISP_MSG_ID };
 
 const UINT32 ControlClient::WITHOUT_AUTH[] = {
@@ -189,30 +183,6 @@ void ControlClient::execute()
         case ControlProto::UPDATE_TVNCONTROL_PROCESS_ID_MSG_ID:
           m_log->detail(_T("Control client sends process ID"));
           updateTvnControlProcessIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_PRIMARY_MSG_ID:
-          m_log->message(_T("Share primary message recieved"));
-          sharePrimaryIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_DISPLAY_MSG_ID:
-          m_log->message(_T("Share display message recieved"));
-          shareDisplayIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_WINDOW_MSG_ID:
-          m_log->message(_T("Share window message recieved"));
-          shareWindowIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_RECT_MSG_ID:
-          m_log->message(_T("Share rect message recieved"));
-          shareRectIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_FULL_MSG_ID:
-          m_log->message(_T("Share full message recieved"));
-          shareFullIdMsgRcvd();
-          break;
-        case ControlProto::SHARE_APP_MSG_ID:
-          m_log->message(_T("Share app message recieved"));
-          shareAppIdMsgRcvd();
           break;
         default:
           m_gate->skipBytes(messageSize);
