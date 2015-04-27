@@ -84,12 +84,6 @@ BOOL IpAccessControlDialog::onCommand(UINT controlID, UINT notificationID)
     case IDC_REFUSE:
       onRefuseRadioClick();
       break;
-    case IDC_ALLOW_LOOPBACK_CONNECTIONS:
-      onAllowLoopbackConnectionsClick();
-      break;
-    case IDC_ALLOW_ONLY_LOOPBACK_CONNECTIONS:
-      onAllowOnlyLoopbackConnectionsClick();
-      break;
     }
   } else if (notificationID == EN_UPDATE) {
     switch (controlID) {
@@ -152,8 +146,6 @@ void IpAccessControlDialog::updateUI()
     setListViewItemText((int)i, ip);
   }
 
-  m_allowLoopbackConnections.check(m_config->isLoopbackConnectionsAllowed());
-  m_onlyLoopbackConnections.check(m_config->isOnlyLoopbackConnectionsAllowed());
   if (m_config->isDefaultActionAccept()) {
     m_defaultActionAccept.check(true);
     m_defaultActionRefuse.check(false);
@@ -162,8 +154,6 @@ void IpAccessControlDialog::updateUI()
     m_defaultActionRefuse.check(true);
   }
   m_queryTimeout.setUnsignedInt(m_config->getQueryTimeout());
-
-  updateCheckBoxesState();
 }
 
 void IpAccessControlDialog::apply()
@@ -177,8 +167,6 @@ void IpAccessControlDialog::apply()
 
   AutoLock al(m_config);
 
-  m_config->allowLoopbackConnections(m_allowLoopbackConnections.isChecked());
-  m_config->acceptOnlyLoopbackConnections(m_onlyLoopbackConnections.isChecked());
   m_config->setDefaultActionToAccept(m_defaultActionAccept.isChecked());
   m_config->setQueryTimeout(timeout);
 
@@ -206,8 +194,6 @@ void IpAccessControlDialog::initControls()
   m_defaultActionAccept.setWindow(GetDlgItem(hwnd, IDC_ACCEPT));
   m_defaultActionRefuse.setWindow(GetDlgItem(hwnd, IDC_REFUSE));
   m_queryTimeout.setWindow(GetDlgItem(hwnd, IDC_TIMEOUT));
-  m_allowLoopbackConnections.setWindow(GetDlgItem(hwnd, IDC_ALLOW_LOOPBACK_CONNECTIONS));
-  m_onlyLoopbackConnections.setWindow(GetDlgItem(hwnd, IDC_ALLOW_ONLY_LOOPBACK_CONNECTIONS));
   m_queryTimeoutSpin.setWindow(GetDlgItem(hwnd, IDC_QUERY_TIMEOUT_SPIN));
   m_ip.setWindow(GetDlgItem(hwnd, IDC_IP_FOR_CHECK_EDIT));
   m_ipCheckResult.setWindow(GetDlgItem(hwnd, IDC_IP_CHECK_RESULT_LABEL));
@@ -353,20 +339,6 @@ void IpAccessControlDialog::onRefuseRadioClick()
   }
 }
 
-void IpAccessControlDialog::onAllowLoopbackConnectionsClick()
-{
-  updateCheckBoxesState();
-  updateButtonsState();
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-}
-
-void IpAccessControlDialog::onAllowOnlyLoopbackConnectionsClick()
-{
-  updateCheckBoxesState();
-  updateButtonsState();
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-}
-
 void IpAccessControlDialog::onIpCheckUpdate()
 {
   StringStorage ipStorage;
@@ -459,16 +431,6 @@ void IpAccessControlDialog::updateButtonsState()
     } else {
       m_moveDownButton.setEnabled(false);
     }
-  }
-}
-
-void IpAccessControlDialog::updateCheckBoxesState()
-{
-  if (m_allowLoopbackConnections.isChecked()) {
-    m_onlyLoopbackConnections.setEnabled(true);
-  } else {
-    m_onlyLoopbackConnections.setEnabled(false);
-    m_onlyLoopbackConnections.check(false);
   }
 }
 

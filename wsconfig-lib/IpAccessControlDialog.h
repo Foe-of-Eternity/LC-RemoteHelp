@@ -75,8 +75,6 @@ private:
   void onListViewSelChangeDblClick();
   void onAcceptRadioClick();
   void onRefuseRadioClick();
-  void onAllowLoopbackConnectionsClick();
-  void onAllowOnlyLoopbackConnectionsClick();
   void onIpCheckUpdate();
   void onQueryTimeoutUpdate();
 
@@ -85,7 +83,6 @@ private:
   //
 
   void updateButtonsState();
-  void updateCheckBoxesState();
   void setListViewItemText(int index, IpAccessRule *control);
 
 private:
@@ -103,8 +100,6 @@ private:
   Control m_moveDownButton;
   CheckBox m_defaultActionAccept;
   CheckBox m_defaultActionRefuse;
-  CheckBox m_allowLoopbackConnections;
-  CheckBox m_onlyLoopbackConnections;
   TextBox m_queryTimeout;
   TextBox m_ip;
   Control m_ipCheckResult;

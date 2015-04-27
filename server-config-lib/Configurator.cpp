@@ -486,9 +486,6 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   if (!sm->setBoolean(_T("RepeatControlAuthentication"), m_serverConfig.getControlAuthAlwaysChecking())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("LoopbackOnly"), m_serverConfig.isOnlyLoopbackConnectionsAllowed())) {
-    saveResult = false;
-  }
   if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
     saveResult = false;
   }
@@ -544,9 +541,6 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
     saveResult = false;
   }
   if (!sm->setUINT(_T("PollingInterval"), m_serverConfig.getPollingInterval())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("AllowLoopback"), m_serverConfig.isLoopbackConnectionsAllowed())) {
     saveResult = false;
   }
   if (!sm->setUINT(_T("VideoRecognitionInterval"), m_serverConfig.getVideoRecognitionInterval())) {
@@ -609,12 +603,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setControlAuthAlwaysChecking(boolVal);
-  }
-  if (!sm->getBoolean(_T("LoopbackOnly"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.acceptOnlyLoopbackConnections(boolVal);
   }
   if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
     loadResult = false;
@@ -691,12 +679,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setPollingInterval(uintVal);
-  }
-  if (!sm->getBoolean(_T("AllowLoopback"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.allowLoopbackConnections(boolVal);
   }
   if (!sm->getUINT(_T("VideoRecognitionInterval"), &uintVal)) {
     loadResult = false;

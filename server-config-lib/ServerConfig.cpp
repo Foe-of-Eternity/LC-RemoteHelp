@@ -33,7 +33,6 @@ ServerConfig::ServerConfig()
   m_disconnectAction(DA_DO_NOTHING), m_logLevel(0), m_useControlAuth(false),
   m_controlAuthAlwaysChecking(false),
   m_acceptRfbConnections(true), m_useAuthentication(true),
-  m_onlyLoopbackConnections(false),
   m_enableFileTransfers(true),
   m_mirrorDriverAllowed(true),
   m_removeWallpaper(true), m_hasReadOnlyPassword(false),
@@ -41,7 +40,6 @@ ServerConfig::ServerConfig()
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
   m_defaultActionAccept(false), m_queryTimeout(30),
-  m_allowLoopbackConnections(false),
   m_videoRecognitionInterval(3000), m_grabTransparentWindows(true),
   m_saveLogToAllUsersPath(false), m_hasControlPassword(false),
   m_showTrayIcon(true)
@@ -69,7 +67,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeFully(m_readonlyPassword, VNC_PASSWORD_SIZE);
   output->writeFully(m_controlPassword, VNC_PASSWORD_SIZE);
   output->writeInt8(m_useAuthentication ? 1 : 0);
-  output->writeInt8(m_onlyLoopbackConnections ? 1 : 0);
   output->writeInt32(m_logLevel);
   output->writeInt8(m_useControlAuth ? 1 : 0);
   output->writeInt8(m_controlAuthAlwaysChecking ? 1 : 0);
@@ -87,8 +84,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   m_portMappings.serialize(output);
 
   m_accessControlContainer.serialize(output);
-
-  output->writeInt8(m_allowLoopbackConnections ? 1 : 0);
 
   _ASSERT((UINT32)m_videoClassNames.size() == m_videoClassNames.size());
   output->writeUInt32((UINT32)m_videoClassNames.size());
@@ -122,7 +117,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   input->readFully(m_readonlyPassword, VNC_PASSWORD_SIZE);
   input->readFully(m_controlPassword, VNC_PASSWORD_SIZE);
   m_useAuthentication = input->readInt8() == 1;
-  m_onlyLoopbackConnections = input->readInt8() == 1;
   m_logLevel = input->readInt32();
   m_useControlAuth = input->readInt8() == 1;
   m_controlAuthAlwaysChecking = input->readInt8() != 0;
@@ -140,8 +134,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_portMappings.deserialize(input);
 
   m_accessControlContainer.deserialize(input);
-
-  m_allowLoopbackConnections = input->readInt8() == 1;
 
   m_videoClassNames.clear();
   size_t count = input->readUInt32();
@@ -417,18 +409,6 @@ void ServerConfig::useAuthentication(bool enabled)
   m_useAuthentication = enabled;
 }
 
-bool ServerConfig::isOnlyLoopbackConnectionsAllowed()
-{
-  AutoLock lock(&m_objectCS);
-  return m_onlyLoopbackConnections;
-}
-
-void ServerConfig::acceptOnlyLoopbackConnections(bool enabled)
-{
-  AutoLock lock(&m_objectCS);
-  m_onlyLoopbackConnections = enabled;
-}
-
 int ServerConfig::getLogLevel()
 {
   AutoLock lock(&m_objectCS);
@@ -591,19 +571,6 @@ PortMappingContainer *ServerConfig::getPortMappingContainer()
 IpAccessControl *ServerConfig::getAccessControl()
 {
   return &m_accessControlContainer;
-}
-
-void ServerConfig::allowLoopbackConnections(bool allow)
-{
-  AutoLock lock(&m_objectCS);
-  m_allowLoopbackConnections = allow;
-}
-
-bool ServerConfig::isLoopbackConnectionsAllowed()
-{
-  AutoLock l(&m_objectCS);
-
-  return m_allowLoopbackConnections;
 }
 
 StringVector *ServerConfig::getVideoClassNames()

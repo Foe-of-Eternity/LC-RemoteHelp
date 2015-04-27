@@ -27,14 +27,12 @@
 
 ExtraRfbServers::Conf::Conf()
 : acceptConnections(false),
-  loopbackOnly(false),
   extraPorts()
 {
 }
 
 ExtraRfbServers::Conf::Conf(const Conf &other)
 : acceptConnections(other.acceptConnections),
-  loopbackOnly(other.loopbackOnly),
   extraPorts(other.extraPorts)
 {
 }
@@ -43,7 +41,6 @@ ExtraRfbServers::Conf &
 ExtraRfbServers::Conf::operator=(const Conf &other)
 {
   acceptConnections = other.acceptConnections;
-  loopbackOnly = other.loopbackOnly;
   extraPorts = other.extraPorts;
   return *this;
 }
@@ -51,7 +48,6 @@ ExtraRfbServers::Conf::operator=(const Conf &other)
 bool ExtraRfbServers::Conf::equals(const Conf *other)
 {
   return (acceptConnections == other->acceptConnections &&
-          loopbackOnly == other->loopbackOnly &&
           extraPorts.equals(&other->extraPorts));
 }
 
@@ -120,8 +116,7 @@ bool ExtraRfbServers::startUp(bool asService, RfbClientManager *mgr)
   m_effectiveConf = newConf;
 
   if (newConf.acceptConnections) {
-    const TCHAR *bindHost =
-      newConf.loopbackOnly ? _T("localhost") : _T("0.0.0.0");
+    const TCHAR *bindHost = _T("0.0.0.0");
 
     for (size_t i = 0; i < newConf.extraPorts.count(); i++) {
       PortMapping pm = *newConf.extraPorts.at(i);
@@ -161,6 +156,5 @@ void ExtraRfbServers::getConfiguration(Conf *out)
   AutoLock l(config);
 
   out->acceptConnections = config->isAcceptingRfbConnections();
-  out->loopbackOnly = config->isOnlyLoopbackConnectionsAllowed();
   out->extraPorts = *config->getPortMappingContainer();
 }

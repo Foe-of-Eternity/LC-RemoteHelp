@@ -151,10 +151,6 @@ public:
 
   void useAuthentication(bool enabled);
 
-  bool isOnlyLoopbackConnectionsAllowed();
-
-  void acceptOnlyLoopbackConnections(bool enabled);
-
   int getLogLevel();
 
   void setLogLevel(int logLevel);
@@ -228,10 +224,6 @@ public:
 
   IpAccessRule::ActionType getActionByAddress(unsigned long ip);
 
-  void allowLoopbackConnections(bool allow);
-
-  bool isLoopbackConnectionsAllowed();
-
   //
   // Video regions
   //
@@ -296,7 +288,6 @@ protected:
   //
 
   bool m_useAuthentication;
-  bool m_onlyLoopbackConnections;
   int m_logLevel;
   bool m_useControlAuth;
   bool m_controlAuthAlwaysChecking;
@@ -360,7 +351,6 @@ protected:
   //
 
   IpAccessControl m_accessControlContainer;
-  bool m_allowLoopbackConnections;
 
   //
   // Video regions

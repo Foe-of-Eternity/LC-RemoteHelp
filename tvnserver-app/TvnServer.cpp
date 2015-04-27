@@ -167,8 +167,7 @@ void TvnServer::onConfigReload(ServerConfig *serverConfig)
     bool changeMainRfbPort = m_rfbServer != 0 &&
       (m_srvConfig->getRfbPort() != (int)m_rfbServer->getBindPort());
 
-    const TCHAR *bindHost =
-      m_srvConfig->isOnlyLoopbackConnectionsAllowed() ? _T("localhost") : _T("0.0.0.0");
+    const TCHAR *bindHost = _T("0.0.0.0");
     bool changeBindHost =  m_rfbServer != 0 &&
       _tcscmp(m_rfbServer->getBindHost(), bindHost) != 0;
 
@@ -331,7 +330,7 @@ void TvnServer::restartMainRfbServer()
     return;
   }
 
-  const TCHAR *bindHost = m_srvConfig->isOnlyLoopbackConnectionsAllowed() ? _T("localhost") : _T("0.0.0.0");
+  const TCHAR *bindHost = _T("0.0.0.0");
   unsigned short bindPort = m_srvConfig->getRfbPort();
 
   m_log.message(_T("Starting main RFB server"));

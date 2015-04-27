@@ -143,13 +143,6 @@ BEGIN
     LTEXT           "Default action on timeout:",IDC_STATIC,16,152,110,10
     RADIOBUTTON     "Reject connection",IDC_REFUSE,26,165,93,10,WS_GROUP | WS_TABSTOP
     RADIOBUTTON     "Accept connection",IDC_ACCEPT,26,178,93,10
-    GROUPBOX        "Loopback Connections",IDC_STATIC,157,104,142,89,WS_GROUP
-    LTEXT           "By default, connections from the same machine are disallowed to prevent the ""cascading windows"" effect.",IDC_STATIC,167,116,124,26
-    LTEXT           "Loopback settings work independently from the rules configured above!",IDC_STATIC,167,144,124,18
-    CONTROL         "Allow loopback connections",IDC_ALLOW_LOOPBACK_CONNECTIONS,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,167,165,118,10
-    CONTROL         "Allow only loopback connections",IDC_ALLOW_ONLY_LOOPBACK_CONNECTIONS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,178,118,10
 END
 
 IDD_CONFIG_ADMINISTRATION_PAGE DIALOGEX 0, 0, 306, 199
