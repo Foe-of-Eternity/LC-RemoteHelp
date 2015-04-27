@@ -28,10 +28,8 @@
 #include "util/StringVector.h"
 #include "util/Exception.h"
 #include "PortMappingContainer.h"
-#include "IpAccessControl.h"
 #include "thread/AutoLock.h"
 #include "thread/LocalMutex.h"
-#include "IpAccessRule.h"
 #include "io-lib/DataInputStream.h"
 #include "io-lib/DataOutputStream.h"
 #include "io-lib/IOException.h"
@@ -203,16 +201,6 @@ public:
   PortMappingContainer *getPortMappingContainer();
 
   //
-  // Ip access control config
-  //
-
-  // Remark: not-thread safe method, use lock / unlock methods of this class
-  // to lock and unlock server configuration.
-  IpAccessControl *getAccessControl();
-
-  IpAccessRule::ActionType getActionByAddress(unsigned long ip);
-
-  //
   // Video regions
   //
 
@@ -325,12 +313,6 @@ protected:
   //
 
   PortMappingContainer m_portMappings;
-
-  //
-  // Ip access control config
-  //
-
-  IpAccessControl m_accessControlContainer;
 
   //
   // Video regions

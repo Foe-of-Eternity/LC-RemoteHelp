@@ -80,8 +80,6 @@ void ServerConfig::serialize(DataOutputStream *output)
 
   m_portMappings.serialize(output);
 
-  m_accessControlContainer.serialize(output);
-
   _ASSERT((UINT32)m_videoClassNames.size() == m_videoClassNames.size());
   output->writeUInt32((UINT32)m_videoClassNames.size());
   for (size_t i = 0; i < m_videoClassNames.size(); i++) {
@@ -127,8 +125,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_localInputPriorityTimeout = input->readUInt32();
 
   m_portMappings.deserialize(input);
-
-  m_accessControlContainer.deserialize(input);
 
   m_videoClassNames.clear();
   size_t count = input->readUInt32();
@@ -176,24 +172,6 @@ void ServerConfig::setLogFileDir(const TCHAR *logFilePath)
   AutoLock l(this);
 
   m_logFilePath.setString(logFilePath);
-}
-
-IpAccessRule::ActionType ServerConfig::getActionByAddress(unsigned long ip)
-{
-  AutoLock l(this);
-
-  IpAccessControl *rules = &m_accessControlContainer;
-
-  size_t rulesCount = rules->size();
-
-  for (size_t i = 0; i < rulesCount; i++) {
-    IpAccessRule *rule = rules->at(i);
-    if (rule->isIncludingAddress(ip)) {
-      return rule->getAction();
-    }
-  }
-
-  return IpAccessRule::ACTION_TYPE_ALLOW;
 }
 
 bool ServerConfig::isControlAuthEnabled()
@@ -529,15 +507,6 @@ bool ServerConfig::isBlockingLocalInput()
 PortMappingContainer *ServerConfig::getPortMappingContainer()
 {
   return &m_portMappings;
-}
-
-//
-// Ip access control config
-//
-
-IpAccessControl *ServerConfig::getAccessControl()
-{
-  return &m_accessControlContainer;
 }
 
 StringVector *ServerConfig::getVideoClassNames()

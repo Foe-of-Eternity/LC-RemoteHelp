@@ -137,29 +137,6 @@ void RfbClientManager::onAuthFailed(RfbClient *client)
   m_newConnectionEvents->onAuthFailed(&ip);
 }
 
-void RfbClientManager::onCheckAccessControl(RfbClient *client)
-{
-  SocketAddressIPv4 peerAddr;
-
-  try {
-    client->getSocketAddr(&peerAddr);
-  } catch (...) {
-    throw AuthException(_T("Failed to get IP address of the RFB client"));
-  }
-
-  struct sockaddr_in addr_in = peerAddr.getSockAddr();
-
-  ServerConfig *config = Configurator::getInstance()->getServerConfig();
-
-  IpAccessRule::ActionType action;
-
-  if (!client->isOutgoing()) {
-    action = config->getActionByAddress((unsigned long)addr_in.sin_addr.S_un.S_addr);
-  } else {
-    action = IpAccessRule::ACTION_TYPE_ALLOW;
-  }
-}
-
 void RfbClientManager::onClipboardUpdate(const StringStorage *newClipboard)
 {
   AutoLock al(&m_clientListLocker);

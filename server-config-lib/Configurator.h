@@ -28,7 +28,6 @@
 #include "config-lib/SettingsManager.h"
 
 #include "PortMappingContainer.h"
-#include "IpAccessControl.h"
 #include "ServerConfig.h"
 #include "ConfigReloadListener.h"
 #include "RegistrySecurityAttributes.h"
@@ -74,10 +73,6 @@ private:
 
   bool savePortMappingContainer(SettingsManager *sm);
   bool loadPortMappingContainer(SettingsManager *sm, PortMappingContainer *portMapping);
-
-  bool saveIpAccessControlContainer(SettingsManager *sm);
-  bool loadIpAccessControlContainer(SettingsManager *sm,
-                                    IpAccessControl *ipContainer);
 
   bool saveServerConfig(SettingsManager *sm);
   bool loadServerConfig(SettingsManager *sm, ServerConfig *config);
