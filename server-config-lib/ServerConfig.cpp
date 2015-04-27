@@ -30,8 +30,7 @@
 
 ServerConfig::ServerConfig()
 : m_rfbPort(5900),
-  m_disconnectAction(DA_DO_NOTHING), m_logLevel(0), m_useControlAuth(false),
-  m_controlAuthAlwaysChecking(false),
+  m_disconnectAction(DA_DO_NOTHING), m_logLevel(0),
   m_acceptRfbConnections(true), m_useAuthentication(true),
   m_enableFileTransfers(true),
   m_mirrorDriverAllowed(true),
@@ -40,12 +39,11 @@ ServerConfig::ServerConfig()
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
   m_videoRecognitionInterval(3000), m_grabTransparentWindows(true),
-  m_saveLogToAllUsersPath(false), m_hasControlPassword(false),
+  m_saveLogToAllUsersPath(false),
   m_showTrayIcon(true)
 {
   memset(m_primaryPassword,  0, sizeof(m_primaryPassword));
   memset(m_readonlyPassword, 0, sizeof(m_readonlyPassword));
-  memset(m_controlPassword,  0, sizeof(m_controlPassword));
 }
 
 ServerConfig::~ServerConfig()
@@ -64,11 +62,8 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeInt8(m_acceptRfbConnections ? 1 : 0);
   output->writeFully(m_primaryPassword, VNC_PASSWORD_SIZE);
   output->writeFully(m_readonlyPassword, VNC_PASSWORD_SIZE);
-  output->writeFully(m_controlPassword, VNC_PASSWORD_SIZE);
   output->writeInt8(m_useAuthentication ? 1 : 0);
   output->writeInt32(m_logLevel);
-  output->writeInt8(m_useControlAuth ? 1 : 0);
-  output->writeInt8(m_controlAuthAlwaysChecking ? 1 : 0);
   output->writeInt8(m_alwaysShared ? 1 : 0);
   output->writeInt8(m_neverShared ? 1 : 0);
   output->writeInt8(m_disconnectClients ? 1 : 0);
@@ -90,7 +85,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeInt8(m_saveLogToAllUsersPath ? 1 : 0);
   output->writeInt8(m_hasPrimaryPassword ? 1 : 0);
   output->writeInt8(m_hasReadOnlyPassword ? 1 : 0);
-  output->writeInt8(m_hasControlPassword ? 1 : 0);
   output->writeInt8(m_showTrayIcon ? 1 : 0);
 
   output->writeUTF8(m_logFilePath.getString());
@@ -108,11 +102,8 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_acceptRfbConnections = input->readInt8() == 1;
   input->readFully(m_primaryPassword, VNC_PASSWORD_SIZE);
   input->readFully(m_readonlyPassword, VNC_PASSWORD_SIZE);
-  input->readFully(m_controlPassword, VNC_PASSWORD_SIZE);
   m_useAuthentication = input->readInt8() == 1;
   m_logLevel = input->readInt32();
-  m_useControlAuth = input->readInt8() == 1;
-  m_controlAuthAlwaysChecking = input->readInt8() != 0;
   m_alwaysShared = input->readInt8() == 1;
   m_neverShared = input->readInt8() == 1;
   m_disconnectClients = input->readInt8() == 1;
@@ -136,7 +127,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_saveLogToAllUsersPath = input->readInt8() == 1;
   m_hasPrimaryPassword = input->readInt8() == 1;
   m_hasReadOnlyPassword = input->readInt8() == 1;
-  m_hasControlPassword = input->readInt8() == 1;
   m_showTrayIcon = input->readInt8() == 1;
 
   input->readUTF8(&m_logFilePath);
@@ -168,34 +158,6 @@ void ServerConfig::setLogFileDir(const TCHAR *logFilePath)
   AutoLock l(this);
 
   m_logFilePath.setString(logFilePath);
-}
-
-bool ServerConfig::isControlAuthEnabled()
-{
-  AutoLock l(&m_objectCS);
-
-  return m_useControlAuth;
-}
-
-void ServerConfig::useControlAuth(bool useAuth)
-{
-  AutoLock l(&m_objectCS);
-
-  m_useControlAuth = useAuth;
-}
-
-bool ServerConfig::getControlAuthAlwaysChecking()
-{
-  AutoLock l(&m_objectCS);
-
-  return m_controlAuthAlwaysChecking;
-}
-
-void ServerConfig::setControlAuthAlwaysChecking(bool value)
-{
-  AutoLock l(&m_objectCS);
-
-  m_controlAuthAlwaysChecking = value;
 }
 
 void ServerConfig::setRfbPort(int port)
@@ -308,22 +270,6 @@ void ServerConfig::setReadOnlyPassword(const unsigned char *value)
   memcpy((void *)&m_readonlyPassword[0], (void *)value, VNC_PASSWORD_SIZE);
 }
 
-void ServerConfig::getControlPassword(unsigned char *password)
-{
-  AutoLock lock(&m_objectCS);
-
-  memcpy(password, m_controlPassword, VNC_PASSWORD_SIZE);
-}
-
-void ServerConfig::setControlPassword(const unsigned char *password)
-{
-  AutoLock lock(&m_objectCS);
-
-  memcpy((void *)&m_controlPassword[0], (const void *)password, VNC_PASSWORD_SIZE);
-
-  m_hasControlPassword = true;
-}
-
 bool ServerConfig::hasPrimaryPassword()
 {
   AutoLock lock(&m_objectCS);
@@ -338,13 +284,6 @@ bool ServerConfig::hasReadOnlyPassword()
   return m_hasReadOnlyPassword;
 }
 
-bool ServerConfig::hasControlPassword()
-{
-  AutoLock lock(&m_objectCS);
-
-  return m_hasControlPassword;
-}
-
 void ServerConfig::deletePrimaryPassword()
 {
   AutoLock lock(&m_objectCS);
@@ -357,13 +296,6 @@ void ServerConfig::deleteReadOnlyPassword()
   AutoLock lock(&m_objectCS);
 
   m_hasReadOnlyPassword = false;
-}
-
-void ServerConfig::deleteControlPassword()
-{
-  AutoLock lock(&m_objectCS);
-
-  m_hasControlPassword = false;
 }
 
 bool ServerConfig::isUsingAuthentication()

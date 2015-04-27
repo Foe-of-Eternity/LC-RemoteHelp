@@ -94,12 +94,6 @@ private:
    */
   void checkRetCode() throw(IOException, RemoteException);
 
-  // Perform auth with a specified password file.
-  void authFromFile();
-
-  // Perform auth with ini file.
-  void authFromIniFile();
-
 private:
   /**
    * Control gate.

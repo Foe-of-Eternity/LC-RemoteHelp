@@ -28,9 +28,7 @@
 #include "RfbClientManager.h"
 
 #include "tvncontrol-app/ControlGate.h"
-#include "tvncontrol-app/ControlAuthException.h"
 #include "tvncontrol-app/Transport.h"
-#include "ControlAppAuthenticator.h"
 #include "TcpDispatcherConnectionListener.h"
 #include "thread/ThreadCollector.h"
 #include "log-writer/LogWriter.h"
@@ -63,13 +61,12 @@ class ControlClient : public Thread,
 public:
   /**
    * Creates new control client handler thread and starts it.
-   * @param transport transport of incoming control connection (non-authorized).
+   * @param transport transport of incoming control connection
    * @param rfbClientManager active TightVNC rfb client manager.
    * @remark control client takes ownership over client transport.
    */
   ControlClient(Transport *transport,
                 RfbClientManager *rfbClientManager,
-                ControlAppAuthenticator *authenticator,
                 HANDLE pipeHandle,
                 LogWriter *log);
   /**
@@ -81,7 +78,6 @@ protected:
   /**
    * Inherited from Thread class.
    * Processed control client connection, consists of following phases:
-   *   Auth phase (send auth type and try auth client).
    *   Control message processing loop.
    */
   virtual void execute();
@@ -104,12 +100,6 @@ private:
    * @throws IOException on io error.
    */
   void sendError(const TCHAR *message) throw(IOException);
-
-  /**
-   * Called when auth message recieved.
-   * @throws IOException on io error.
-   */
-  void authMsgRcdv() throw(IOException);
 
   /**
    * Handlers of control proto messages.
@@ -217,15 +207,6 @@ private:
    */
   RfbClientManager *m_rfbClientManager;
 
-  /**
-   * true if control authentication is passed or no auth is set.
-   */
-  bool m_authPassed;
-  bool m_repeatAuthPassed;
-  UINT32 m_authReqMessageId;
-
-  ControlAppAuthenticator *m_authenticator;
-
   // A connection identifier will be used by a viewer to connect to
   // the server across a tcp dispatcher.
   unsigned int m_tcpDispId;
@@ -235,12 +216,6 @@ private:
   ThreadCollector m_connectingSocketThreadCollector;
 
   LogWriter *m_log;
-
-  /**
-   * Array of client messages that needs client to be auth.
-   */
-  static const UINT32 REQUIRES_AUTH[];
-  static const UINT32 WITHOUT_AUTH[];
 };
 
 #endif

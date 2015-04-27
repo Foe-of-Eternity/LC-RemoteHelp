@@ -44,7 +44,6 @@ public:
   static const TCHAR CONNECT[];
   static const TCHAR SHUTDOWN[];
 
-  static const TCHAR SET_CONTROL_PASSWORD[];
   static const TCHAR SET_PRIMARY_VNC_PASSWORD[];
   static const TCHAR CHECK_SERVICE_PASSWORDS[];
 
@@ -65,7 +64,6 @@ public:
   void getConnectHostName(StringStorage *hostName) const;
   bool hasShutdownFlag();
   bool hasSetVncPasswordFlag();
-  bool hasSetControlPasswordFlag();
   bool hasCheckServicePasswords();
   bool hasConfigAppFlag();
   bool hasConfigServiceFlag();
@@ -75,13 +73,11 @@ public:
   bool isSlave();
 
   const TCHAR *getPrimaryVncPassword() const;
-  const TCHAR *getControlPassword() const;
 
   bool isCommandSpecified();
 
 private:
   StringStorage m_vncPassword;
-  StringStorage m_controlPassword;
 
   StringStorage m_connectHostName;
   StringStorage m_passwordFile;

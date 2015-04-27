@@ -31,7 +31,6 @@
 #include "gui/SpinControl.h"
 #include "gui/BalloonTip.h"
 #include "server-config-lib/ServerConfig.h"
-#include "PasswordControl.h"
 
 class AdministrationConfigDialog: public BaseDialog
 {
@@ -71,10 +70,6 @@ private:
   void onLogLevelUpdate();
   void onDARadioButtonClick(int number);
   void onLogForAllUsersClick();
-  void onUseControlAuthClick();
-  void onRepeatControlAuthClick();
-  void onChangeControlPasswordClick();
-  void onUnsetControlPasswordClick();
 
   //
   // Helper methods
@@ -87,19 +82,13 @@ protected:
   ServerConfig *m_config;
   // Controls
   Control m_openLogPathButton;
-  Control m_setControlPasswordButton;
-  Control m_unsetControlPasswordButton;
   CheckBox m_disconnectAction[3];
   TextBox m_logLevel;
   TextBox m_logPathTB;
-  CheckBox m_useControlAuth;
-  CheckBox m_repeatControlAuth;
   CheckBox m_shared[5];
   CheckBox m_logForAllUsers;
   SpinControl m_logSpin;
   BaseDialog *m_parentDialog;
-
-  PasswordControl *m_cpControl;
 
   friend class ConfigDialog;
 };
