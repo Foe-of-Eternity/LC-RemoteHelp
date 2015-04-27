@@ -138,23 +138,7 @@ protected:
    */
   int runConfigurator(bool configService, bool isRunAsRequested);
 
-  // Checks the rfb and administrator authentications. If one of them is empty
-  // the function runs a dialog to prompt to enable the both authentication and
-  // to set or to add passwords.
-  int checkServicePasswords(bool isRunAsRequested);
-
 private:
-  /**
-   * Converts plain text password to crypted password.
-   * @fixme move in to tvnserver application as additional application.
-   */
-  static void getCryptedPassword(UINT8 cryptedPass[8], const TCHAR *plainTextPass);
-
-  // Auxiliary function to the same name function. It does real work.
-  void checkServicePasswords();
-
-  // Auxiliary function that forces the current run service to reload configuration.
-  void reloadConfig();
 
 private:
   LogWriter m_log;

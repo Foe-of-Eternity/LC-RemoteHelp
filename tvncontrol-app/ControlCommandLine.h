@@ -38,14 +38,10 @@ public:
 
   static const TCHAR CONTROL_SERVICE[];
   static const TCHAR CONTROL_APPLICATION[];
-  static const TCHAR PASSWORD_FILE[];
   static const TCHAR CONFIG_RELOAD[];
   static const TCHAR DISCONNECT_ALL[];
   static const TCHAR CONNECT[];
   static const TCHAR SHUTDOWN[];
-
-  static const TCHAR SET_PRIMARY_VNC_PASSWORD[];
-  static const TCHAR CHECK_SERVICE_PASSWORDS[];
 
   static const TCHAR SLAVE_MODE[];
   static const TCHAR DONT_ELEVATE[];
@@ -56,15 +52,11 @@ public:
 
   void parse(const CommandLineArgs *cmdArgs) throw(CommandLineFormatException);
 
-  void getPasswordFile(StringStorage *passwordFile) const;
-  bool hasPasswordFile();
   bool hasReloadFlag();
   bool hasKillAllFlag();
   bool hasConnectFlag();
   void getConnectHostName(StringStorage *hostName) const;
   bool hasShutdownFlag();
-  bool hasSetVncPasswordFlag();
-  bool hasCheckServicePasswords();
   bool hasConfigAppFlag();
   bool hasConfigServiceFlag();
   bool hasControlServiceFlag();
@@ -72,15 +64,10 @@ public:
   bool hasDontElevateFlag();
   bool isSlave();
 
-  const TCHAR *getPrimaryVncPassword() const;
-
   bool isCommandSpecified();
 
 private:
-  StringStorage m_vncPassword;
-
   StringStorage m_connectHostName;
-  StringStorage m_passwordFile;
 };
 
 #endif

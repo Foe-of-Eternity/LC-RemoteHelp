@@ -57,7 +57,6 @@
 #include "wsconfig-lib/ConfigDialog.h"
 #include "util/AnsiStringStorage.h"
 #include "tvnserver-app/NamingDefs.h"
-#include "SetPasswordsDialog.h"
 
 ControlApplication::ControlApplication(HINSTANCE hinst,
                                        const TCHAR *windowClassName,
@@ -113,23 +112,6 @@ int ControlApplication::run()
     return runConfigurator(cmdLineParser.hasConfigServiceFlag(), cmdLineParser.hasDontElevateFlag());
   }
 
-  if (cmdLineParser.hasCheckServicePasswords()) {
-    return checkServicePasswords(cmdLineParser.hasDontElevateFlag());
-  }
-
-  // Change passwords and exit.
-  if (cmdLineParser.hasSetVncPasswordFlag()) {
-    Configurator::getInstance()->setServiceFlag(true);
-    Configurator::getInstance()->load();
-    ServerConfig *config = Configurator::getInstance()->getServerConfig();
-    UINT8 cryptedPass[8];
-    getCryptedPassword(cryptedPass, cmdLineParser.getPrimaryVncPassword());
-    config->setPrimaryPassword((const unsigned char *)cryptedPass);
-    config->useAuthentication(true);
-    Configurator::getInstance()->save();
-    return 0;
-  }
-
   int retCode = 0;
 
   // If we are in the "-controlservice -slave" mode, make sure there are no
@@ -152,7 +134,7 @@ int ControlApplication::run()
   try {
     connect(cmdLineParser.hasControlServiceFlag(), cmdLineParser.isSlave());
   } catch (Exception &) {
-    if (!cmdLineParser.isSlave() && !cmdLineParser.hasCheckServicePasswords()) {
+    if (!cmdLineParser.isSlave()) {
       const TCHAR *msg = StringTable::getString(IDS_FAILED_TO_CONNECT_TO_CONTROL_SERVER);
       const TCHAR *caption = StringTable::getString(IDS_MBC_TVNCONTROL);
       MessageBox(0, msg, caption, MB_OK | MB_ICONERROR);
@@ -163,11 +145,6 @@ int ControlApplication::run()
   // Execute command (if specified) and exit.
   if (cmdLineParser.isCommandSpecified()) {
     Command *command = 0;
-
-    StringStorage passwordFile;
-    cmdLineParser.getPasswordFile(&passwordFile);
-    m_serverControl->setPasswordProperties(passwordFile.getString(), true,
-                                           cmdLineParser.hasControlServiceFlag());
 
     if (cmdLineParser.hasKillAllFlag()) {
       command = new DisconnectAllCommand(m_serverControl);
@@ -364,111 +341,4 @@ int ControlApplication::runConfigurator(bool configService, bool isRunAsRequeste
   ConfigDialog confDialog(configService, 0);
 
   return confDialog.showModal();
-}
-
-void ControlApplication::getCryptedPassword(UINT8 cryptedPass[8], const TCHAR *plainTextPassString)
-{
-  // Get a copy of the password truncated at 8 characters.
-  StringStorage plainTextPass(plainTextPassString);
-  plainTextPass.getSubstring(&plainTextPass, 0, 7);
-  // Convert from TCHAR[] to char[].
-  // FIXME: Check exception catching.
-  AnsiStringStorage ansiPass(&plainTextPass);
-
-  // Convert to a byte array.
-  UINT8 byteArray[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-  memcpy(byteArray, ansiPass.getString(), ansiPass.getLength());
-
-  // Encrypt with a fixed key.
-  VncPassCrypt::getEncryptedPass(cryptedPass, byteArray);
-}
-
-int ControlApplication::checkServicePasswords(bool isRunAsRequested)
-{
-  // FIXME: code duplication.
-  if (IsUserAnAdmin() == FALSE) {
-    // If admin rights already requested and application still don't have them,
-    // then show error message and exit.
-    if (isRunAsRequested) {
-      MessageBox(0,
-        StringTable::getString(IDS_ADMIN_RIGHTS_NEEDED),
-        StringTable::getString(IDS_MBC_TVNCONTROL),
-        MB_OK | MB_ICONERROR);
-      return 1;
-    }
-    // Path to tvnserver binary.
-    StringStorage pathToBinary;
-    // Command line for child process.
-    StringStorage childCommandLine;
-
-    // Get path to tvnserver binary.
-    Environment::getCurrentModulePath(&pathToBinary);
-    // Set -dontelevate flag to tvncontrol know that admin rights already requested.
-    childCommandLine.format(_T("%s -dontelevate"), m_commandLine.getString());
-
-    // Start child.
-    try {
-      Shell::runAsAdmin(pathToBinary.getString(), childCommandLine.getString());
-      return 0;
-    } catch (SystemException &sysEx) {
-      if (sysEx.getErrorCode() != ERROR_CANCELLED) {
-        MessageBox(0,
-          sysEx.getMessage(),
-          StringTable::getString(IDS_MBC_TVNCONTROL),
-          MB_OK | MB_ICONERROR);
-      }
-      return 1;
-    } // try / catch.
-    return 0;
-  }
-  checkServicePasswords();
-  return 0;
-}
-
-void ControlApplication::checkServicePasswords()
-{
-  Configurator::getInstance()->setServiceFlag(true);
-  Configurator::getInstance()->load();
-  ServerConfig *config = Configurator::getInstance()->getServerConfig();
-
-  bool askToChangeRfbAuth = !config->isUsingAuthentication() || !config->hasPrimaryPassword();
-  SetPasswordsDialog dialog(askToChangeRfbAuth);
-  if (dialog.showModal() == IDOK) {
-    UINT8 cryptedPass[8];
-    bool useRfbAuth = dialog.getUseRfbPass();
-    bool dontUseRfbAuth = dialog.getRfbPassForClear();
-    // Note: The state !useRfbAuth && !dontUseRfbAuth is valid and means "do not change
-    // the auth settings".
-    if (useRfbAuth) {
-      StringStorage pass;
-      dialog.getRfbPass(&pass);
-      getCryptedPassword(cryptedPass, pass.getString());
-      config->setPrimaryPassword(cryptedPass);
-      config->useAuthentication(true);
-    } else if (dontUseRfbAuth) {
-      config->deletePrimaryPassword();
-      config->deleteReadOnlyPassword();
-      config->useAuthentication(false);
-    }
-    Configurator::getInstance()->save();
-    reloadConfig();
-  }
-}
-
-void ControlApplication::reloadConfig()
-{
-  StringStorage pathToBinary;
-  try {
-    // Get path to tvnserver binary.
-    Environment::getCurrentModulePath(&pathToBinary);
-    Process processToReloadConfig(pathToBinary.getString(), _T("-controlservice -reload"));
-    processToReloadConfig.start();
-  } catch (Exception &e) {
-    StringStorage errMess;
-    errMess.format(StringTable::getString(IDS_FAILED_TO_RELOAD_SERVICE_ON_CHECK_PASS), e.getMessage());
-    MessageBox(0,
-      errMess.getString(),
-      StringTable::getString(IDS_MBC_TVNCONTROL),
-      MB_OK | MB_ICONERROR);
-  }
 }

@@ -14,16 +14,10 @@
     <ClCompile Include="AdministrationConfigDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChangePasswordDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CommonInputValidation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConfigDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PasswordControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServerConfigDialog.cpp">
@@ -43,16 +37,10 @@
     <ClInclude Include="AdministrationConfigDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChangePasswordDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CommonInputValidation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PasswordControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServerConfigDialog.h">

@@ -25,7 +25,6 @@
 #include "tvnserver/resource.h"
 #include "ServerConfigDialog.h"
 #include "ConfigDialog.h"
-#include "ChangePasswordDialog.h"
 #include "server-config-lib/Configurator.h"
 #include "util/StringParser.h"
 #include "CommonInputValidation.h"
@@ -72,21 +71,6 @@ BOOL ServerConfigDialog::onCommand(UINT controlID, UINT notificationID)
     switch (controlID) {
     case IDC_ACCEPT_RFB_CONNECTIONS:
       onAcceptRfbConnectionsClick();
-      break;
-    case IDC_USE_AUTHENTICATION:
-      onAuthenticationClick();
-      break;
-    case IDC_PRIMARY_PASSWORD:
-      onPrimaryPasswordChange();
-      break;
-    case IDC_VIEW_ONLY_PASSWORD:
-      onReadOnlyPasswordChange();
-      break;
-    case IDC_UNSET_PRIMARY_PASSWORD_BUTTON:
-      onUnsetPrimaryPasswordClick();
-      break;
-    case IDC_UNSET_READONLY_PASSWORD_BUTTON:
-      onUnsetReadOnlyPasswordClick();
       break;
     case IDC_ENABLE_FILE_TRANSFERS:
       onFileTransferCheckBoxClick();
@@ -171,18 +155,6 @@ bool ServerConfigDialog::validateInput()
     return false;
   }
 
-  bool passwordSpecified = m_ppControl->hasPassword() || m_vpControl->hasPassword();
-
-  if (m_acceptRfbConnections.isChecked() &&
-      m_useAuthentication.isChecked() &&
-      !passwordSpecified) {
-    MessageBox(m_ctrlThis.getWindow(),
-               StringTable::getString(IDS_SET_PASSWORD_NOTIFICATION),
-               StringTable::getString(IDS_CAPTION_BAD_INPUT),
-               MB_ICONSTOP | MB_OK);
-    return false;
-  }
-
   return true;
 }
 
@@ -195,20 +167,6 @@ void ServerConfigDialog::updateUI()
   m_removeWallpaper.check(m_config->isRemovingDesktopWallpaperEnabled());
 
   m_acceptRfbConnections.check(m_config->isAcceptingRfbConnections());
-
-  if (m_config->hasPrimaryPassword()) {
-    UINT8 ppCrypted[8];
-    m_config->getPrimaryPassword(ppCrypted);
-    m_ppControl->setCryptedPassword((const char *)ppCrypted);
-  }
-
-  if (m_config->hasReadOnlyPassword()) {
-    UINT8 vpCrypted[8];
-    m_config->getReadOnlyPassword(vpCrypted);
-    m_vpControl->setCryptedPassword((const char *)vpCrypted);
-  }
-
-  m_useAuthentication.check(m_config->isUsingAuthentication());
 
   m_blockLocalInput.check(m_config->isBlockingLocalInput());
   m_blockRemoteInput.check(m_config->isBlockingRemoteInput());
@@ -248,27 +206,6 @@ void ServerConfigDialog::apply()
   m_config->enableRemovingDesktopWallpaper(m_removeWallpaper.isChecked());
 
   m_config->acceptRfbConnections(m_acceptRfbConnections.isChecked());
-  m_config->useAuthentication(m_useAuthentication.isChecked());
-
-  //
-  // Primary password.
-  //
-
-  if (m_ppControl->hasPassword()) {
-    m_config->setPrimaryPassword((const unsigned char *)m_ppControl->getCryptedPassword());
-  } else {
-    m_config->deletePrimaryPassword();
-  }
-
-  //
-  // View only password.
-  //
-
-  if (m_vpControl->hasPassword()) {
-    m_config->setReadOnlyPassword((const unsigned char *)m_vpControl->getCryptedPassword());
-  } else {
-    m_config->deleteReadOnlyPassword();
-  }
 
   // Local input priority timeout string storage
   StringStorage liptStringStorage;
@@ -298,11 +235,6 @@ void ServerConfigDialog::initControls()
   m_enableFileTransfers.setWindow(GetDlgItem(hwnd, IDC_ENABLE_FILE_TRANSFERS));
   m_removeWallpaper.setWindow(GetDlgItem(hwnd, IDC_REMOVE_WALLPAPER));
   m_acceptRfbConnections.setWindow(GetDlgItem(hwnd, IDC_ACCEPT_RFB_CONNECTIONS));
-  m_primaryPassword.setWindow(GetDlgItem(hwnd, IDC_PRIMARY_PASSWORD));
-  m_readOnlyPassword.setWindow(GetDlgItem(hwnd, IDC_VIEW_ONLY_PASSWORD));
-  m_useAuthentication.setWindow(GetDlgItem(hwnd, IDC_USE_AUTHENTICATION));
-  m_unsetPrimaryPassword.setWindow(GetDlgItem(hwnd, IDC_UNSET_PRIMARY_PASSWORD_BUTTON));
-  m_unsetReadOnlyPassword.setWindow(GetDlgItem(hwnd, IDC_UNSET_READONLY_PASSWORD_BUTTON));
   m_showTrayIcon.setWindow(GetDlgItem(hwnd, IDC_SHOW_TVNCONTROL_ICON_CHECKBOX));
 
   m_rfbPortSpin.setWindow(GetDlgItem(hwnd, IDC_RFB_PORT_SPIN));
@@ -338,9 +270,6 @@ void ServerConfigDialog::initControls()
 
   // FIXME: This control is not used yet.
   m_grabTransparentWindows.check(true);
-
-  m_ppControl = new PasswordControl(&m_primaryPassword, &m_unsetPrimaryPassword);
-  m_vpControl = new PasswordControl(&m_readOnlyPassword, &m_unsetReadOnlyPassword);
 }
 
 //
@@ -351,16 +280,9 @@ void ServerConfigDialog::updateControlDependencies()
 {
   if (m_acceptRfbConnections.isChecked()) {
     m_rfbPort.setEnabled(true);
-    m_useAuthentication.setEnabled(true);
   } else {
     m_rfbPort.setEnabled(false);
-    m_useAuthentication.setEnabled(false);
   }
-
-  bool passwordsAreEnabled = ((m_useAuthentication.isChecked()) && (m_useAuthentication.isEnabled()));
-
-  m_ppControl->setEnabled(passwordsAreEnabled);
-  m_vpControl->setEnabled(passwordsAreEnabled);
 
   m_rfbPortSpin.invalidate();
   m_pollingIntervalSpin.invalidate();
@@ -372,13 +294,6 @@ void ServerConfigDialog::onAcceptRfbConnectionsClick()
   ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
 }
 
-void ServerConfigDialog::onAuthenticationClick()
-{
-  updateControlDependencies();
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-}
-
-
 void ServerConfigDialog::onShowTrayIconCheckBoxClick()
 {
   bool oldVal = m_config->getShowTrayIconFlag();
@@ -387,34 +302,6 @@ void ServerConfigDialog::onShowTrayIconCheckBoxClick()
   if (oldVal != newVal) {
     ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
   }
-}
-
-void ServerConfigDialog::onPrimaryPasswordChange()
-{
-  if (m_ppControl->showChangePasswordModalDialog(&m_ctrlThis)) {
-    ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-  }
-}
-
-void ServerConfigDialog::onReadOnlyPasswordChange()
-{
-  if (m_vpControl->showChangePasswordModalDialog(&m_ctrlThis)) {
-    ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-  }
-}
-
-void ServerConfigDialog::onUnsetPrimaryPasswordClick()
-{
-  m_ppControl->unsetPassword(true, m_ctrlThis.getWindow());
-
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-}
-
-void ServerConfigDialog::onUnsetReadOnlyPasswordClick()
-{
-  m_vpControl->unsetPassword(true, m_ctrlThis.getWindow());
-
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
 }
 
 void ServerConfigDialog::onPollingIntervalSpinChangePos(LPNMUPDOWN message)

@@ -188,27 +188,13 @@ void TvnServer::getServerInfo(TvnServerInfo *info)
 
   StringStorage statusString;
 
-  // Vnc authentication enabled.
-  bool vncAuthEnabled = m_srvConfig->isUsingAuthentication();
-  // No vnc passwords are set.
-  bool noVncPasswords = !m_srvConfig->hasPrimaryPassword() && !m_srvConfig->hasReadOnlyPassword();
-  // Determinates that main rfb server cannot accept connection in case of passwords problem.
-  bool vncPasswordsError = vncAuthEnabled && noVncPasswords;
-
   if (rfbServerListening) {
-    if (vncPasswordsError) {
-      statusString = StringTable::getString(IDS_NO_PASSWORDS_SET);
-    } else {
-      // FIXME: Usage of deprecated FUNCTION!
-      char localAddressString[1024];
-      getLocalIPAddrString(localAddressString, 1024);
-      AnsiStringStorage ansiString(localAddressString);
-      ansiString.toStringStorage(&statusString);
-
-      if (!vncAuthEnabled) {
-        statusString.appendString(StringTable::getString(IDS_NO_AUTH_STATUS));
-      } // if no auth enabled.
-    } // accepting connections and no problem with passwords.
+    // FIXME: Usage of deprecated FUNCTION!
+    char localAddressString[1024];
+    getLocalIPAddrString(localAddressString, 1024);
+    AnsiStringStorage ansiString(localAddressString);
+    ansiString.toStringStorage(&statusString);
+    statusString.appendString(StringTable::getString(IDS_NO_AUTH_STATUS));
   } else {
     statusString = StringTable::getString(IDS_SERVER_NOT_LISTENING);
   } // not accepting connections.
@@ -218,7 +204,7 @@ void TvnServer::getServerInfo(TvnServerInfo *info)
   info->m_statusText.format(_T("%s - %s"),
                             StringTable::getString(stringId),
                             statusString.getString());
-  info->m_acceptFlag = rfbServerListening && !vncPasswordsError;
+  info->m_acceptFlag = rfbServerListening;
   info->m_serviceFlag = m_runAsService;
 }
 

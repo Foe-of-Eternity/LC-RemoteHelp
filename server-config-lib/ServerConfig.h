@@ -35,8 +35,6 @@
 
 #include <shlobj.h>
 
-#define VNC_PASSWORD_SIZE 8
-
 class ServerConfig : public Lockable
 {
 public:
@@ -116,25 +114,9 @@ public:
   bool isAcceptingRfbConnections();
   void acceptRfbConnections(bool accept);
 
-  void getPrimaryPassword(unsigned char *password);
-  void setPrimaryPassword(const unsigned char *value);
-
-  void getReadOnlyPassword(unsigned char *password);
-  void setReadOnlyPassword(const unsigned char *value);
-
-  bool hasPrimaryPassword();
-  bool hasReadOnlyPassword();
-
-  void deletePrimaryPassword();
-  void deleteReadOnlyPassword();
-
   //
   // Configurator from Administration tab
   //
-
-  bool isUsingAuthentication();
-
-  void useAuthentication(bool enabled);
 
   int getLogLevel();
 
@@ -235,14 +217,10 @@ protected:
 
   bool m_acceptRfbConnections;
 
-  unsigned char m_primaryPassword[VNC_PASSWORD_SIZE];
-  unsigned char m_readonlyPassword[VNC_PASSWORD_SIZE];
-
   //
   // Configurator from Administration tab
   //
 
-  bool m_useAuthentication;
   int m_logLevel;
 
   //
@@ -305,13 +283,6 @@ protected:
 
   StringStorage m_logFilePath;
 private:
-
-  //
-  // Helper methods
-  //
-
-  bool m_hasPrimaryPassword;
-  bool m_hasReadOnlyPassword;
 
   //
   // Critical section

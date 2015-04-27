@@ -56,8 +56,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     { ControlCommandLine::CONFIG_APPLICATION, NO_ARG },
     { ControlCommandLine::CONFIG_SERVICE, NO_ARG },
-    { ControlCommandLine::SET_PRIMARY_VNC_PASSWORD, NO_ARG },
-    { ControlCommandLine::CHECK_SERVICE_PASSWORDS, NO_ARG },
     { ControlCommandLine::CONTROL_SERVICE, NO_ARG },
     { ControlCommandLine::CONTROL_APPLICATION, NO_ARG },
 
@@ -99,10 +97,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     return 0;
   } else if (firstKey.isEqualTo(ControlCommandLine::CONFIG_APPLICATION) ||
              firstKey.isEqualTo(ControlCommandLine::CONFIG_SERVICE) ||
-             firstKey.isEqualTo(ControlCommandLine::SET_PRIMARY_VNC_PASSWORD) ||
              firstKey.isEqualTo(ControlCommandLine::CONTROL_SERVICE) ||
-             firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION) ||
-             firstKey.isEqualTo(ControlCommandLine::CHECK_SERVICE_PASSWORDS)) {
+             firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION)) {
     try {
       ControlApplication tvnControl(hInstance,
         WindowNames::WINDOW_CLASS_NAME,

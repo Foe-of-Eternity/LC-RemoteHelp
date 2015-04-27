@@ -32,7 +32,6 @@
 #include "server-config-lib/Configurator.h"
 #include "util/CommonHeader.h"
 #include "util/StringParser.h"
-#include "wsconfig-lib/ChangePasswordDialog.h"
 #include "util/StringTable.h"
 #include "win-system/Process.h"
 #include "tvnserver-app/NamingDefs.h"

@@ -193,10 +193,7 @@ void RfbClient::execute()
 
       m_shared = rfbInitializer.getSharedFlag();
       m_log->debug(_T("Shared flag = %d"), (int)m_shared);
-      m_viewOnlyAuth = rfbInitializer.getViewOnlyAuth();
-      m_log->debug(_T("Initial view-only state = %d"), (int)m_viewOnly);
       m_log->debug(_T("Authenticated with view-only password = %d"), (int)m_viewOnlyAuth);
-      m_viewOnly = m_viewOnly || m_viewOnlyAuth;
 
       // Let RfbClientManager handle new authenticated connection.
       m_desktop = m_extAuthListener->onClientAuth(this);

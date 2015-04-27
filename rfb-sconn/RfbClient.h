@@ -80,7 +80,6 @@ public:
   bool isOutgoing() const;
 
   bool getSharedFlag() const { return m_shared; }
-  bool getViewOnlyAuth() const { return m_viewOnlyAuth; }
 
   void setViewOnlyFlag(bool value);
 

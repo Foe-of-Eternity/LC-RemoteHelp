@@ -26,7 +26,6 @@
 #include "ControlProto.h"
 #include "server-config-lib/Configurator.h"
 #include "config-lib/IniFileSettingsManager.h"
-#include "util/VncPassCrypt.h"
 #include "util/AnsiStringStorage.h"
 #include "tvnserver-app/NamingDefs.h"
 #include "file-lib/WinFile.h"
@@ -36,12 +35,8 @@
 #include <crtdbg.h>
 
 ControlMessage::ControlMessage(UINT32 messageId, ControlGate *gate,
-                               const TCHAR *passwordFile,
-                               bool getPassFromConfigEnabled,
                                bool forService)
 : DataOutputStream(0), m_messageId(messageId), m_gate(gate),
-  m_passwordFile(passwordFile),
-  m_getPassFromConfigEnabled(getPassFromConfigEnabled),
   m_forService(forService)
 {
   m_tunnel = new ByteArrayOutputStream(2048);

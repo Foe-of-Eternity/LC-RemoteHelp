@@ -283,9 +283,6 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   if (!sm->setBoolean(_T("AcceptRfbConnections"), m_serverConfig.isAcceptingRfbConnections())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("UseVncAuthentication"), m_serverConfig.isUsingAuthentication())) {
-    saveResult = false;
-  }
   if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
     saveResult = false;
   }
@@ -297,28 +294,6 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   }
   if (!sm->setBoolean(_T("UseMirrorDriver"), m_serverConfig.getMirrorIsAllowed())) {
     saveResult = false;
-  }
-  if (m_serverConfig.hasPrimaryPassword()) {
-    unsigned char password[VNC_PASSWORD_SIZE];
-
-    m_serverConfig.getPrimaryPassword(&password[0]);
-
-    if (!sm->setBinaryData(_T("Password"), &password[0], VNC_PASSWORD_SIZE)) {
-      saveResult = false;
-    }
-  } else {
-    sm->deleteKey(_T("Password"));
-  }
-  if (m_serverConfig.hasReadOnlyPassword()) {
-    unsigned char password[VNC_PASSWORD_SIZE];
-
-    m_serverConfig.getReadOnlyPassword(&password[0]);
-
-    if (!sm->setBinaryData(_T("PasswordViewOnly"), &password[0], VNC_PASSWORD_SIZE)) {
-      saveResult = false;
-    }
-  } else {
-    sm->deleteKey(_T("PasswordViewOnly"));
   }
   if (!sm->setBoolean(_T("AlwaysShared"), m_serverConfig.isAlwaysShared())) {
     saveResult = false;
@@ -375,12 +350,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
     m_isConfigLoadedPartly = true;
     m_serverConfig.acceptRfbConnections(boolVal);
   }
-  if (!sm->getBoolean(_T("UseVncAuthentication"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.useAuthentication(boolVal);
-  }
   if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
     loadResult = false;
   } else {
@@ -405,26 +374,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
     m_isConfigLoadedPartly = true;
     m_serverConfig.setMirrorAllowing(boolVal);
   }
-
-  size_t passSize = 8;
-  unsigned char buffer[VNC_PASSWORD_SIZE] = {0};
-
-  if (!sm->getBinaryData(_T("Password"), (void *)&buffer, &passSize)) {
-    loadResult = false;
-    m_serverConfig.deletePrimaryPassword();
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setPrimaryPassword(&buffer[0]);
-  }
-  passSize = 8;
-  if (!sm->getBinaryData(_T("PasswordViewOnly"), (void *)&buffer, &passSize)) {
-    loadResult = false;
-    m_serverConfig.deleteReadOnlyPassword();
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setReadOnlyPassword(&buffer[0]);
-  }
-
   if (!sm->getBoolean(_T("AlwaysShared"), &boolVal)) {
     loadResult = false;
   } else {
