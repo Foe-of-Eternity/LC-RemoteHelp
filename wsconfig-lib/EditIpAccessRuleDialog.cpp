@@ -52,7 +52,7 @@ BOOL EditIpAccessRuleDialog::onInitDialog()
 {
   initControls();
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 2; i++) {
     m_access[i].check(false);
   }
 
@@ -66,9 +66,6 @@ BOOL EditIpAccessRuleDialog::onInitDialog()
     break;
   case IpAccessRule::ACTION_TYPE_DENY:
     m_access[1].check(true);
-    break;
-  case IpAccessRule::ACTION_TYPE_QUERY:
-    m_access[2].check(true);
     break;
   }
 
@@ -106,9 +103,6 @@ BOOL EditIpAccessRuleDialog::onCommand(UINT cID, UINT nID)
     case IDC_DENY:
      onAccessTypeRadioClick(1);
       break;
-    case IDC_QUERY:
-      onAccessTypeRadioClick(2);
-      break;
     }
   }
   return TRUE;
@@ -124,8 +118,6 @@ void EditIpAccessRuleDialog::onOkButtonClick()
       m_data->setAction(IpAccessRule::ACTION_TYPE_ALLOW);
     } else if (m_access[1].isChecked()) {
       m_data->setAction(IpAccessRule::ACTION_TYPE_DENY);
-    } else if (m_access[2].isChecked()) {
-      m_data->setAction(IpAccessRule::ACTION_TYPE_QUERY);
     }
 
     StringStorage firstIp;
@@ -150,7 +142,7 @@ void EditIpAccessRuleDialog::onAccessTypeRadioClick(int num)
 {
   if (!m_access[num].isChecked()) {
     m_access[num].check(true);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
       if (i != num) {
         m_access[i].check(false);
       } // if
@@ -167,7 +159,6 @@ void EditIpAccessRuleDialog::initControls()
 
   m_access[0].setWindow(GetDlgItem(hwnd, IDC_ALLOW));
   m_access[1].setWindow(GetDlgItem(hwnd, IDC_DENY));
-  m_access[2].setWindow(GetDlgItem(hwnd, IDC_QUERY));
 }
 
 bool EditIpAccessRuleDialog::validateInput()

@@ -83,9 +83,6 @@ private:
   bool loadServerConfig(SettingsManager *sm, ServerConfig *config);
   void updateLogDirPath();
 
-  bool saveQueryConfig(SettingsManager *sm);
-  bool loadQueryConfig(SettingsManager *sm, ServerConfig *config);
-
   bool saveInputHandlingConfig(SettingsManager *sm);
   bool loadInputHandlingConfig(SettingsManager *sm, ServerConfig *config);
 

@@ -39,7 +39,6 @@ ServerConfig::ServerConfig()
   m_hasPrimaryPassword(false), m_alwaysShared(false), m_neverShared(false),
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
-  m_defaultActionAccept(false), m_queryTimeout(30),
   m_videoRecognitionInterval(3000), m_grabTransparentWindows(true),
   m_saveLogToAllUsersPath(false), m_hasControlPassword(false),
   m_showTrayIcon(true)
@@ -78,8 +77,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeInt8(m_blockLocalInput ? 1 : 0);
   output->writeInt8(m_localInputPriority ? 1 : 0);
   output->writeUInt32(m_localInputPriorityTimeout);
-  output->writeInt8(m_defaultActionAccept ? 1 : 0);
-  output->writeUInt32(m_queryTimeout);
 
   m_portMappings.serialize(output);
 
@@ -128,8 +125,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_blockLocalInput = input->readInt8() == 1;
   m_localInputPriority = input->readInt8() == 1;
   m_localInputPriorityTimeout = input->readUInt32();
-  m_defaultActionAccept = input->readInt8() == 1;
-  m_queryTimeout = input->readUInt32();
 
   m_portMappings.deserialize(input);
 
@@ -529,34 +524,6 @@ bool ServerConfig::isBlockingLocalInput()
 {
   AutoLock lock(&m_objectCS);
   return m_blockLocalInput;
-}
-
-unsigned int ServerConfig::getQueryTimeout()
-{
-  AutoLock lock(&m_objectCS);
-  return m_queryTimeout;
-}
-
-void ServerConfig::setQueryTimeout(unsigned int timeout)
-{
-  AutoLock lock(&m_objectCS);
-  if (timeout < MINIMAL_QUERY_TIMEOUT) {
-    m_queryTimeout = MINIMAL_QUERY_TIMEOUT;
-  } else {
-    m_queryTimeout = timeout;
-  }
-}
-
-bool ServerConfig::isDefaultActionAccept()
-{
-  AutoLock lock(&m_objectCS);
-  return m_defaultActionAccept;
-}
-
-void ServerConfig::setDefaultActionToAccept(bool accept)
-{
-  AutoLock lock(&m_objectCS);
-  m_defaultActionAccept = accept;
 }
 
 PortMappingContainer *ServerConfig::getPortMappingContainer()

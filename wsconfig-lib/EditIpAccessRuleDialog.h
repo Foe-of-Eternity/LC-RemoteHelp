@@ -71,7 +71,7 @@ protected:
   // Controls
   TextBox m_firstIp;
   TextBox m_lastIp;
-  CheckBox m_access[3];
+  CheckBox m_access[2];
   // Data
   IpAccessRule *m_data;
   bool m_isOpenedForEdit;

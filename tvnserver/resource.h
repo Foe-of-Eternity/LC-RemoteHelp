@@ -33,7 +33,6 @@
 #define IDC_VIDEO_CLASS_NAMES           1009
 #define IDC_VIEW_ONLY_CHECKBOX          1010
 #define IDC_VISIT_WEB_SITE_BUTTON       1011
-#define IDC_ALLOW_LOOPBACK_CONNECTIONS  1012
 #define IDC_DISPATCH_NAME               1013
 #define IDC_LOG_FILEPATH_EDIT           1014
 #define IDC_PORT_EDIT                   1015
@@ -64,9 +63,6 @@
 #define IDC_MAPPINGS                    1039
 #define IDC_LOCAL_INPUT_PRIORITY_TIMEOUT 1040
 #define IDC_LOCAL_INPUT_PRIORITY        1041
-#define IDC_TIMEOUT                     1042
-#define IDC_REFUSE                      1043
-#define IDC_ACCEPT                      1044
 #define IDC_ACCEPT_RFB_CONNECTIONS      1045
 #define IDC_RFB_PORT                    1048
 #define IDC_LOCK_WORKSTATION            1049
@@ -74,11 +70,9 @@
 #define IDC_ENABLE_FILE_TRANSFERS       1051
 #define IDC_REMOVE_WALLPAPER            1052
 #define IDC_LOG_LEVEL                   1053
-#define IDC_ALLOW_ONLY_LOOPBACK_CONNECTIONS 1054
 #define IDC_USE_AUTHENTICATION          1056
 #define IDC_ALLOW                       1057
 #define IDC_DENY                        1058
-#define IDC_QUERY                       1059
 #define IDC_PASSWORD                    1060
 #define IDC_PASSWORD2                   1061
 #define IDC_PRIMARY_PASSWORD            1062
@@ -90,7 +84,6 @@
 #define IDC_SHARED_RADIO5               1068
 #define IDC_POLLING_INTERVAL            1069
 #define IDC_POLLING_INTERVAL_SPIN       1071
-#define IDC_QUERY_TIMEOUT_SPIN          1072
 #define IDC_INACTIVITY_TIMEOUT_SPIN     1073
 #define IDC_VIDEO_RECOGNITION_INTERVAL_SPIN 1074
 #define IDC_IP_FOR_CHECK_EDIT           1075
@@ -153,7 +146,6 @@
 #define IDS_LAST_IP_MUST_BE_MORE_THAN_FIRST 40039
 #define IDS_NEW_IP_ACCESS_RULE_DIALOG_CAPTION 40040
 #define IDS_EDIT_IP_ACCESS_RULE_DIALOG_CAPTION 40041
-#define IDS_QUERY_TIMEOUT_TOO_SMALL     40042
 #define IDS_FIRST_IP_COLUMN             40043
 #define IDS_LAST_IP_COLUMN              40044
 #define IDS_ACTION_COLUMN               40045
@@ -165,10 +157,8 @@
 #define IDS_ACTION_UNDEF_HINT           40052
 #define IDS_ACTION_ACCEPT_HINT          40053
 #define IDS_ACTION_REJECT_HINT          40054
-#define IDS_ACTION_QUERY_HINT           40055
 #define IDS_ACTION_ACCEPT               40056
 #define IDS_ACTION_DENY                 40057
-#define IDS_ACTION_QUERY                40058
 #define IDS_USER_CANCEL_CONTROL_AUTH    40059
 #define IDS_TVNSERVER_USAGE             40060
 #define IDS_SERVER_NOT_LISTENING        40061
@@ -202,7 +192,6 @@
 #define IDS_INVALID_INACTIVITY_TIMEOUT  40089
 #define IDC_TIMEOUT_LABEL               40090
 #define IDS_NO_PASSWORDS_SET            40091
-#define IDS_INVALID_QUERY_TIMEOUT       40092
 #define IDS_INVALID_VIDEO_RECOGNITION_INTERVAL 40093
 #define IDS_TVNSERVER_SERVICE           40094
 #define IDS_1060_ERROR_DESCRIPTION      40095

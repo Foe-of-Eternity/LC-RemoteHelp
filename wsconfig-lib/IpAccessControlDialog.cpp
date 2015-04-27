@@ -78,20 +78,11 @@ BOOL IpAccessControlDialog::onCommand(UINT controlID, UINT notificationID)
     case IDC_MOVE_DOWN_BUTTON:
       onMoveDownButtonClick();
       break;
-    case IDC_ACCEPT:
-      onAcceptRadioClick();
-      break;
-    case IDC_REFUSE:
-      onRefuseRadioClick();
-      break;
     }
   } else if (notificationID == EN_UPDATE) {
     switch (controlID) {
     case IDC_IP_FOR_CHECK_EDIT:
       onIpCheckUpdate();
-      break;
-    case IDC_TIMEOUT:
-      onQueryTimeoutUpdate();
       break;
     }
   }
@@ -116,23 +107,6 @@ BOOL IpAccessControlDialog::onNotify(UINT controlID, LPARAM data)
 
 bool IpAccessControlDialog::validateInput()
 {
-  if (!CommonInputValidation::validateUINT(
-    &m_queryTimeout,
-    StringTable::getString(IDS_INVALID_QUERY_TIMEOUT))) {
-    return false;
-  }
-
-  unsigned int queryTimeout;
-
-  UIDataAccess::queryValueAsUInt(&m_queryTimeout, &queryTimeout);
-
-  if (queryTimeout < ServerConfig::MINIMAL_QUERY_TIMEOUT) {
-    CommonInputValidation::notifyValidationError(
-      &m_queryTimeout,
-      StringTable::getString(IDS_QUERY_TIMEOUT_TOO_SMALL));
-    return false;
-  }
-
   return true;
 }
 
@@ -145,30 +119,11 @@ void IpAccessControlDialog::updateUI()
     _ASSERT((int)i == i);
     setListViewItemText((int)i, ip);
   }
-
-  if (m_config->isDefaultActionAccept()) {
-    m_defaultActionAccept.check(true);
-    m_defaultActionRefuse.check(false);
-  } else {
-    m_defaultActionAccept.check(false);
-    m_defaultActionRefuse.check(true);
-  }
-  m_queryTimeout.setUnsignedInt(m_config->getQueryTimeout());
 }
 
 void IpAccessControlDialog::apply()
 {
-  // Query timeout string storage
-  StringStorage qtStringStorage;
-  m_queryTimeout.getText(&qtStringStorage);
-
-  int timeout = 0;
-  StringParser::parseInt(qtStringStorage.getString(), &timeout);
-
   AutoLock al(m_config);
-
-  m_config->setDefaultActionToAccept(m_defaultActionAccept.isChecked());
-  m_config->setQueryTimeout(timeout);
 
   //
   // Put IP access rules container in correct order
@@ -191,10 +146,6 @@ void IpAccessControlDialog::initControls()
   m_removeButton.setWindow(GetDlgItem(hwnd, IDC_REMOVE_BUTTON));
   m_moveUpButton.setWindow(GetDlgItem(hwnd, IDC_MOVE_UP_BUTTON));
   m_moveDownButton.setWindow(GetDlgItem(hwnd, IDC_MOVE_DOWN_BUTTON));
-  m_defaultActionAccept.setWindow(GetDlgItem(hwnd, IDC_ACCEPT));
-  m_defaultActionRefuse.setWindow(GetDlgItem(hwnd, IDC_REFUSE));
-  m_queryTimeout.setWindow(GetDlgItem(hwnd, IDC_TIMEOUT));
-  m_queryTimeoutSpin.setWindow(GetDlgItem(hwnd, IDC_QUERY_TIMEOUT_SPIN));
   m_ip.setWindow(GetDlgItem(hwnd, IDC_IP_FOR_CHECK_EDIT));
   m_ipCheckResult.setWindow(GetDlgItem(hwnd, IDC_IP_CHECK_RESULT_LABEL));
 
@@ -204,10 +155,6 @@ void IpAccessControlDialog::initControls()
 
   m_list.allowMultiSelection(false);
   m_list.setFullRowSelectStyle(true);
-
-  m_queryTimeoutSpin.setBuddy(&m_queryTimeout);
-  m_queryTimeoutSpin.setAccel(0, 1);
-  m_queryTimeoutSpin.setRange32(0, INT_MAX);
 }
 
 void IpAccessControlDialog::onAddButtonClick()
@@ -321,24 +268,6 @@ void IpAccessControlDialog::onListViewSelChange()
   updateButtonsState();
 }
 
-void IpAccessControlDialog::onAcceptRadioClick()
-{
-  if (!m_defaultActionAccept.isChecked()) {
-    m_defaultActionAccept.check(true);
-    m_defaultActionRefuse.check(false);
-    ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-  }
-}
-
-void IpAccessControlDialog::onRefuseRadioClick()
-{
-  if (!m_defaultActionRefuse.isChecked()) {
-    m_defaultActionRefuse.check(true);
-    m_defaultActionAccept.check(false);
-    ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
-  }
-}
-
 void IpAccessControlDialog::onIpCheckUpdate()
 {
   StringStorage ipStorage;
@@ -384,17 +313,9 @@ void IpAccessControlDialog::onIpCheckUpdate()
   case IpAccessRule::ACTION_TYPE_DENY:
     actionDescription.setString(StringTable::getString(IDS_ACTION_REJECT_HINT));
     break;
-  case IpAccessRule::ACTION_TYPE_QUERY:
-    actionDescription.setString(StringTable::getString(IDS_ACTION_QUERY_HINT));
-    break;
   }
 
   m_ipCheckResult.setText(actionDescription.getString());
-}
-
-void IpAccessControlDialog::onQueryTimeoutUpdate()
-{
-  ((ConfigDialog *)m_parentDialog)->updateApplyButtonState();
 }
 
 void IpAccessControlDialog::updateButtonsState()
@@ -460,9 +381,6 @@ void IpAccessControlDialog::setListViewItemText(int index, IpAccessRule *control
     break;
   case IpAccessRule::ACTION_TYPE_DENY:
     m_list.setSubItemText(index, 2, StringTable::getString(IDS_ACTION_DENY));
-    break;
-  case IpAccessRule::ACTION_TYPE_QUERY:
-    m_list.setSubItemText(index, 2, StringTable::getString(IDS_ACTION_QUERY));
     break;
   }
   m_list.setItemData(index, (LPARAM)control);

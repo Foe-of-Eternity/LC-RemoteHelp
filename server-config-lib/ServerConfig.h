@@ -45,7 +45,6 @@ class ServerConfig : public Lockable
 public:
   static const unsigned int MINIMAL_POLLING_INTERVAL = 30;
   static const unsigned int MINIMAL_LOCAL_INPUT_PRIORITY_TIMEOUT = 1;
-  static const unsigned int MINIMAL_QUERY_TIMEOUT = 1;
 
   //
   // Enum defines server action when last client disconnects
@@ -196,17 +195,6 @@ public:
   bool isBlockingLocalInput();
 
   //
-  // Query config
-  //
-
-  unsigned int getQueryTimeout();
-
-  void setQueryTimeout(unsigned int timeout);
-
-  bool isDefaultActionAccept();
-  void setDefaultActionToAccept(bool accept);
-
-  //
   // Port mapping config
   //
 
@@ -331,14 +319,6 @@ protected:
   //
 
   unsigned int m_localInputPriorityTimeout;
-
-  bool m_defaultActionAccept;
-
-  //
-  // Timeout for Query IpAccessControl record
-  //
-
-  unsigned int m_queryTimeout;
 
   //
   // Port mapping config

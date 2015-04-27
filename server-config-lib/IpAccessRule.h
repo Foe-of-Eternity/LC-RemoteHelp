@@ -42,8 +42,7 @@ public:
 
   enum ActionType {
     ACTION_TYPE_ALLOW = 0,
-    ACTION_TYPE_DENY  = 1,
-    ACTION_TYPE_QUERY = 2
+    ACTION_TYPE_DENY  = 1
   };
 
 public:

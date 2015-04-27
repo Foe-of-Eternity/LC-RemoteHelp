@@ -117,9 +117,6 @@ bool Configurator::save(SettingsManager *sm)
   if (!savePortMappingContainer(sm)) {
     saveResult = false;
   }
-  if (!saveQueryConfig(sm)) {
-    saveResult = false;
-  }
   if (!saveInputHandlingConfig(sm)) {
     saveResult = false;
   }
@@ -147,9 +144,6 @@ bool Configurator::load(SettingsManager *sm)
     }
   }
 
-  if (!loadQueryConfig(sm, &m_serverConfig)) {
-    loadResult = false;
-  }
   if (!loadInputHandlingConfig(sm, &m_serverConfig)) {
     loadResult = false;
   }
@@ -246,38 +240,6 @@ bool Configurator::loadPortMappingContainer(SettingsManager *sm,
   }
 
   return !wasError;
-}
-
-bool Configurator::saveQueryConfig(SettingsManager *sm)
-{
-  bool saveResult = true;
-  if (!sm->setUINT(_T("QueryTimeout"), m_serverConfig.getQueryTimeout())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("QueryAcceptOnTimeout"), m_serverConfig.isDefaultActionAccept())) {
-    saveResult = false;
-  }
-  return saveResult;
-}
-
-bool Configurator::loadQueryConfig(SettingsManager *sm, ServerConfig *config)
-{
-  bool loadResult = true;
-  unsigned int uintValue;
-  bool boolValue;
-  if (!sm->getUINT(_T("QueryTimeout"), &uintValue)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setQueryTimeout(uintValue);
-  }
-  if (!sm->getBoolean(_T("QueryAcceptOnTimeout"), &boolValue)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setDefaultActionToAccept(boolValue);
-  }
-  return loadResult;
 }
 
 bool Configurator::saveInputHandlingConfig(SettingsManager *sm)

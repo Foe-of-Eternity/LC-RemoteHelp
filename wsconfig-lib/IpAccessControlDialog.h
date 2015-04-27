@@ -27,7 +27,6 @@
 
 #include "gui/BaseDialog.h"
 #include "gui/ListView.h"
-#include "gui/SpinControl.h"
 #include "gui/BalloonTip.h"
 
 #include "server-config-lib/Configurator.h"
@@ -73,10 +72,7 @@ private:
   void onMoveDownButtonClick();
   void onListViewSelChange();
   void onListViewSelChangeDblClick();
-  void onAcceptRadioClick();
-  void onRefuseRadioClick();
   void onIpCheckUpdate();
-  void onQueryTimeoutUpdate();
 
   //
   // Private helper methods
@@ -98,12 +94,8 @@ private:
   Control m_removeButton;
   Control m_moveUpButton;
   Control m_moveDownButton;
-  CheckBox m_defaultActionAccept;
-  CheckBox m_defaultActionRefuse;
-  TextBox m_queryTimeout;
   TextBox m_ip;
   Control m_ipCheckResult;
-  SpinControl m_queryTimeoutSpin;
   BaseDialog *m_parentDialog;
 };
 

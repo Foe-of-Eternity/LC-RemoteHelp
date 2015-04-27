@@ -158,21 +158,6 @@ void RfbClientManager::onCheckAccessControl(RfbClient *client)
   } else {
     action = IpAccessRule::ACTION_TYPE_ALLOW;
   }
-
-  // Promt user to know what to do with incmoing connection.
-
-  if (action == IpAccessRule::ACTION_TYPE_QUERY) {
-    StringStorage peerHost;
-
-    peerAddr.toString(&peerHost);
-
-    int queryRetVal = QueryConnectionApplication::execute(peerHost.getString(),
-                                                          config->isDefaultActionAccept(),
-                                                          config->getQueryTimeout());
-    if (queryRetVal == 1) {
-      throw AuthException(_T("Connection has been rejected"));
-    }
-  }
 }
 
 void RfbClientManager::onClipboardUpdate(const StringStorage *newClipboard)
