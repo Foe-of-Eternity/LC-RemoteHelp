@@ -13,18 +13,15 @@
 #define IDD_ABOUT_DIALOG                125
 #define IDB_LOGO_BIG                    127
 #define IDD_QUERY_RFB_CONNECTION        128
-#define IDD_DISPATCHER_CONN             130
 #define IDC_ACCEPT_BUTTON               1000
 #define IDC_SHOW_TVNCONTROL_ICON_CHECKBOX 1001
 #define IDC_STATIC_VERSION              1002
 #define IDC_CONFIG_TAB                  1003
-#define IDC_DISPATCH_ID                 1004
 #define IDC_LOG_LEVEL_SPIN              1006
 #define IDC_RFB_PORT_SPIN               1008
 #define IDC_VIDEO_CLASS_NAMES           1009
 #define IDC_VIEW_ONLY_CHECKBOX          1010
 #define IDC_VISIT_WEB_SITE_BUTTON       1011
-#define IDC_DISPATCH_NAME               1013
 #define IDC_LOG_FILEPATH_EDIT           1014
 #define IDC_STATIC_LICENSING            1016
 #define IDC_VIDEO_RECOGNITION_INTERVAL  1018
@@ -32,7 +29,6 @@
 #define IDC_LOG_FOR_ALL_USERS           1020
 #define IDC_ORDER_SUPPORT_BUTTON        1021
 #define IDC_BLOCK_REMOTE_INPUT          1023
-#define IDC_DISPATCH_KEYWORD            1024
 #define IDC_GRAB_TRANSPARENT            1025
 #define IDC_BLOCK_LOCAL_INPUT           1038
 #define IDC_LOCAL_INPUT_PRIORITY_TIMEOUT 1040

@@ -104,15 +104,6 @@ public:
   void makeOutgoingConnection(const TCHAR *connectString, bool viewOnly) throw(IOException, RemoteException);
 
   /**
-   * Initialized connection to a TcpDispatcher.
-   * @param connectString connect string in host[:(port|diplay)] format.
-   */
-  void makeTcpDispatcherConnection(const TCHAR *connectString,
-                                   const TCHAR *dispatcherName,
-                                   const TCHAR *keyword,
-                                   UINT32 connectionId);
-
-  /**
    * Sends new configuration to server.
    * @param config new server configuration.
    * @throws RemoteException on error on server.

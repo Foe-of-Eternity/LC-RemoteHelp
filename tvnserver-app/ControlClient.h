@@ -140,11 +140,6 @@ private:
    * Called when Connect to a tcp dispatcher message recieved.
    * @throws IOException on io error.
    */
-  void connectToTcpDispatcher() throw(IOException);
-  /**
-   * Called when set server config message recieved.
-   * @throws IOException on io error.
-   */
   void setServerConfigMsgRcvd() throw(IOException);
   /**
    * Called when get server config message recieved.
