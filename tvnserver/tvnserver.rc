@@ -242,19 +242,6 @@ BEGIN
     PUSHBUTTON      "&Cancel",IDCANCEL,132,85,50,15
 END
 
-IDD_QUERY_RFB_CONNECTION DIALOGEX 0, 0, 250, 104
-STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION
-CAPTION "Incoming TightVNC Connection"
-FONT 8, "Ms Shell Dlg 2", 0, 0, 0x0
-BEGIN
-    LTEXT           "TightVNC Server has received an incoming connection originating from",IDC_STATIC,7,7,236,10
-    EDITTEXT        IDC_IP_EDIT,7,19,236,12,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | WS_GROUP | NOT WS_TABSTOP
-    LTEXT           "By accepting the connection, you allow the remote person to view and possibly control your computer.  Choose the action by pressing a button below.",IDC_STATIC,7,36,236,26,NOT WS_GROUP
-    PUSHBUTTON      "&Accept",IDC_ACCEPT_BUTTON,71,64,50,15,WS_GROUP
-    PUSHBUTTON      "&Reject",IDC_REJECT_BUTTON,128,64,50,15
-    CTEXT           "[default action]",IDC_TIMEOUT_LABEL,7,86,236,10
-END
-
 IDD_SET_PASSWORDS DIALOGEX 0, 0, 299, 230
 STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_CENTER | WS_POPUP | WS_CAPTION
 CAPTION "TightVNC Server: Set Passwords"
@@ -487,10 +474,6 @@ BEGIN
     IDS_OFFLINE_CONFIG_SAVE_NOTIFICATION 
                             "Changes to the configuration will not take effect until you restart the TightVNC Server."
     IDS_ADMIN_RIGHTS_NEEDED "You need administrator privileges to run the application."
-    IDS_AUTO_ACCEPT_CONNECTION_FORMAT 
-                            "Connection will be accepted automatically in %d seconds."
-    IDS_AUTO_REJECT_CONNECTION_FORMAT 
-                            "Connection will be rejected automatically in %d seconds."
     IDS_URL_LICENSING_FSA   "http://www.tightvnc.com/licensing/?f=sa"
     IDS_URL_PRODUCT_FSA     "http://www.tightvnc.com/?f=sa"
     IDS_SERVICE_STOP_TIMEOUT "Timed out waiting for service shutdown"

@@ -24,7 +24,6 @@
 
 #include "RfbClientManager.h"
 #include "thread/ZombieKiller.h"
-#include "QueryConnectionApplication.h"
 #include "server-config-lib/Configurator.h"
 
 RfbClientManager::RfbClientManager(const TCHAR *serverName,
