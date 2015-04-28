@@ -477,9 +477,6 @@
       <Project>{8eafb5be-620c-4ab1-88c2-e4ae9fd59be5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\tcp-dispatcher\tcp-dispatcher.vcxproj">
-      <Project>{9a7033fa-6263-425d-83bf-a1d9f48ba997}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\thread\thread.vcxproj">
       <Project>{5f629934-ed68-4d38-9ba5-cf3a139a44a1}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

@@ -290,7 +290,6 @@
   <ItemGroup>
     <ClCompile Include="AdditionalActionApplication.cpp" />
     <ClCompile Include="AuthTracker.cpp" />
-    <ClCompile Include="ConnectToTcpDispatcherThread.cpp" />
     <ClCompile Include="ControlClient.cpp" />
     <ClCompile Include="ControlServer.cpp" />
     <ClCompile Include="DesktopServerApplication.cpp" />
@@ -314,7 +313,6 @@
   <ItemGroup>
     <ClInclude Include="AdditionalActionApplication.h" />
     <ClInclude Include="AuthTracker.h" />
-    <ClInclude Include="ConnectToTcpDispatcherThread.h" />
     <ClInclude Include="ControlClient.h" />
     <ClInclude Include="ControlServer.h" />
     <ClInclude Include="DesktopServerApplication.h" />
