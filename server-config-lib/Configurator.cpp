@@ -274,13 +274,7 @@ bool Configurator::loadVideoRegionConfig(SettingsManager *sm, ServerConfig *conf
 bool Configurator::saveServerConfig(SettingsManager *sm)
 {
   bool saveResult = true;
-  if (!sm->setUINT(_T("RfbPort"), m_serverConfig.getRfbPort())) {
-    saveResult = false;
-  }
   if (!sm->setUINT(_T("DisconnectAction"), (UINT)m_serverConfig.getDisconnectAction())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("AcceptRfbConnections"), m_serverConfig.isAcceptingRfbConnections())) {
     saveResult = false;
   }
   if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
@@ -333,22 +327,11 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   bool boolVal;
   UINT uintVal;
 
-  if (!sm->getUINT(_T("RfbPort"), &uintVal)) {
-    loadResult = false;
-  } else {
-    m_serverConfig.setRfbPort(uintVal);
-  }
   if (!sm->getUINT(_T("DisconnectAction"), &uintVal)) {
     loadResult = false;
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setDisconnectAction((ServerConfig::DisconnectAction)uintVal);
-  }
-  if (!sm->getBoolean(_T("AcceptRfbConnections"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.acceptRfbConnections(boolVal);
   }
   if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
     loadResult = false;

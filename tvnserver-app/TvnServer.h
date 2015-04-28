@@ -138,10 +138,8 @@ public:
 
 protected:
   void restartControlServer();
-  void restartMainRfbServer();
 
   void stopControlServer();
-  void stopMainRfbServer();
 
   // Calls a callback function to change update log properties.
   void changeLogProps();
@@ -178,10 +176,6 @@ protected:
    * Control server.
    */
   ControlServer *m_controlServer;
-  /**
-   * Main rfb server.
-   */
-  RfbServer *m_rfbServer;
 
   LogInitListener *m_logInitListener;
 };

@@ -85,13 +85,6 @@ public:
   }
 
   //
-  // Display (or port numbers) group.
-  //
-
-  void setRfbPort(int port);
-  int getRfbPort();
-
-  //
   // Other server options access methods
   //
 
@@ -106,13 +99,6 @@ public:
 
   bool getMirrorIsAllowed();
   void setMirrorAllowing(bool value);
-
-  //
-  // Incoming connections options group
-  //
-
-  bool isAcceptingRfbConnections();
-  void acceptRfbConnections(bool accept);
 
   //
   // Configurator from Administration tab
@@ -193,12 +179,6 @@ public:
 protected:
 
   //
-  // Server port numbers
-  //
-
-  int m_rfbPort;
-
-  //
   // Other server options members group
   //
 
@@ -210,12 +190,6 @@ protected:
   //
 
   DisconnectAction m_disconnectAction;
-
-  //
-  // Incoming connections options group
-  //
-
-  bool m_acceptRfbConnections;
 
   //
   // Configurator from Administration tab

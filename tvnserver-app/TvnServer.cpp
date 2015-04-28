@@ -62,7 +62,7 @@ TvnServer::TvnServer(bool runsInServiceContext,
   m_runAsService(runsInServiceContext),
   m_logInitListener(logInitListener),
   m_rfbClientManager(0),
-  m_controlServer(0), m_rfbServer(0),
+  m_controlServer(0),
   m_config(runsInServiceContext),
   m_log(logger)
 {
@@ -119,7 +119,6 @@ TvnServer::TvnServer(bool runsInServiceContext,
     // FIXME: Nested lock in protected code (congifuration locking).
     AutoLock l(&m_mutex);
 
-    restartMainRfbServer();
     restartControlServer();
   }
 }
@@ -129,7 +128,6 @@ TvnServer::~TvnServer()
   Configurator::getInstance()->removeListener(this);
 
   stopControlServer();
-  stopMainRfbServer();
 
   ZombieKiller *zombieKiller = ZombieKiller::getInstance();
 
@@ -153,58 +151,21 @@ TvnServer::~TvnServer()
 // Remark: this method can be called from other threads.
 void TvnServer::onConfigReload(ServerConfig *serverConfig)
 {
-  // Start/stop/restart RFB servers if needed.
-  {
-    // FIXME: Protect only primitive operations.
-    // FIXME: Nested lock in protected code (congifuration locking).
-    AutoLock l(&m_mutex);
-
-    bool toggleMainRfbServer =
-      m_srvConfig->isAcceptingRfbConnections() != (m_rfbServer != 0);
-    bool changeMainRfbPort = m_rfbServer != 0 &&
-      (m_srvConfig->getRfbPort() != (int)m_rfbServer->getBindPort());
-
-    const TCHAR *bindHost = _T("0.0.0.0");
-    bool changeBindHost =  m_rfbServer != 0 &&
-      _tcscmp(m_rfbServer->getBindHost(), bindHost) != 0;
-
-    if (toggleMainRfbServer ||
-        changeMainRfbPort ||
-        changeBindHost) {
-      restartMainRfbServer();
-    }
-  }
-
   changeLogProps();
 }
 
 void TvnServer::getServerInfo(TvnServerInfo *info)
 {
-  bool rfbServerListening = true;
-  {
-    AutoLock l(&m_mutex);
-    rfbServerListening = m_rfbServer != 0;
-  }
-
   StringStorage statusString;
 
-  if (rfbServerListening) {
-    // FIXME: Usage of deprecated FUNCTION!
-    char localAddressString[1024];
-    getLocalIPAddrString(localAddressString, 1024);
-    AnsiStringStorage ansiString(localAddressString);
-    ansiString.toStringStorage(&statusString);
-    statusString.appendString(StringTable::getString(IDS_NO_AUTH_STATUS));
-  } else {
-    statusString = StringTable::getString(IDS_SERVER_NOT_LISTENING);
-  } // not accepting connections.
+  statusString = StringTable::getString(IDS_SERVER_NOT_LISTENING);
 
   UINT stringId = m_runAsService ? IDS_TVNSERVER_SERVICE : IDS_TVNSERVER_APP;
 
   info->m_statusText.format(_T("%s - %s"),
                             StringTable::getString(stringId),
                             statusString.getString());
-  info->m_acceptFlag = rfbServerListening;
+  info->m_acceptFlag = false;
   info->m_serviceFlag = m_runAsService;
 }
 
@@ -298,28 +259,6 @@ void TvnServer::restartControlServer()
   }
 }
 
-void TvnServer::restartMainRfbServer()
-{
-  // FIXME: Errors are critical here, they should not be ignored.
-
-  stopMainRfbServer();
-
-  if (!m_srvConfig->isAcceptingRfbConnections()) {
-    return;
-  }
-
-  const TCHAR *bindHost = _T("0.0.0.0");
-  unsigned short bindPort = m_srvConfig->getRfbPort();
-
-  m_log.message(_T("Starting main RFB server"));
-
-  try {
-    m_rfbServer = new RfbServer(bindHost, bindPort, m_rfbClientManager, m_runAsService, &m_log);
-  } catch (Exception &ex) {
-    m_log.error(_T("Failed to start main RFB server: \"%s\""), ex.getMessage());
-  }
-}
-
 void TvnServer::stopControlServer()
 {
   m_log.message(_T("Stopping control server"));
@@ -332,21 +271,6 @@ void TvnServer::stopControlServer()
   }
   if (controlServer != 0) {
     delete controlServer;
-  }
-}
-
-void TvnServer::stopMainRfbServer()
-{
-  m_log.message(_T("Stopping main RFB server"));
-
-  RfbServer *rfbServer = 0;
-  {
-    AutoLock l(&m_mutex);
-    rfbServer = m_rfbServer;
-    m_rfbServer = 0;
-  }
-  if (rfbServer != 0) {
-    delete rfbServer;
   }
 }
 

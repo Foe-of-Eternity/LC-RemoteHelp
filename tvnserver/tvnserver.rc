@@ -160,12 +160,6 @@ BEGIN
     EDITTEXT        IDC_POLLING_INTERVAL,239,174,38,12,ES_AUTOHSCROLL | ES_NUMBER | WS_GROUP
     CONTROL         "",IDC_POLLING_INTERVAL_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,231,173,11,14
     LTEXT           "ms",IDC_STATIC,282,175,13,10
-    CONTROL         "",IDC_RFB_PORT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,128,30,11,14
-    EDITTEXT        IDC_RFB_PORT,89,31,38,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Main server port:",IDC_STATIC,27,32,55,10
-    CONTROL         "Accept incoming connections",IDC_ACCEPT_RFB_CONNECTIONS,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,16,17,123,10
-    GROUPBOX        "Incoming Viewer Connections",IDC_STATIC,6,4,142,123
 END
 
 IDD_CONFIG_VIDEO_CLASSES_PAGE DIALOGEX 0, 0, 306, 199
@@ -426,7 +420,6 @@ BEGIN
     IDS_1073_ERROR_DESCRIPTION "Service is already registered"
     IDS_SHUTDOWN_NOTIFICATION_FORMAT 
                             "This will disconnect all clients and they will not be able to reconnect until the TightVNC Server is restarted.\n\nAre you sure you want to shutdown the %s?"
-    IDS_NO_AUTH_STATUS      " (no auth!)"
     IDS_LICENSING_INFO      "Licensing Terms: GNU General Public License version 2"
 END
 

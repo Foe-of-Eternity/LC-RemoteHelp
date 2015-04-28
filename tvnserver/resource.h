@@ -16,7 +16,6 @@
 #define IDC_STATIC_VERSION              1002
 #define IDC_CONFIG_TAB                  1003
 #define IDC_LOG_LEVEL_SPIN              1006
-#define IDC_RFB_PORT_SPIN               1008
 #define IDC_VIDEO_CLASS_NAMES           1009
 #define IDC_VIEW_ONLY_CHECKBOX          1010
 #define IDC_VISIT_WEB_SITE_BUTTON       1011
@@ -31,8 +30,6 @@
 #define IDC_BLOCK_LOCAL_INPUT           1038
 #define IDC_LOCAL_INPUT_PRIORITY_TIMEOUT 1040
 #define IDC_LOCAL_INPUT_PRIORITY        1041
-#define IDC_ACCEPT_RFB_CONNECTIONS      1045
-#define IDC_RFB_PORT                    1048
 #define IDC_LOCK_WORKSTATION            1049
 #define IDC_LOGOFF_WORKSTATION          1050
 #define IDC_ENABLE_FILE_TRANSFERS       1051
@@ -56,7 +53,6 @@
 #define ID_CLOSE_CONTROL_INTERFACE      40004
 #define IDS_INVALID_LOG_LEVEL           40005
 #define ID_CONFIGURATION                40006
-#define IDM_ATTACH_TO_DISPATCHER        40007
 #define IDS_CONTROL_SERVER_RAISE_EXCEPTION 40008
 #define IDS_CONTROL_CONNECTION_LOST     40009
 #define ID_OUTGOING_CONN                40010
@@ -109,7 +105,6 @@
 #define IDS_TVNSERVER_APP               40096
 #define IDS_1073_ERROR_DESCRIPTION      40097
 #define IDS_SHUTDOWN_NOTIFICATION_FORMAT 40098
-#define IDS_NO_AUTH_STATUS              40099
 #define IDS_LICENSING_INFO              40100
 
 // Next default values for new objects

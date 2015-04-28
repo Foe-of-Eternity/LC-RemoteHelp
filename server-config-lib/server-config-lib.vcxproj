@@ -264,7 +264,6 @@
   <ItemGroup>
     <ClInclude Include="ConfigReloadListener.h" />
     <ClInclude Include="Configurator.h" />
-    <ClInclude Include="DesktopConfig.h" />
     <ClInclude Include="RegistrySecurityAttributes.h" />
     <ClInclude Include="ServerConfig.h" />
   </ItemGroup>

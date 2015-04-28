@@ -68,10 +68,8 @@ private:
   // Contol event handlers
   //
 
-  void onAcceptRfbConnectionsClick();
   void onShowTrayIconCheckBoxClick();
   void onPollingIntervalSpinChangePos(LPNMUPDOWN message);
-  void onRfbPortUpdate();
   void onPollingIntervalUpdate();
   void onFileTransferCheckBoxClick();
   void onRemoveWallpaperCheckBoxClick();
@@ -91,15 +89,12 @@ protected:
   // Configuration
   ServerConfig *m_config;
   // Controls
-  TextBox m_rfbPort;
   TextBox m_pollingInterval;
   CheckBox m_grabTransparentWindows;
   CheckBox m_useMirrorDriver;
   CheckBox m_enableFileTransfers;
   CheckBox m_removeWallpaper;
-  CheckBox m_acceptRfbConnections;
   CheckBox m_showTrayIcon;
-  SpinControl m_rfbPortSpin;
   SpinControl m_pollingIntervalSpin;
 
   //
