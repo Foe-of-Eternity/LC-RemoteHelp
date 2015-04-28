@@ -32,11 +32,8 @@
 
 const TCHAR TvnService::SERVICE_COMMAND_LINE_KEY[] = _T("-service");
 
-TvnService::TvnService(WinServiceEvents *winServiceEvents,
-                       NewConnectionEvents *newConnectionEvents)
+TvnService::TvnService()
 : Service(ServiceNames::SERVICE_NAME), m_tvnServer(0),
-  m_winServiceEvents(winServiceEvents),
-  m_newConnectionEvents(newConnectionEvents),
   m_logServer(LogNames::LOG_PIPE_PUBLIC_NAME),
   m_clientLogger(LogNames::LOG_PIPE_PUBLIC_NAME, LogNames::SERVER_LOG_FILE_STUB_NAME)
 {
@@ -49,13 +46,10 @@ TvnService::~TvnService()
 void TvnService::onStart()
 {
   try {
-    m_winServiceEvents->enable();
     // FIXME: Use real logger instead of zero.
-    m_tvnServer = new TvnServer(true, m_newConnectionEvents, this, &m_clientLogger);
+    m_tvnServer = new TvnServer(true, this, &m_clientLogger);
     m_tvnServer->addListener(this);
-    m_winServiceEvents->onSuccServiceStart();
   } catch (Exception &e) {
-    m_winServiceEvents->onFailedServiceStart(&StringStorage(e.getMessage()));
   }
 }
 
@@ -65,8 +59,6 @@ void TvnService::main()
   m_tvnServer->removeListener(this);
   delete m_tvnServer;
   m_tvnServer = 0;
-
-  m_winServiceEvents->onServiceStop();
 }
 
 void TvnService::onStop()

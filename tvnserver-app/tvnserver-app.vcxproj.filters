@@ -71,9 +71,6 @@
     <ClCompile Include="WsConfigRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WinEventLogWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnectToTcpDispatcherThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,9 +137,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WsConfigRunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinEventLogWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConnectToTcpDispatcherThread.h">

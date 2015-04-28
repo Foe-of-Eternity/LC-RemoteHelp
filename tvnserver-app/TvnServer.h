@@ -79,7 +79,6 @@ public:
    * To know when need to shutdown TightVNC server you need to use addListener method.
    */
   TvnServer(bool runsInServiceContext,
-            NewConnectionEvents *newConnectionEvents,
             LogInitListener *logInitListener,
             Logger *logger);
   /**

@@ -32,8 +32,6 @@
 #include "win-system/Service.h"
 
 #include "thread/Thread.h"
-#include "WinServiceEvents.h"
-#include "NewConnectionEvents.h"
 
 /**
  * TightVNC service.
@@ -56,8 +54,7 @@ public:
   /**
    * Creates object.
    */
-  TvnService(WinServiceEvents *winServiceEvents,
-             NewConnectionEvents *newConnectionEvents);
+  TvnService();
   /**
    * Deletes object.
    */
@@ -146,9 +143,6 @@ protected:
 
   LogServer m_logServer;
   ClientLogger m_clientLogger;
-
-  WinServiceEvents *m_winServiceEvents;
-  NewConnectionEvents *m_newConnectionEvents;
 };
 
 #endif

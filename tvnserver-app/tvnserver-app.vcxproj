@@ -309,7 +309,6 @@
     <ClCompile Include="TvnServerHelp.cpp" />
     <ClCompile Include="TvnServerListener.cpp" />
     <ClCompile Include="TvnService.cpp" />
-    <ClCompile Include="WinEventLogWriter.cpp" />
     <ClCompile Include="WsConfigRunner.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -334,7 +333,6 @@
     <ClInclude Include="TvnServerHelp.h" />
     <ClInclude Include="TvnServerListener.h" />
     <ClInclude Include="TvnService.h" />
-    <ClInclude Include="WinEventLogWriter.h" />
     <ClInclude Include="WsConfigRunner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

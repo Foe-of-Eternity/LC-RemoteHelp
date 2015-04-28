@@ -52,7 +52,6 @@
 #include <time.h>
 
 TvnServer::TvnServer(bool runsInServiceContext,
-                     NewConnectionEvents *newConnectionEvents,
                      LogInitListener *logInitListener,
                      Logger *logger)
 : Singleton<TvnServer>(),
@@ -104,7 +103,7 @@ TvnServer::TvnServer(bool runsInServiceContext,
 
    // Instanize zombie killer singleton.
    // FIXME: may be need to do it in another place or use "lazy" initialization.
-  m_rfbClientManager = new RfbClientManager(0, newConnectionEvents, &m_log, desktopFactory);
+  m_rfbClientManager = new RfbClientManager(0, &m_log, desktopFactory);
 
   m_rfbClientManager->addListener(this);
 

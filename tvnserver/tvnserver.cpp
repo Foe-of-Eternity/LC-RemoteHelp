@@ -41,14 +41,9 @@
 #include "tvnserver/resource.h"
 #include "tvnserver-app/NamingDefs.h"
 
-#include "tvnserver-app/WinEventLogWriter.h"
-
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                        LPTSTR lpCmdLine, int nCmdShow)
 {
-  LogWriter preLog(0);
-  WinEventLogWriter winEventLogWriter(&preLog);
-
   ResourceLoader resourceLoaderSingleton(hInstance);
 
   CommandLineFormat format[] = {
@@ -86,7 +81,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   // Check if need to start additional application that packed into tvnserver.exe.
 
   if (firstKey.isEqualTo(TvnService::SERVICE_COMMAND_LINE_KEY)) {
-    TvnService tvnService(&winEventLogWriter, &winEventLogWriter);
+    TvnService tvnService;
     try {
       tvnService.run();
     } catch (Exception &) {
@@ -143,7 +138,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   // No additional applications, run TightVNC server as single application.
   TvnServerApplication tvnServer(hInstance,
     WindowNames::WINDOW_CLASS_NAME,
-    lpCmdLine, &winEventLogWriter);
+    lpCmdLine);
 
   return tvnServer.run();
 }
