@@ -125,18 +125,6 @@ protected:
    * @return application exit code.
    */
   int runControlCommand(Command *command);
-  /**
-   * Runs configuration dialog (mode of tvncontrol).
-   * @param configService determinates if we gonna to configure service.
-   * @param isRunAsRequested determinates if admin rights for tvncontrol was already requested
-   * by parent process, ignored when configService is false.
-   * @remark if configService is true and application don't have admin rights, then it
-   * will start new process requesting admin rights.
-   * @return application exit code.
-   * @remark Call this function only to config in offline mode because it uses
-   * the registry.
-   */
-  int runConfigurator(bool configService, bool isRunAsRequested);
 
 private:
 

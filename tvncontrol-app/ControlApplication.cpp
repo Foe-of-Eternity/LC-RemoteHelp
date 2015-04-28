@@ -54,7 +54,6 @@
 
 #include "tvnserver/resource.h"
 
-#include "wsconfig-lib/ConfigDialog.h"
 #include "util/AnsiStringStorage.h"
 #include "tvnserver-app/NamingDefs.h"
 
@@ -105,11 +104,6 @@ int ControlApplication::run()
   } catch (CommandLineFormatException &) {
     TvnServerHelp::showUsage();
     return 1;
-  }
-
-  // Run configuration dialog and exit.
-  if (cmdLineParser.hasConfigAppFlag() || cmdLineParser.hasConfigServiceFlag()) {
-    return runConfigurator(cmdLineParser.hasConfigServiceFlag(), cmdLineParser.hasDontElevateFlag());
   }
 
   int retCode = 0;
@@ -292,53 +286,4 @@ int ControlApplication::runControlCommand(Command *command)
 
   int errorCode = ctrlCmd.executionResultOk() ? 0 : 1;
   return errorCode;
-}
-
-int ControlApplication::runConfigurator(bool configService, bool isRunAsRequested)
-{
-  // If not enough rights to configurate service, then restart application requesting
-  // admin access rights.
-  if (configService && (IsUserAnAdmin() == FALSE)) {
-    // If admin rights already requested and application still don't have them,
-    // then show error message and exit.
-    if (isRunAsRequested) {
-      MessageBox(0,
-        StringTable::getString(IDS_ADMIN_RIGHTS_NEEDED),
-        StringTable::getString(IDS_MBC_TVNCONTROL),
-        MB_OK | MB_ICONERROR);
-      return 0;
-    }
-    // Path to tvnserver binary.
-    StringStorage pathToBinary;
-    // Command line for child process.
-    StringStorage childCommandLine;
-
-    // Get path to tvnserver binary.
-    Environment::getCurrentModulePath(&pathToBinary);
-    // Set -dontelevate flag to tvncontrol know that admin rights already requested.
-    childCommandLine.format(_T("%s -dontelevate"), m_commandLine.getString());
-
-    // Start child.
-    try {
-      Shell::runAsAdmin(pathToBinary.getString(), childCommandLine.getString());
-    } catch (SystemException &sysEx) {
-      if (sysEx.getErrorCode() != ERROR_CANCELLED) {
-        MessageBox(0,
-          sysEx.getMessage(),
-          StringTable::getString(IDS_MBC_TVNCONTROL),
-          MB_OK | MB_ICONERROR);
-      }
-      return 1;
-    } // try / catch.
-    return 0;
-  }
-
-  Configurator *configurator = Configurator::getInstance();
-
-  configurator->setServiceFlag(configService);
-  configurator->load();
-
-  ConfigDialog confDialog(configService, 0);
-
-  return confDialog.showModal();
 }

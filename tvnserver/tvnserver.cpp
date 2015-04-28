@@ -54,8 +54,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   CommandLineFormat format[] = {
     { TvnService::SERVICE_COMMAND_LINE_KEY, NO_ARG },
 
-    { ControlCommandLine::CONFIG_APPLICATION, NO_ARG },
-    { ControlCommandLine::CONFIG_SERVICE, NO_ARG },
     { ControlCommandLine::CONTROL_SERVICE, NO_ARG },
     { ControlCommandLine::CONTROL_APPLICATION, NO_ARG },
 
@@ -95,9 +93,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       return 1;
     }
     return 0;
-  } else if (firstKey.isEqualTo(ControlCommandLine::CONFIG_APPLICATION) ||
-             firstKey.isEqualTo(ControlCommandLine::CONFIG_SERVICE) ||
-             firstKey.isEqualTo(ControlCommandLine::CONTROL_SERVICE) ||
+  } else if (firstKey.isEqualTo(ControlCommandLine::CONTROL_SERVICE) ||
              firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION)) {
     try {
       ControlApplication tvnControl(hInstance,
