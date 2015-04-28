@@ -142,16 +142,16 @@ bool Configurator::load(SettingsManager *sm)
 bool Configurator::saveInputHandlingConfig(SettingsManager *sm)
 {
   bool saveResult = true;
-  if (!sm->setUINT(_T("LocalInputPriorityTimeout"), m_serverConfig.getLocalInputPriorityTimeout())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("LocalInputPriority"), m_serverConfig.isLocalInputPriorityEnabled())) {
+  if (!sm->setBoolean(_T("BlockLocalInput"), m_serverConfig.isBlockingLocalInput())) {
     saveResult = false;
   }
   if (!sm->setBoolean(_T("BlockRemoteInput"), m_serverConfig.isBlockingRemoteInput())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("BlockLocalInput"), m_serverConfig.isBlockingLocalInput())) {
+  if (!sm->setBoolean(_T("LocalInputPriority"), m_serverConfig.isLocalInputPriorityEnabled())) {
+    saveResult = false;
+  }
+  if (!sm->setUINT(_T("LocalInputPriorityTimeout"), m_serverConfig.getLocalInputPriorityTimeout())) {
     saveResult = false;
   }
   return saveResult;
@@ -168,11 +168,19 @@ bool Configurator::loadInputHandlingConfig(SettingsManager *sm, ServerConfig *co
   bool boolVal = false;
   UINT uintVal = 0;
 
-  if (!sm->getUINT(_T("LocalInputPriorityTimeout"), &uintVal)) {
+  if (!sm->getBoolean(_T("BlockLocalInput"), &boolVal)) {
     loadResult = false;
-  } else {
+  }
+  else {
     m_isConfigLoadedPartly = true;
-    config->setLocalInputPriorityTimeout(uintVal);
+    config->blockLocalInput(boolVal);
+  }
+  if (!sm->getBoolean(_T("BlockRemoteInput"), &boolVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    config->blockRemoteInput(boolVal);
   }
   if (!sm->getBoolean(_T("LocalInputPriority"), &boolVal)) {
     loadResult = false;
@@ -180,17 +188,12 @@ bool Configurator::loadInputHandlingConfig(SettingsManager *sm, ServerConfig *co
     m_isConfigLoadedPartly = true;
     config->setLocalInputPriority(boolVal);
   }
-  if (!sm->getBoolean(_T("BlockRemoteInput"), &boolVal)) {
+  if (!sm->getUINT(_T("LocalInputPriorityTimeout"), &uintVal)) {
     loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    config->blockRemoteInput(boolVal);
   }
-  if (!sm->getBoolean(_T("BlockLocalInput"), &boolVal)) {
-    loadResult = false;
-  } else {
+  else {
     m_isConfigLoadedPartly = true;
-    config->blockLocalInput(boolVal);
+    config->setLocalInputPriorityTimeout(uintVal);
   }
 
   return loadResult;
@@ -206,38 +209,38 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
 
   StringStorage stringVal;
 
-  if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("EnableFileTransfers"), m_serverConfig.isFileTransfersEnabled())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("RemoveWallpaper"), m_serverConfig.isRemovingDesktopWallpaperEnabled())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("UseMirrorDriver"), m_serverConfig.getMirrorIsAllowed())) {
-    saveResult = false;
-  }
   if (!sm->setBoolean(_T("AlwaysShared"), m_serverConfig.isAlwaysShared())) {
-    saveResult = false;
-  }
-  if (!sm->setBoolean(_T("NeverShared"), m_serverConfig.isNeverShared())) {
     saveResult = false;
   }
   if (!sm->setBoolean(_T("DisconnectClients"), m_serverConfig.isDisconnectingExistingClients())) {
     saveResult = false;
   }
-  if (!sm->setUINT(_T("PollingInterval"), m_serverConfig.getPollingInterval())) {
+  if (!sm->setBoolean(_T("EnableFileTransfers"), m_serverConfig.isFileTransfersEnabled())) {
     saveResult = false;
   }
   if (!sm->setBoolean(_T("GrabTransparentWindows"), m_serverConfig.getGrabTransparentWindowsFlag())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("RunControlInterface"), m_serverConfig.getShowTrayIconFlag())) {
+  m_serverConfig.getLogFileDir(&stringVal);
+  if (!sm->setString(_T("LogDir"), stringVal.getString())) {
     saveResult = false;
   }
-  m_serverConfig.getLogFileDir(&stringVal);
-  if (!sm->setString(_T("LogFileDir"), stringVal.getString())) {
+  if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
+    saveResult = false;
+  }
+  if (!sm->setBoolean(_T("NeverShared"), m_serverConfig.isNeverShared())) {
+    saveResult = false;
+  }
+  if (!sm->setUINT(_T("PollingInterval"), m_serverConfig.getPollingInterval())) {
+    saveResult = false;
+  }
+  if (!sm->setBoolean(_T("RemoveWallpaper"), m_serverConfig.isRemovingDesktopWallpaperEnabled())) {
+    saveResult = false;
+  }
+  if (!sm->setBoolean(_T("ShowTrayIcon"), m_serverConfig.getShowTrayIconFlag())) {
+    saveResult = false;
+  }
+  if (!sm->setBoolean(_T("UseMirrorDriver"), m_serverConfig.getMirrorIsAllowed())) {
     saveResult = false;
   }
   return saveResult;
@@ -255,17 +258,61 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   UINT uintVal;
   StringStorage stringVal;
 
-  if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
+  if (!sm->getBoolean(_T("AlwaysShared"), &boolVal)) {
     loadResult = false;
-  } else {
+  }
+  else {
     m_isConfigLoadedPartly = true;
-    m_serverConfig.setLogLevel(uintVal);
+    m_serverConfig.setAlwaysShared(boolVal);
+  }
+  if (!sm->getBoolean(_T("DisconnectClients"), &boolVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.disconnectExistingClients(boolVal);
   }
   if (!sm->getBoolean(_T("EnableFileTransfers"), &boolVal)) {
     loadResult = false;
-  } else {
+  }
+  else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.enableFileTransfers(boolVal);
+  }
+  if (!sm->getBoolean(_T("GrabTransparentWindows"), &boolVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setGrabTransparentWindowsFlag(boolVal);
+  }
+  if (!sm->getString(_T("LogDir"), &stringVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setLogFileDir(stringVal.getString());
+  }
+  if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setLogLevel(uintVal);
+  }
+  if (!sm->getBoolean(_T("NeverShared"), &boolVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setNeverShared(boolVal);
+  }
+  if (!sm->getUINT(_T("PollingInterval"), &uintVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setPollingInterval(uintVal);
   }
   if (!sm->getBoolean(_T("RemoveWallpaper"), &boolVal)) {
     loadResult = false;
@@ -273,54 +320,18 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
     m_isConfigLoadedPartly = true;
     m_serverConfig.enableRemovingDesktopWallpaper(boolVal);
   }
+  if (!sm->getBoolean(_T("ShowTrayIcon"), &boolVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setShowTrayIconFlag(boolVal);
+  }
   if (!sm->getBoolean(_T("UseMirrorDriver"), &boolVal)) {
     loadResult = false;
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setMirrorAllowing(boolVal);
-  }
-  if (!sm->getBoolean(_T("AlwaysShared"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setAlwaysShared(boolVal);
-  }
-  if (!sm->getBoolean(_T("NeverShared"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setNeverShared(boolVal);
-  }
-  if (!sm->getBoolean(_T("DisconnectClients"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.disconnectExistingClients(boolVal);
-  }
-  if (!sm->getUINT(_T("PollingInterval"), &uintVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setPollingInterval(uintVal);
-  }
-  if (!sm->getBoolean(_T("GrabTransparentWindows"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setGrabTransparentWindowsFlag(boolVal);
-  }
-  if (!sm->getBoolean(_T("RunControlInterface"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setShowTrayIconFlag(boolVal);
-  }
-  if (!sm->getString(_T("LogFileDir"), &stringVal)) {
-    loadResult = false;
-  }
-  else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setLogFileDir(stringVal.getString());
   }
   return loadResult;
 }
