@@ -65,7 +65,6 @@ private:
   // Control event handlers
   //
 
-  void onShareRadioButtonClick(int number);
   void onOpenFolderButtonClick();
   void onLogLevelUpdate();
   void onLogForAllUsersClick();
@@ -83,7 +82,6 @@ protected:
   Control m_openLogPathButton;
   TextBox m_logLevel;
   TextBox m_logPathTB;
-  CheckBox m_shared[5];
   CheckBox m_logForAllUsers;
   SpinControl m_logSpin;
   BaseDialog *m_parentDialog;

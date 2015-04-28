@@ -33,7 +33,7 @@ ServerConfig::ServerConfig()
   m_enableFileTransfers(true),
   m_mirrorDriverAllowed(true),
   m_removeWallpaper(true),
-  m_alwaysShared(false), m_neverShared(false),
+  m_alwaysShared(false), m_neverShared(true),
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
   m_grabTransparentWindows(true),
