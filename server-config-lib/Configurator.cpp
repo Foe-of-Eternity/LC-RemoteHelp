@@ -23,7 +23,6 @@
 //
 
 #include "win-system/Environment.h"
-#include "wsconfig-lib/TvnLogFilename.h"
 #include "config-lib/IniFileSettingsManager.h"
 
 #include "win-system/Registry.h"
@@ -200,6 +199,13 @@ bool Configurator::loadInputHandlingConfig(SettingsManager *sm, ServerConfig *co
 bool Configurator::saveServerConfig(SettingsManager *sm)
 {
   bool saveResult = true;
+
+  //
+  // Temporary variables
+  //
+
+  StringStorage stringVal;
+
   if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
     saveResult = false;
   }
@@ -227,10 +233,11 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   if (!sm->setBoolean(_T("GrabTransparentWindows"), m_serverConfig.getGrabTransparentWindowsFlag())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("SaveLogToAllUsersPath"), m_serverConfig.isSaveLogToAllUsersPathFlagEnabled())) {
+  if (!sm->setBoolean(_T("RunControlInterface"), m_serverConfig.getShowTrayIconFlag())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("RunControlInterface"), m_serverConfig.getShowTrayIconFlag())) {
+  m_serverConfig.getLogFileDir(&stringVal);
+  if (!sm->setString(_T("LogFileDir"), stringVal.getString())) {
     saveResult = false;
   }
   return saveResult;
@@ -246,6 +253,7 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
 
   bool boolVal;
   UINT uintVal;
+  StringStorage stringVal;
 
   if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
     loadResult = false;
@@ -301,27 +309,18 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
     m_isConfigLoadedPartly = true;
     m_serverConfig.setGrabTransparentWindowsFlag(boolVal);
   }
-  if (!sm->getBoolean(_T("SaveLogToAllUsersPath"), &boolVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.saveLogToAllUsersPath(boolVal);
-  }
   if (!sm->getBoolean(_T("RunControlInterface"), &boolVal)) {
     loadResult = false;
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setShowTrayIconFlag(boolVal);
   }
-  updateLogDirPath();
+  if (!sm->getString(_T("LogFileDir"), &stringVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setLogFileDir(stringVal.getString());
+  }
   return loadResult;
-}
-
-void Configurator::updateLogDirPath()
-{
-  StringStorage pathToLogDirectory;
-  TvnLogFilename::queryLogFileDirectory(m_isConfiguringService,
-    m_serverConfig.isSaveLogToAllUsersPathFlagEnabled(),
-    &pathToLogDirectory);
-  m_serverConfig.setLogFileDir(pathToLogDirectory.getString());
 }

@@ -138,9 +138,6 @@ public:
   // Other
   //
 
-  void saveLogToAllUsersPath(bool enabled);
-  bool isSaveLogToAllUsersPathFlagEnabled();
-
   void setGrabTransparentWindowsFlag(bool grab);
   bool getGrabTransparentWindowsFlag();
 
@@ -211,8 +208,6 @@ protected:
 
   bool m_grabTransparentWindows;
 
-  // Flag that determiates where log file directory will be.
-  bool m_saveLogToAllUsersPath;
   // Run control interface with TightVNC server or not.
   bool m_showTrayIcon;
 

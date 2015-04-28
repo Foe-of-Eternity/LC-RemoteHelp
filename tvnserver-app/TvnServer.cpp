@@ -34,8 +34,6 @@
 
 #include "tvnserver/resource.h"
 
-#include "wsconfig-lib/TvnLogFilename.h"
-
 #include "network/socket/WindowsSocket.h"
 
 #include "util/StringTable.h"

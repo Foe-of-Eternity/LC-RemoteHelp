@@ -36,7 +36,6 @@
 #include "server-config-lib/Configurator.h"
 
 #include "ServerConfigDialog.h"
-#include "AdministrationConfigDialog.h"
 
 #include "tvncontrol-app/ControlCommand.h"
 
@@ -83,7 +82,6 @@ protected:
   Configurator *m_config;
   // Dialogs for tab control
   ServerConfigDialog m_serverConfigDialog;
-  AdministrationConfigDialog m_administrationConfigDialog;
   // Other members
   bool m_isConfiguringService;
 

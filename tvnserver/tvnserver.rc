@@ -105,22 +105,6 @@ BEGIN
     CONTROL         "",IDC_CONFIG_TAB,"SysTabControl32",WS_GROUP | WS_TABSTOP,5,5,310,215
 END
 
-IDD_CONFIG_ADMINISTRATION_PAGE DIALOGEX 0, 0, 306, 199
-STYLE DS_SETFONT | WS_CHILD | WS_SYSMENU
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "Ms Shell Dlg 2", 0, 0, 0x0
-BEGIN
-    GROUPBOX        "Logging",IDC_STATIC,6,145,293,48,WS_GROUP
-    LTEXT           "Log verbosity level (0 disables logging):",IDC_STATIC,16,158,126,10
-    EDITTEXT        IDC_LOG_LEVEL,144,156,24,12,ES_AUTOHSCROLL | ES_NUMBER | WS_GROUP
-    CONTROL         "",IDC_LOG_LEVEL_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,156,11,12
-    CONTROL         "Make log available to all users",IDC_LOG_FOR_ALL_USERS,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,185,158,111,10
-    LTEXT           "Log file:",IDC_STATIC,16,176,29,10
-    EDITTEXT        IDC_LOG_FILEPATH_EDIT,48,174,188,12,ES_AUTOHSCROLL | ES_READONLY | WS_GROUP
-    PUSHBUTTON      "Open folder",IDC_OPEN_LOG_FOLDER_BUTTON,242,173,50,15,WS_GROUP
-END
-
 IDD_CONFIG_SERVER_PAGE DIALOGEX 0, 0, 306, 199
 STYLE DS_SETFONT | WS_CHILD
 EXSTYLE WS_EX_CONTROLPARENT
@@ -248,15 +232,6 @@ BEGIN
     BEGIN
     END
 
-    IDD_CONFIG_ADMINISTRATION_PAGE, DIALOG
-    BEGIN
-        LEFTMARGIN, 6
-        RIGHTMARGIN, 299
-        TOPMARGIN, 4
-        BOTTOMMARGIN, 193
-        HORZGUIDE, 56
-    END
-
     IDD_CONFIG_SERVER_PAGE, DIALOG
     BEGIN
         LEFTMARGIN, 6
@@ -292,7 +267,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAPTION_BAD_INPUT   "Input Validation Error"
-    IDS_INVALID_LOG_LEVEL   "The specified log level value is incorrect.\nLog level must be a number between 0 and 9."
     IDS_CONTROL_SERVER_RAISE_EXCEPTION 
                             "TightVNC Server has reported an error:\n%s"
     IDS_CONTROL_CONNECTION_LOST 
@@ -308,13 +282,11 @@ BEGIN
     IDS_PORT_RANGE_ERROR    "Port must be a number between 1 and 65535."
     IDS_MBC_TVNSERVER       "TightVNC Server"
     IDS_MBC_TVNCONTROL      "TightVNC Control Interface"
-    IDS_LOGPATH_UNAVALIABLE "(n/a)"
     IDS_SERVER_TAB_CAPTION  "Server"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ADMINISTRATION_TAB_CAPTION "Administration"
     IDS_SERVICE             "Service"
     IDS_SERVER              "Server"
     IDS_OFFLINE_MODE        " (Offline)"
