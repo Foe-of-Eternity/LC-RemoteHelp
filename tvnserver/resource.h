@@ -12,8 +12,6 @@
 #define IDI_DISABLED                    119
 #define IDD_ABOUT_DIALOG                125
 #define IDB_LOGO_BIG                    127
-#define IDD_QUERY_RFB_CONNECTION        128
-#define IDC_ACCEPT_BUTTON               1000
 #define IDC_SHOW_TVNCONTROL_ICON_CHECKBOX 1001
 #define IDC_STATIC_VERSION              1002
 #define IDC_CONFIG_TAB                  1003
@@ -103,11 +101,8 @@
 #define IDS_SERVICE_INSTALLED           40083
 #define IDS_SERVICE_REMOVED             40084
 #define IDS_SERVICE_REINSTALLED         40085
-#define IDC_REJECT_BUTTON               40086
 #define IDS_INVALID_POLLING_INTERVAL    40087
-#define IDC_IP_EDIT                     40088
 #define IDS_INVALID_INACTIVITY_TIMEOUT  40089
-#define IDC_TIMEOUT_LABEL               40090
 #define IDS_INVALID_VIDEO_RECOGNITION_INTERVAL 40093
 #define IDS_TVNSERVER_SERVICE           40094
 #define IDS_1060_ERROR_DESCRIPTION      40095
