@@ -41,17 +41,6 @@ public:
   static const unsigned int MINIMAL_POLLING_INTERVAL = 30;
   static const unsigned int MINIMAL_LOCAL_INPUT_PRIORITY_TIMEOUT = 1;
 
-  //
-  // Enum defines server action when last client disconnects
-  // from the TightVNC server.
-  //
-
-  enum DisconnectAction {
-    DA_DO_NOTHING = 0,
-    DA_LOCK_WORKSTATION = 1,
-    DA_LOGOUT_WORKSTATION = 2
-  };
-
 public:
   ServerConfig();
   virtual ~ServerConfig();
@@ -93,9 +82,6 @@ public:
 
   void enableRemovingDesktopWallpaper(bool enabled);
   bool isRemovingDesktopWallpaperEnabled();
-
-  void setDisconnectAction(DisconnectAction action);
-  DisconnectAction getDisconnectAction();
 
   bool getMirrorIsAllowed();
   void setMirrorAllowing(bool value);
@@ -172,11 +158,6 @@ protected:
   bool m_enableFileTransfers;
   bool m_removeWallpaper;
   bool m_mirrorDriverAllowed;
-  //
-  // Server action when last client disconnects from server
-  //
-
-  DisconnectAction m_disconnectAction;
 
   //
   // Configurator from Administration tab

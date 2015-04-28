@@ -192,46 +192,6 @@ void TvnServer::afterFirstClientConnect()
 
 void TvnServer::afterLastClientDisconnect()
 {
-  ServerConfig::DisconnectAction action = m_srvConfig->getDisconnectAction();
-
-  // Disconnect action must be executed in process on interactive user session to take effect.
-  // Now, choose application keys for specified action.
-
-  StringStorage keys;
-
-  switch (action) {
-  case ServerConfig::DA_LOCK_WORKSTATION:
-    keys.format(_T("%s"), AdditionalActionApplication::LOCK_WORKSTATION_KEY);
-    break;
-  case ServerConfig::DA_LOGOUT_WORKSTATION:
-    keys.format(_T("%s"), AdditionalActionApplication::LOGOUT_KEY);
-    break;
-  default:
-    return;
-  }
-
-  Process *process;
-
-  // Choose how to start process.
-  StringStorage thisModulePath;
-  Environment::getCurrentModulePath(&thisModulePath);
-  thisModulePath.quoteSelf();
-  if (isRunningAsService()) {
-    process = new CurrentConsoleProcess(&m_log, thisModulePath.getString(),
-                                        keys.getString());
-  } else {
-    process = new Process(thisModulePath.getString(), keys.getString());
-  }
-
-  m_log.message(_T("Execute disconnect action in separate process"));
-
-  try {
-    process->start();
-  } catch (SystemException &ex) {
-    m_log.error(_T("Failed to start application: \"%s\""), ex.getMessage());
-  }
-
-  delete process;
 }
 
 void TvnServer::restartControlServer()

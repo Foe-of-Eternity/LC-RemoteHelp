@@ -68,7 +68,6 @@ private:
   void onShareRadioButtonClick(int number);
   void onOpenFolderButtonClick();
   void onLogLevelUpdate();
-  void onDARadioButtonClick(int number);
   void onLogForAllUsersClick();
 
   //
@@ -82,7 +81,6 @@ protected:
   ServerConfig *m_config;
   // Controls
   Control m_openLogPathButton;
-  CheckBox m_disconnectAction[3];
   TextBox m_logLevel;
   TextBox m_logPathTB;
   CheckBox m_shared[5];

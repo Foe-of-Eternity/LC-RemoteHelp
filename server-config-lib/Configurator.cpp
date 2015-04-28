@@ -200,9 +200,6 @@ bool Configurator::loadInputHandlingConfig(SettingsManager *sm, ServerConfig *co
 bool Configurator::saveServerConfig(SettingsManager *sm)
 {
   bool saveResult = true;
-  if (!sm->setUINT(_T("DisconnectAction"), (UINT)m_serverConfig.getDisconnectAction())) {
-    saveResult = false;
-  }
   if (!sm->setUINT(_T("LogLevel"), (UINT)m_serverConfig.getLogLevel())) {
     saveResult = false;
   }
@@ -250,12 +247,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   bool boolVal;
   UINT uintVal;
 
-  if (!sm->getUINT(_T("DisconnectAction"), &uintVal)) {
-    loadResult = false;
-  } else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setDisconnectAction((ServerConfig::DisconnectAction)uintVal);
-  }
   if (!sm->getUINT(_T("LogLevel"), &uintVal)) {
     loadResult = false;
   } else {
