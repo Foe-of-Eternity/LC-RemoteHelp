@@ -4,7 +4,6 @@
 //
 #define IDD_CONFIG_ADMINISTRATION_PAGE  102
 #define IDD_CONFIG_SERVER_PAGE          103
-#define IDD_CONFIG_VIDEO_CLASSES_PAGE   104
 #define IDD_CONFIG                      107
 #define IDD_OUTGOING_CONN               113
 #define IDI_IDLE                        115
@@ -16,12 +15,10 @@
 #define IDC_STATIC_VERSION              1002
 #define IDC_CONFIG_TAB                  1003
 #define IDC_LOG_LEVEL_SPIN              1006
-#define IDC_VIDEO_CLASS_NAMES           1009
 #define IDC_VIEW_ONLY_CHECKBOX          1010
 #define IDC_VISIT_WEB_SITE_BUTTON       1011
 #define IDC_LOG_FILEPATH_EDIT           1014
 #define IDC_STATIC_LICENSING            1016
-#define IDC_VIDEO_RECOGNITION_INTERVAL  1018
 #define IDC_APPLY                       1019
 #define IDC_LOG_FOR_ALL_USERS           1020
 #define IDC_ORDER_SUPPORT_BUTTON        1021
@@ -43,7 +40,6 @@
 #define IDC_POLLING_INTERVAL            1069
 #define IDC_POLLING_INTERVAL_SPIN       1071
 #define IDC_INACTIVITY_TIMEOUT_SPIN     1073
-#define IDC_VIDEO_RECOGNITION_INTERVAL_SPIN 1074
 #define IDC_OPEN_LOG_FOLDER_BUTTON      1077
 #define IDC_DO_NOTHING                  1078
 #define IDC_USE_MIRROR_DRIVER           1082
@@ -67,7 +63,6 @@
 #define IDS_LOGPATH_UNAVALIABLE         40022
 #define IDS_SERVER_TAB_CAPTION          40027
 #define IDC_HOSTNAME_COMBO              40028
-#define IDS_VIDEO_WINDOWS_TAB_CAPTION   40031
 #define IDS_ADMINISTRATION_TAB_CAPTION  40032
 #define IDS_SERVICE                     40033
 #define IDS_SERVER                      40034
@@ -99,7 +94,6 @@
 #define IDS_SERVICE_REINSTALLED         40085
 #define IDS_INVALID_POLLING_INTERVAL    40087
 #define IDS_INVALID_INACTIVITY_TIMEOUT  40089
-#define IDS_INVALID_VIDEO_RECOGNITION_INTERVAL 40093
 #define IDS_TVNSERVER_SERVICE           40094
 #define IDS_1060_ERROR_DESCRIPTION      40095
 #define IDS_TVNSERVER_APP               40096

@@ -37,7 +37,6 @@
 
 #include "ServerConfigDialog.h"
 #include "AdministrationConfigDialog.h"
-#include "VideoRegionsConfigDialog.h"
 
 #include "tvncontrol-app/ControlCommand.h"
 
@@ -85,7 +84,6 @@ protected:
   // Dialogs for tab control
   ServerConfigDialog m_serverConfigDialog;
   AdministrationConfigDialog m_administrationConfigDialog;
-  VideoRegionsConfigDialog m_videoRegionsConfigDialog;
   // Other members
   bool m_isConfiguringService;
 

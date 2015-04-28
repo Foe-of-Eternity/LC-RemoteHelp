@@ -150,13 +150,7 @@ BOOL ConfigDialog::onInitDialog()
   m_administrationConfigDialog.create();
   moveDialogToTabControl(&m_administrationConfigDialog);
 
-  m_videoRegionsConfigDialog.setParent(&m_ctrlThis);
-  m_videoRegionsConfigDialog.setParentDialog(this);
-  m_videoRegionsConfigDialog.create();
-  moveDialogToTabControl(&m_videoRegionsConfigDialog);
-
   m_tabControl.addTab(&m_serverConfigDialog, StringTable::getString(IDS_SERVER_TAB_CAPTION));
-  m_tabControl.addTab(&m_videoRegionsConfigDialog, StringTable::getString(IDS_VIDEO_WINDOWS_TAB_CAPTION));
   m_tabControl.addTab(&m_administrationConfigDialog, StringTable::getString(IDS_ADMINISTRATION_TAB_CAPTION));
 
   m_tabControl.removeTab(0);
@@ -199,7 +193,6 @@ void ConfigDialog::onApplyButtonClick()
   if (canApply) {
     m_administrationConfigDialog.apply();
     m_serverConfigDialog.apply();
-    m_videoRegionsConfigDialog.apply();
   } else {
     return ;
   }

@@ -36,7 +36,7 @@ ServerConfig::ServerConfig()
   m_alwaysShared(false), m_neverShared(false),
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
-  m_videoRecognitionInterval(3000), m_grabTransparentWindows(true),
+  m_grabTransparentWindows(true),
   m_saveLogToAllUsersPath(false),
   m_showTrayIcon(true)
 {
@@ -64,13 +64,6 @@ void ServerConfig::serialize(DataOutputStream *output)
   output->writeInt8(m_localInputPriority ? 1 : 0);
   output->writeUInt32(m_localInputPriorityTimeout);
 
-  _ASSERT((UINT32)m_videoClassNames.size() == m_videoClassNames.size());
-  output->writeUInt32((UINT32)m_videoClassNames.size());
-  for (size_t i = 0; i < m_videoClassNames.size(); i++) {
-    output->writeUTF8(m_videoClassNames.at(i).getString());
-  }
-
-  output->writeUInt32(m_videoRecognitionInterval);
   output->writeInt8(m_grabTransparentWindows ? 1 : 0);
 
   output->writeInt8(m_saveLogToAllUsersPath ? 1 : 0);
@@ -97,15 +90,6 @@ void ServerConfig::deserialize(DataInputStream *input)
   m_localInputPriority = input->readInt8() == 1;
   m_localInputPriorityTimeout = input->readUInt32();
 
-  m_videoClassNames.clear();
-  size_t count = input->readUInt32();
-  StringStorage videoClass;
-  for (size_t i = 0; i < count; i++) {
-    input->readUTF8(&videoClass);
-    m_videoClassNames.push_back(videoClass);
-  }
-
-  m_videoRecognitionInterval = input->readUInt32();
   m_grabTransparentWindows = input->readInt8() == 1;
 
   m_saveLogToAllUsersPath = input->readInt8() == 1;
@@ -310,24 +294,6 @@ bool ServerConfig::isBlockingLocalInput()
 {
   AutoLock lock(&m_objectCS);
   return m_blockLocalInput;
-}
-
-StringVector *ServerConfig::getVideoClassNames()
-{
-  return &m_videoClassNames;
-}
-
-unsigned int ServerConfig::getVideoRecognitionInterval()
-{
-  AutoLock lock(&m_objectCS);
-  return m_videoRecognitionInterval;
-}
-
-void ServerConfig::setVideoRecognitionInterval(unsigned int interval)
-{
-  AutoLock lock(&m_objectCS);
-
-  m_videoRecognitionInterval = interval;
 }
 
 void ServerConfig::saveLogToAllUsersPath(bool enabled)
