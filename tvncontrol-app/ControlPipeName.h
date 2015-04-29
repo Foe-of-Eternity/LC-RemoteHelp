@@ -39,7 +39,7 @@ public:
    * @param forService flag determinating if we create pipe name for service or application.
    * @param pipeName [out] target pipe name.
    */
-  static void createPipeName(bool forService, StringStorage *pipeName, LogWriter *log);
+  static void createPipeName(StringStorage *pipeName, LogWriter *log);
 
 private:
   /**

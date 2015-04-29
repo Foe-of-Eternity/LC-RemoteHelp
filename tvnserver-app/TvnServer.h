@@ -27,7 +27,6 @@
 
 #include "util/CommonHeader.h"
 
-#include "desktop/WinServiceDesktopFactory.h"
 #include "desktop/ApplicationDesktopFactory.h"
 #include "RfbClientManager.h"
 #include "RfbServer.h"
@@ -78,8 +77,7 @@ public:
    * @remark doesn't block calling thread execution cause all servers runs in it's own threads.
    * To know when need to shutdown TightVNC server you need to use addListener method.
    */
-  TvnServer(bool runsInServiceContext,
-            LogInitListener *logInitListener,
+  TvnServer(LogInitListener *logInitListener,
             Logger *logger);
   /**
    * Stops and destroys TightVNC server.
@@ -158,13 +156,6 @@ protected:
    */
   LocalMutex m_mutex;
 
-  /**
-   * Flag that determitates if we run in server context.
-   * true if service, false if application.
-   */
-  const bool m_runAsService;
-
-  WinServiceDesktopFactory m_serviceDesktopFactory;
   ApplicationDesktopFactory m_applicationDesktopFactory;
   /**
    * Rfb client manager (for all rfb servers), used by rfb servers

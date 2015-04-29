@@ -81,7 +81,7 @@ int TvnServerApplication::run()
 
   // Start TightVNC server and TightVNC control application.
   try {
-    m_tvnServer = new TvnServer(false, this, &m_fileLogger);
+    m_tvnServer = new TvnServer(this, &m_fileLogger);
     m_tvnServer->addListener(this);
     m_tvnControlRunner = new WsConfigRunner(&m_fileLogger);
 

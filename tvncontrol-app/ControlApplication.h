@@ -91,21 +91,14 @@ public:
 
 protected:
   /**
-   * Connect to the control interface of the server. If both -controlservice
-   * and -slave keys were specified, this function makes several tries to
-   * connect, with a pause between tries. That should recover the case when
-   * the control interface starts before the service is fully started.
+   * Connect to the control interface of the server.
    *
-   * @param controlService true if -controlservice was specified in the
-   *   command line, false otherwise. This flag is used to determine the name
-   *   of the pipe to connect to, and affects error handling on connection
-   *   failures (together with the slave flag).
    * @param slave true if -slave option was specified in the command line,
    *   false otherwise. This flag affects error handling on connection
    *   failures (together with the connectService flag).
    * @throws Exception on errors.
    */
-  void connect(bool controlService, bool slave) throw(Exception);
+  void connect(bool slave) throw(Exception);
 
   /**
    * Inherited from Thread class.

@@ -88,7 +88,6 @@ class ServerApplicationNames
 public:
   static const TCHAR SERVER_INSTANCE_MUTEX_NAME[];
   static const TCHAR CONTROL_APP_INSTANCE_MUTEX_NAME[];
-  static const TCHAR FOR_SERVICE_CONTROL_APP_PIPE_NAME[];
   static const TCHAR FOR_APP_CONTROL_APP_SERVICE_PIPE_NAME[];
 };
 

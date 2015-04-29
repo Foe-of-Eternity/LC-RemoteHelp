@@ -31,7 +31,6 @@
 
 #include "ConnectStringParser.h"
 
-const TCHAR ControlCommandLine::CONTROL_SERVICE[] = _T("-controlservice");
 const TCHAR ControlCommandLine::CONTROL_APPLICATION[] = _T("-controlapp");
 const TCHAR ControlCommandLine::CONFIG_RELOAD[]  = _T("-reload");
 const TCHAR ControlCommandLine::DISCONNECT_ALL[] = _T("-disconnectall");
@@ -57,7 +56,6 @@ void ControlCommandLine::parse(const CommandLineArgs *cmdArgs)
     { DISCONNECT_ALL, NO_ARG },
     { CONNECT, NEEDS_ARG },
     { SHUTDOWN, NO_ARG },
-    { CONTROL_SERVICE, NO_ARG },
     { CONTROL_APPLICATION, NO_ARG },
     { SLAVE_MODE, NO_ARG },
     { DONT_ELEVATE, NO_ARG }
@@ -75,11 +73,11 @@ void ControlCommandLine::parse(const CommandLineArgs *cmdArgs)
     optionSpecified(CONNECT, &m_connectHostName);
   }
 
-  if ((hasControlServiceFlag() || hasControlAppFlag()) && (isSlave()) && (m_foundKeys.size() > 2)) {
+  if (hasControlAppFlag() && (isSlave()) && (m_foundKeys.size() > 2)) {
     throw CommandLineFormatException();
   }
 
-  bool hasNotSlaveControl = (hasControlServiceFlag() || hasControlAppFlag()) && !isSlave();
+  bool hasNotSlaveControl = hasControlAppFlag() && !isSlave();
   if (hasNotSlaveControl && m_foundKeys.size() > 2) {
     throw CommandLineFormatException();
   }
@@ -117,11 +115,6 @@ bool ControlCommandLine::hasShutdownFlag()
 bool ControlCommandLine::hasDontElevateFlag()
 {
   return optionSpecified(DONT_ELEVATE);
-}
-
-bool ControlCommandLine::hasControlServiceFlag()
-{
-  return optionSpecified(CONTROL_SERVICE);
 }
 
 bool ControlCommandLine::hasControlAppFlag()

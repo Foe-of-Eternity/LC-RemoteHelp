@@ -33,7 +33,6 @@
 class ControlCommandLine : private CommandLine
 {
 public:
-  static const TCHAR CONTROL_SERVICE[];
   static const TCHAR CONTROL_APPLICATION[];
   static const TCHAR CONFIG_RELOAD[];
   static const TCHAR DISCONNECT_ALL[];
@@ -54,7 +53,6 @@ public:
   bool hasConnectFlag();
   void getConnectHostName(StringStorage *hostName) const;
   bool hasShutdownFlag();
-  bool hasControlServiceFlag();
   bool hasControlAppFlag();
   bool hasDontElevateFlag();
   bool isSlave();

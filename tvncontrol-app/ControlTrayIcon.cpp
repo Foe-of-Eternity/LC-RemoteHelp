@@ -190,11 +190,9 @@ void ControlTrayIcon::onShutdownServerMenuItemClick()
 
     StringStorage userMessage;
 
-    UINT stringId = serverInfo.m_serviceFlag ? IDS_TVNSERVER_SERVICE : IDS_TVNSERVER_APP;
-
     userMessage.format(
       StringTable::getString(IDS_SHUTDOWN_NOTIFICATION_FORMAT),
-      StringTable::getString(stringId));
+      StringTable::getString(IDS_TVNSERVER_APP));
 
     if (MessageBox(
       getWindow(),

@@ -27,12 +27,9 @@
 #include "util/CommandLine.h"
 #include "win-system/WinCommandLineArgs.h"
 
-#include "tvnserver-app/TvnService.h"
 #include "tvnserver-app/TvnServerApplication.h"
 #include "tvnserver-app/DesktopServerApplication.h"
 #include "tvnserver-app/AdditionalActionApplication.h"
-#include "tvnserver-app/ServiceControlApplication.h"
-#include "tvnserver-app/ServiceControlCommandLine.h"
 #include "tvnserver-app/DesktopServerCommandLine.h"
 
 #include "tvncontrol-app/ControlApplication.h"
@@ -47,21 +44,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   ResourceLoader resourceLoaderSingleton(hInstance);
 
   CommandLineFormat format[] = {
-    { TvnService::SERVICE_COMMAND_LINE_KEY, NO_ARG },
-
-    { ControlCommandLine::CONTROL_SERVICE, NO_ARG },
     { ControlCommandLine::CONTROL_APPLICATION, NO_ARG },
 
     { DesktopServerCommandLine::DESKTOP_SERVER_KEY, NO_ARG },
 
     { AdditionalActionApplication::LOCK_WORKSTATION_KEY, NO_ARG },
     { AdditionalActionApplication::LOGOUT_KEY, NO_ARG },
-
-    { ServiceControlCommandLine::INSTALL_SERVICE },
-    { ServiceControlCommandLine::REMOVE_SERVICE },
-    { ServiceControlCommandLine::REINSTALL_SERVICE },
-    { ServiceControlCommandLine::START_SERVICE },
-    { ServiceControlCommandLine::STOP_SERVICE }
   };
 
   CommandLine parser;
@@ -80,16 +68,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   // Check if need to start additional application that packed into tvnserver.exe.
 
-  if (firstKey.isEqualTo(TvnService::SERVICE_COMMAND_LINE_KEY)) {
-    TvnService tvnService;
-    try {
-      tvnService.run();
-    } catch (Exception &) {
-      return 1;
-    }
-    return 0;
-  } else if (firstKey.isEqualTo(ControlCommandLine::CONTROL_SERVICE) ||
-             firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION)) {
+  if (firstKey.isEqualTo(ControlCommandLine::CONTROL_APPLICATION)) {
     try {
       ControlApplication tvnControl(hInstance,
         WindowNames::WINDOW_CLASS_NAME,
@@ -124,15 +103,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     } catch (...) {
       return 1;
     }
-  } else if (firstKey.isEqualTo(ServiceControlCommandLine::INSTALL_SERVICE) ||
-             firstKey.isEqualTo(ServiceControlCommandLine::REMOVE_SERVICE) ||
-             firstKey.isEqualTo(ServiceControlCommandLine::REINSTALL_SERVICE) ||
-             firstKey.isEqualTo(ServiceControlCommandLine::START_SERVICE) ||
-             firstKey.isEqualTo(ServiceControlCommandLine::STOP_SERVICE)) {
-    ServiceControlApplication tvnsc(hInstance,
-      WindowNames::WINDOW_CLASS_NAME,
-      lpCmdLine);
-    return tvnsc.run();
   }
 
   // No additional applications, run TightVNC server as single application.

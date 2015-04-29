@@ -51,16 +51,14 @@
 #include <crtdbg.h>
 #include <time.h>
 
-TvnServer::TvnServer(bool runsInServiceContext,
-                     LogInitListener *logInitListener,
+TvnServer::TvnServer(LogInitListener *logInitListener,
                      Logger *logger)
 : Singleton<TvnServer>(),
   ListenerContainer<TvnServerListener *>(),
-  m_runAsService(runsInServiceContext),
   m_logInitListener(logInitListener),
   m_rfbClientManager(0),
   m_controlServer(0),
-  m_config(runsInServiceContext),
+  m_config(false),
   m_log(logger)
 {
   m_log.message(_T("%s Build on %s"),
@@ -94,12 +92,7 @@ TvnServer::TvnServer(bool runsInServiceContext,
     m_log.interror(_T("%s"), ex.getMessage());
   }
 
-  DesktopFactory *desktopFactory = 0;
-  if (runsInServiceContext) {
-    desktopFactory = &m_serviceDesktopFactory;
-  } else {
-    desktopFactory = &m_applicationDesktopFactory;
-  }
+  DesktopFactory *desktopFactory = &m_applicationDesktopFactory;
 
    // Instanize zombie killer singleton.
    // FIXME: may be need to do it in another place or use "lazy" initialization.
@@ -153,17 +146,10 @@ void TvnServer::onConfigReload(ServerConfig *serverConfig)
 
 void TvnServer::getServerInfo(TvnServerInfo *info)
 {
-  StringStorage statusString;
-
-  statusString = StringTable::getString(IDS_SERVER_NOT_LISTENING);
-
-  UINT stringId = m_runAsService ? IDS_TVNSERVER_SERVICE : IDS_TVNSERVER_APP;
-
   info->m_statusText.format(_T("%s - %s"),
-                            StringTable::getString(stringId),
-                            statusString.getString());
+                            StringTable::getString(IDS_TVNSERVER_APP),
+                            StringTable::getString(IDS_SERVER_NOT_LISTENING));
   info->m_acceptFlag = false;
-  info->m_serviceFlag = m_runAsService;
 }
 
 void TvnServer::generateExternalShutdownSignal()
@@ -176,11 +162,6 @@ void TvnServer::generateExternalShutdownSignal()
 
     each->onTvnServerShutdown();
   } // for all listeners.
-}
-
-bool TvnServer::isRunningAsService() const
-{
-  return m_runAsService;
 }
 
 void TvnServer::afterFirstClientConnect()
@@ -202,7 +183,7 @@ void TvnServer::restartControlServer()
 
   try {
     StringStorage pipeName;
-    ControlPipeName::createPipeName(isRunningAsService(), &pipeName, &m_log);
+    ControlPipeName::createPipeName(&pipeName, &m_log);
 
     // FIXME: Memory leak
     SecurityAttributes *pipeSecurity = new SecurityAttributes();

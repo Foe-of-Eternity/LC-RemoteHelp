@@ -108,25 +108,11 @@ int ControlApplication::run()
 
   int retCode = 0;
 
-  // If we are in the "-controlservice -slave" mode, make sure there are no
-  // other "service slaves" in this session, exit if there is one already.
-
-  GlobalMutex *appGlobalMutex = 0;
-
-  if (cmdLineParser.hasControlServiceFlag() && cmdLineParser.isSlave()) {
-    try {
-      appGlobalMutex = new GlobalMutex(
-        ServerApplicationNames::CONTROL_APP_INSTANCE_MUTEX_NAME, false, true);
-    } catch (...) {
-      return 1;
-    }
-  }
-
   ZombieKiller zombieKiller;
 
   // Connect to server.
   try {
-    connect(cmdLineParser.hasControlServiceFlag(), cmdLineParser.isSlave());
+    connect(cmdLineParser.isSlave());
   } catch (Exception &) {
     if (!cmdLineParser.isSlave()) {
       const TCHAR *msg = StringTable::getString(IDS_FAILED_TO_CONNECT_TO_CONTROL_SERVER);
@@ -184,18 +170,14 @@ int ControlApplication::run()
     retCode = runControlInterface(showIcon);
   }
 
-  if (appGlobalMutex != 0) {
-    delete appGlobalMutex;
-  }
-
   return retCode;
 }
 
-void ControlApplication::connect(bool controlService, bool slave)
+void ControlApplication::connect(bool slave)
 {
   // Determine the name of pipe to connect to.
   StringStorage pipeName;
-  ControlPipeName::createPipeName(controlService, &pipeName, &m_log);
+  ControlPipeName::createPipeName(&pipeName, &m_log);
 
   int numTriesRemaining = slave ? 10 : 1;
   int msDelayBetweenTries = 2000;
