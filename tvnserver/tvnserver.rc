@@ -64,7 +64,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "About...",                    ID_ABOUT_TIGHTVNC_MENUITEM
         MENUITEM SEPARATOR
-        MENUITEM "Shutdown TightVNC Server",    ID_SHUTDOWN_SERVICE
+        MENUITEM "Shutdown LC RemoteHelp Server", ID_SHUTDOWN_SERVICE
         MENUITEM "Close Control Interface",     ID_CLOSE_CONTROL_INTERFACE
     END
 END
@@ -75,20 +75,18 @@ END
 // Dialog
 //
 
-IDD_ABOUT_DIALOG DIALOGEX 0, 0, 308, 138
+IDD_ABOUT_DIALOG DIALOGEX 0, 0, 309, 100
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "About TightVNC Server"
+CAPTION "About LC RemoteHelp Server"
 FONT 8, "Ms Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CONTROL         IDB_LOGO_BIG,IDC_STATIC,"Static",SS_BITMAP | WS_GROUP,24,14,60,55
-    LTEXT           "TightVNC Server for Windows",IDC_STATIC,107,12,189,10
+    LTEXT           "LC RemoteHelp Server for Windows",IDC_STATIC,107,12,189,10
     LTEXT           "Version unknown, build time unknown",IDC_STATIC_VERSION,107,20,189,10
-    LTEXT           "Copyright (C) 2008-2013 GlavSoft LLC.\nAll Rights Reserved.",IDC_STATIC,107,38,189,18
+    LTEXT           "Copyright (C) 2015 Lacon Computer\nCopyright (C) 2008-2013 GlavSoft LLC.\nAll Rights Reserved.",IDC_STATIC,107,35,189,43
     LTEXT           "",IDC_STATIC_LICENSING,107,64,189,10
-    LTEXT           "We provide technical support, development and customization services on TightVNC.\nThe source code is available commercially as well, if the GPL license is not acceptable.\nPlease visit the Web site for more information on our products.",IDC_STATIC,13,81,283,26
-    DEFPUSHBUTTON   "Visit the Web Site",IDC_VISIT_WEB_SITE_BUTTON,7,116,94,15,WS_GROUP
-    PUSHBUTTON      "Commercial Licensing",IDC_ORDER_SUPPORT_BUTTON,107,116,94,15
-    PUSHBUTTON      "Close This Window",IDCANCEL,207,116,94,15
+    DEFPUSHBUTTON   "Visit the Web Site",IDC_VISIT_WEB_SITE_BUTTON,7,78,94,15,WS_GROUP
+    PUSHBUTTON      "Close This Window",IDCANCEL,208,78,94,15
 END
 
 IDD_OUTGOING_CONN DIALOGEX 0, 0, 257, 107
@@ -112,7 +110,7 @@ END
 // Bitmap
 //
 
-IDB_LOGO_BIG            BITMAP                  ".\\res\\tightvnc.bmp"
+IDB_LOGO_BIG            BITMAP                  ".\\res\\laconcomputer.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -121,9 +119,7 @@ IDB_LOGO_BIG            BITMAP                  ".\\res\\tightvnc.bmp"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_IDLE                ICON                    ".\\res\\idle.ico"
-IDI_CONNECTED           ICON                    ".\\res\\connected.ico"
-IDI_DISABLED            ICON                    ".\\res\\disabled.ico"
+IDI_DEFAULT             ICON                    ".\\res\\default.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -131,8 +127,8 @@ IDI_DISABLED            ICON                    ".\\res\\disabled.ico"
 //
 
 1 VERSIONINFO
- FILEVERSION 2,7,10,0
- PRODUCTVERSION 2,7,10,0
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
  FILEFLAGSMASK 0x0L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -147,14 +143,14 @@ BEGIN
     BEGIN
         BLOCK "040904e2"
         BEGIN
-            VALUE "CompanyName", "GlavSoft LLC."
-            VALUE "FileDescription", "TightVNC Server"
-            VALUE "FileVersion", "2, 7, 10, 0"
-            VALUE "InternalName", "tvnserver"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2013 GlavSoft LLC."
-            VALUE "OriginalFilename", "tvnserver.exe"
-            VALUE "ProductName", "TightVNC"
-            VALUE "ProductVersion", "2, 7, 10, 0"
+            VALUE "CompanyName", "Lacon Computer"
+            VALUE "FileDescription", "LC RemoteHelp"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "rhserver"
+            VALUE "LegalCopyright", "Copyright (C) 2015 Lacon Computer"
+            VALUE "OriginalFilename", "rhserver.exe"
+            VALUE "ProductName", "LC RemoteHelp"
+            VALUE "ProductVersion", "1.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -175,12 +171,12 @@ BEGIN
     IDD_ABOUT_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 301
+        RIGHTMARGIN, 302
         VERTGUIDE, 107
         VERTGUIDE, 296
         TOPMARGIN, 7
-        BOTTOMMARGIN, 131
-        HORZGUIDE, 116
+        BOTTOMMARGIN, 93
+        HORZGUIDE, 78
     END
 
     IDD_OUTGOING_CONN, DIALOG
@@ -198,26 +194,26 @@ END
 STRINGTABLE
 BEGIN
     IDS_CONTROL_SERVER_RAISE_EXCEPTION 
-                            "TightVNC Server has reported an error:\n%s"
+                            "LC RemoteHelp Server has reported an error:\n%s"
     IDS_CONTROL_CONNECTION_LOST 
-                            "Connection to the TightVNC Server has been lost."
+                            "Connection to the LC RemoteHelp Server has been lost."
     IDS_SERVER_ALREADY_RUNNING 
-                            "Another copy of TightVNC Server is already running."
+                            "Another copy of LC RemoteHelp Server is already running."
 END
 
 STRINGTABLE
 BEGIN
-    IDS_MBC_TVNSERVER       "TightVNC Server"
-    IDS_MBC_TVNCONTROL      "TightVNC Control Interface"
+    IDS_MBC_TVNSERVER       "LC RemoteHelp Server"
+    IDS_MBC_TVNCONTROL      "LC RemoteHelp Control Interface"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_TVNSERVER_USAGE     "TightVNC Server supports the following command-line options:\n\ntvnserver\t-help\ntvnserver\t[ -run ]\ntvnserver\t{ -install | -reinstall | -remove | -start | -stop }  [ -silent ]\ntvnserver\t{ -controlservice | -controlapp }\ntvnserver\t{ -controlservice | -controlapp }\n\t   { -connect HOST | -disconnectall | -reload | -shutdown |\n\t      -sharefull | -shareprimary |\n\t      -sharedisplay DISPLAY_NUMBER  | \n\t      -sharerect WIDTHxHEIGHT+LEFT+TOP |\n\t      -sharewindow CAPTION }\n\t   [ -passfile FILE ]\ntvnserver\t{ -configservice | -configapp }"
+    IDS_TVNSERVER_USAGE     "LC RemoteHelp Server supports the following command-line options:\n\ntvnserver\t-help\ntvnserver\t[ -run ]\ntvnserver\t{ -controlapp }\ntvnserver\t{ -controlapp }\n\t   { -connect HOST | -disconnectall | -reload | -shutdown }\ntvnserver\t{ -configapp }"
     IDS_SERVER_NOT_LISTENING "not listening"
     IDS_FAILED_TO_CONNECT_TO_CONTROL_SERVER 
-                            "Failed to connect to TightVNC Server."
-    IDS_MBC_TVNSERVER_USAGE "TightVNC Server Usage Help"
+                            "Failed to connect to LC RemoteHelp Server."
+    IDS_MBC_TVNSERVER_USAGE "LC RemoteHelp Server Usage Help"
 END
 
 STRINGTABLE
@@ -226,38 +222,37 @@ BEGIN
                             "Failed to open Web resource for the following reason:\n%s"
     IDS_PRODUCT_VERSION_FORMAT "Version %s (built on %s)"
     IDS_ADMIN_RIGHTS_NEEDED "You need administrator privileges to run the application."
-    IDS_URL_LICENSING_FSA   "http://www.tightvnc.com/licensing/?f=sa"
-    IDS_URL_PRODUCT_FSA     "http://www.tightvnc.com/?f=sa"
+    IDS_URL_PRODUCT_FSA     "https://laconcomputer.com/"
     IDS_SERVICE_STOP_TIMEOUT "Timed out waiting for service shutdown"
     IDS_SERVICE_START_TIMEOUT "Timed out waiting for service startup"
     IDS_SERVICE_ALREADY_RUNNING "Service is already running"
     IDS_SERVICE_ALREADY_STOPPED "Service is not running"
     IDS_CONTROL_CLIENT_NOT_CONNECTED "Not connected"
     IDS_FAILED_TO_INSTALL_SERVICE_FORMAT 
-                            "Failed to register TightVNC service for the following reason:\n%s."
+                            "Failed to register LC RemoteHelp service for the following reason:\n%s."
 END
 
 STRINGTABLE
 BEGIN
     IDS_FAILED_TO_REMOVE_SERVICE_FORMAT 
-                            "Failed to unregister TightVNC service for the following reason:\n%s."
+                            "Failed to unregister LC RemoteHelp service for the following reason:\n%s."
     IDS_FAILED_TO_START_SERVICE_FORMAT 
-                            "Failed to start TightVNC service for the following reason:\n%s."
+                            "Failed to start LC RemoteHelp service for the following reason:\n%s."
     IDS_FAILED_TO_STOP_SERVICE_FORMAT 
-                            "Failed to stop TightVNC service for the following reason:\n%s."
-    IDS_SERVICE_INSTALLED   "TightVNC service has been registered."
-    IDS_SERVICE_REMOVED     "TightVNC service has been unregistered."
-    IDS_SERVICE_REINSTALLED "TightVNC service has been reinstalled."
-    IDS_TVNSERVER_SERVICE   "TightVNC Service"
+                            "Failed to stop LC RemoteHelp service for the following reason:\n%s."
+    IDS_SERVICE_INSTALLED   "LC RemoteHelp service has been registered."
+    IDS_SERVICE_REMOVED     "LC RemoteHelp service has been unregistered."
+    IDS_SERVICE_REINSTALLED "LC RemoteHelp service has been reinstalled."
+    IDS_TVNSERVER_SERVICE   "LC RemoteHelp Service"
     IDS_1060_ERROR_DESCRIPTION "Service is not registered"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_TVNSERVER_APP       "TightVNC Server"
+    IDS_TVNSERVER_APP       "LC RemoteHelp Server"
     IDS_1073_ERROR_DESCRIPTION "Service is already registered"
     IDS_SHUTDOWN_NOTIFICATION_FORMAT 
-                            "This will disconnect all clients and they will not be able to reconnect until the TightVNC Server is restarted.\n\nAre you sure you want to shutdown the %s?"
+                            "This will disconnect all clients and they will not be able to reconnect until the LC RemoteHelp Server is restarted.\n\nAre you sure you want to shutdown the %s?"
     IDS_LICENSING_INFO      "Licensing Terms: GNU General Public License version 2"
 END
 

@@ -51,13 +51,12 @@ ControlTrayIcon::ControlTrayIcon(ControlProxy *serverControl,
   m_serverControl(serverControl), m_notificator(notificator),
   m_appControl(appControl),
   m_inWindowProc(false),
-  m_termination(false)
+  m_termination(false),
+  m_someoneConnected(false)
 {
   ResourceLoader *resLoader = ResourceLoader::getInstance();
 
-  m_iconWorking = new Icon(resLoader->loadIcon(MAKEINTRESOURCE(IDI_CONNECTED)));
-  m_iconIdle = new Icon(resLoader->loadIcon(MAKEINTRESOURCE(IDI_IDLE)));
-  m_iconDisabled = new Icon(resLoader->loadIcon(MAKEINTRESOURCE(IDI_DISABLED)));
+  m_iconDefault = new Icon(resLoader->loadIcon(MAKEINTRESOURCE(IDI_DEFAULT)));
 
   setWindowProcHolder(this);
 
@@ -72,9 +71,7 @@ ControlTrayIcon::ControlTrayIcon(ControlProxy *serverControl,
 
 ControlTrayIcon::~ControlTrayIcon()
 {
-  delete m_iconDisabled;
-  delete m_iconIdle;
-  delete m_iconWorking;
+  delete m_iconDefault;
 }
 
 LRESULT ControlTrayIcon::windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
@@ -176,10 +173,7 @@ void ControlTrayIcon::onShutdownServerMenuItemClick()
 {
   // Promt user if any client is connected to rfb server.
 
-  // FIXME: Bad way to determinate connected clients.
-  bool someoneConnected = (getIcon() == m_iconWorking);
-
-  if (someoneConnected) {
+  if (m_someoneConnected) {
     TvnServerInfo serverInfo = {0};
 
     {
@@ -248,14 +242,7 @@ void ControlTrayIcon::syncStatusWithServer()
     std::list<RfbClientInfo *> clients;
     m_serverControl->getClientsList(&clients);
 
-    // Change icon status.
-    if (clients.size() > 0) {
-      setIcon(m_iconWorking);
-    } else if (info.m_acceptFlag) {
-      setIcon(m_iconIdle);
-    } else {
-      setIcon(m_iconDisabled);
-    }
+    m_someoneConnected = (clients.size() > 0);
 
     setText(info.m_statusText.getString());
 
@@ -278,7 +265,7 @@ void ControlTrayIcon::syncStatusWithServer()
 
 void ControlTrayIcon::setNotConnectedState()
 {
-  setIcon(m_iconDisabled);
+  setIcon(m_iconDefault);
   setText(StringTable::getString(IDS_CONTROL_CLIENT_NOT_CONNECTED));
 }
 

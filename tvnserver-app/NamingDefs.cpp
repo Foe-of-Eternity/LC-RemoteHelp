@@ -27,46 +27,39 @@
 const TCHAR NamingDefs::MIRROR_DRIVER_MESSAGE_WINDOW_CLASS_NAME[] =
   _T("MIRROR_DRIVER_MESSAGE_WINDOW_CLASS_NAME");
 
-const TCHAR ProductNames::PRODUCT_NAME[] = _T("TightVNC");
-const TCHAR ProductNames::SERVER_PRODUCT_NAME[] = _T("TightVNC Server");
+const TCHAR ProductNames::PRODUCT_NAME[] = _T("LC RemoteHelp");
+const TCHAR ProductNames::SERVER_PRODUCT_NAME[] = _T("LC RemoteHelp Server");
 
-const TCHAR IniFilePaths::SERVER_PATH[] = _T(".\\tvnserver.ini");
+const TCHAR IniFilePaths::SERVER_PATH[] = _T(".\\rhserver.ini");
 
 const TCHAR IniFileKeys::SERVER_CONFIG[] = _T("config");
 
 const TCHAR WindowNames::WINDOW_CLASS_NAME[] =
-  _T("TvnWindowsApplicationClass");
+  _T("LCRHWindowsApplicationClass");
 
-const TCHAR LogNames::SERVER_LOG_FILE_STUB_NAME[] = _T("tvnserver");
-const TCHAR LogNames::VIEWER_LOG_FILE_STUB_NAME[] = _T("tvnviewer");
-const TCHAR LogNames::LOG_DIR_NAME[] = _T("TightVNC");
-const TCHAR LogNames::LOG_PIPE_PUBLIC_NAME[] = _T("TVN_log_pipe_public_name");
-const TCHAR LogNames::WIN_EVENT_PROVIDER_NAME[] = _T("tvnserver");
+const TCHAR LogNames::SERVER_LOG_FILE_STUB_NAME[] = _T("rhserver");
+const TCHAR LogNames::VIEWER_LOG_FILE_STUB_NAME[] = _T("rhviewer");
+const TCHAR LogNames::LOG_DIR_NAME[] = _T("LC RemoteHelp");
+const TCHAR LogNames::LOG_PIPE_PUBLIC_NAME[] = _T("LCRH_log_pipe_public_name");
 
 const TCHAR ClipboardNames::CLIPBOARD_WIN_CLASS_NAME[] = 
-  _T("Tvnserver.Clipboard.MessageWindow");
-
-
-const TCHAR ServiceNames::TVNCONTROL_START_REGISTRY_ENTRY_NAME[] =
-  _T("tvncontrol");
-const TCHAR ServiceNames::SERVICE_NAME[] = _T("tvnserver");
-const TCHAR ServiceNames::SERVICE_NAME_TO_DISPLAY[] = _T("TightVNC Server");
+  _T("rhserver.Clipboard.MessageWindow");
 
 const TCHAR ServerApplicationNames::SERVER_INSTANCE_MUTEX_NAME[] =
-  _T("tvnserverApplication");
+  _T("rhserverApplication");
 const TCHAR ServerApplicationNames::CONTROL_APP_INSTANCE_MUTEX_NAME[] =
-  _T("tvnserverServiceControlSlave");
+  _T("rhserverServiceControlSlave");
 const TCHAR ServerApplicationNames::FOR_APP_CONTROL_APP_SERVICE_PIPE_NAME[] =
-  _T("TightVNC_Application_Control");
+  _T("LC_RemoteHelp_Application_Control");
 
 const TCHAR HookDefinitions::HOOK_LOADER_WINDOW_CLASS[] =
-  _T("TvnHookLoaderWindowClass");
+  _T("LCRHHookLoaderWindowClass");
 const TCHAR HookDefinitions::HOOK_TARGET_WIN_CLASS_NAME[] =
   _T("HookTargetWinClassName");
 const TCHAR HookDefinitions::HOOK_LOADER_NAME[] = _T("hookldr.exe");
 const UINT HookDefinitions::LOADER_CLOSE_CODE =
-  RegisterWindowMessage(_T("TVN.HOOK.LOADER.CLOSE.CODE"));
+  RegisterWindowMessage(_T("LCRH.HOOK.LOADER.CLOSE.CODE"));
 const UINT HookDefinitions::SPEC_IPC_CODE =
-  RegisterWindowMessage(_T("TVN.HOOK.MESSAGE.CODE"));
+  RegisterWindowMessage(_T("LCRH.HOOK.MESSAGE.CODE"));
 
-const TCHAR DefaultNames::DEFAULT_COMPUTER_NAME[] = _T("TightVNC Server");
+const TCHAR DefaultNames::DEFAULT_COMPUTER_NAME[] = _T("LC RemoteHelp Server");

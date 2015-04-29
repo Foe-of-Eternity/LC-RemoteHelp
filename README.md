@@ -1,4 +1,4 @@
-# tightvnc-remotehelp
+# LC RemoteHelp
 
 To properly check out this repository, you must have a utf16
 filter in your `~/.gitconfig`

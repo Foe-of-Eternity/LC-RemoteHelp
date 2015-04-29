@@ -66,21 +66,12 @@ public:
   static const TCHAR VIEWER_LOG_FILE_STUB_NAME[];
   static const TCHAR LOG_DIR_NAME[];
   static const TCHAR LOG_PIPE_PUBLIC_NAME[];
-  static const TCHAR WIN_EVENT_PROVIDER_NAME[];
 };
 
 class ClipboardNames
 {
 public:
   static const TCHAR CLIPBOARD_WIN_CLASS_NAME[];
-};
-
-class ServiceNames
-{
-public:
-  static const TCHAR TVNCONTROL_START_REGISTRY_ENTRY_NAME[];
-  static const TCHAR SERVICE_NAME[];
-  static const TCHAR SERVICE_NAME_TO_DISPLAY[];
 };
 
 class ServerApplicationNames

@@ -118,10 +118,10 @@ protected:
   // Pointer to control application.
   ControlApplication *m_appControl;
 
-  // States of tray icon.
-  Icon *m_iconWorking;
-  Icon *m_iconIdle;
-  Icon *m_iconDisabled;
+  // Tray icon.
+  Icon *m_iconDefault;
+
+  bool m_someoneConnected;
 
   // Interface to execute some commands on remote TightVNC server.
   ControlProxy *m_serverControl;

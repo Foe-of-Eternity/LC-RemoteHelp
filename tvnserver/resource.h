@@ -3,16 +3,13 @@
 // Used by tvnserver.rc
 //
 #define IDD_OUTGOING_CONN               113
-#define IDI_IDLE                        115
-#define IDI_CONNECTED                   117
-#define IDI_DISABLED                    119
+#define IDI_DEFAULT                     115
 #define IDD_ABOUT_DIALOG                125
 #define IDB_LOGO_BIG                    127
 #define IDC_STATIC_VERSION              1002
 #define IDC_VIEW_ONLY_CHECKBOX          1010
 #define IDC_VISIT_WEB_SITE_BUTTON       1011
 #define IDC_STATIC_LICENSING            1016
-#define IDC_ORDER_SUPPORT_BUTTON        1021
 #define ID_ABOUT_TIGHTVNC_MENUITEM      40001
 #define IDR_TRAYMENU                    40002
 #define ID_CLOSE_CONTROL_INTERFACE      40004
@@ -33,7 +30,6 @@
 #define IDS_FAILED_TO_OPEN_URL_FORMAT   40065
 #define IDS_PRODUCT_VERSION_FORMAT      40066
 #define IDS_ADMIN_RIGHTS_NEEDED         40068
-#define IDS_URL_LICENSING_FSA           40072
 #define IDS_URL_PRODUCT_FSA             40073
 #define IDS_SERVICE_STOP_TIMEOUT        40074
 #define IDS_SERVICE_START_TIMEOUT       40075
@@ -58,7 +54,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         40101
 #define _APS_NEXT_CONTROL_VALUE         1094
 #define _APS_NEXT_SYMED_VALUE           101
