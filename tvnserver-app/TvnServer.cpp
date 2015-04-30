@@ -46,6 +46,9 @@
 #include "tvncontrol-app/TransportFactory.h"
 #include "tvncontrol-app/ControlPipeName.h"
 
+#include "rfb/HostPath.h"
+#include "tvnserver-app/OutgoingRfbConnectionThread.h"
+
 #include "tvnserver/BuildTime.h"
 
 #include <crtdbg.h>
@@ -54,16 +57,16 @@
 TvnServer::TvnServer(LogInitListener *logInitListener,
                      Logger *logger)
 : Singleton<TvnServer>(),
-  ListenerContainer<TvnServerListener *>(),
-  m_logInitListener(logInitListener),
-  m_rfbClientManager(0),
-  m_controlServer(0),
-  m_config(false),
-  m_log(logger)
+ListenerContainer<TvnServerListener *>(),
+m_logInitListener(logInitListener),
+m_rfbClientManager(0),
+m_controlServer(0),
+m_config(false),
+m_log(logger)
 {
   m_log.message(_T("%s Build on %s"),
-                 ProductNames::SERVER_PRODUCT_NAME,
-                 BuildTime::DATE);
+    ProductNames::SERVER_PRODUCT_NAME,
+    BuildTime::DATE);
 
   // Initialize configuration.
   // FIXME: It looks like configurator may be created as a member object.
@@ -78,7 +81,8 @@ TvnServer::TvnServer(LogInitListener *logInitListener,
     // FIXME: Use correct log name.
     m_logInitListener->onLogInit(logDir.getString(), LogNames::SERVER_LOG_FILE_STUB_NAME, logLevel);
 
-  } catch (...) {
+  }
+  catch (...) {
     // A log error must not be a reason that stop the server.
   }
 
@@ -88,14 +92,15 @@ TvnServer::TvnServer(LogInitListener *logInitListener,
 
   try {
     WindowsSocket::startup(2, 1);
-  } catch (Exception &ex) {
+  }
+  catch (Exception &ex) {
     m_log.interror(_T("%s"), ex.getMessage());
   }
 
   DesktopFactory *desktopFactory = &m_applicationDesktopFactory;
 
-   // Instanize zombie killer singleton.
-   // FIXME: may be need to do it in another place or use "lazy" initialization.
+  // Instanize zombie killer singleton.
+  // FIXME: may be need to do it in another place or use "lazy" initialization.
   m_rfbClientManager = new RfbClientManager(0, &m_log, desktopFactory);
 
   m_rfbClientManager->addListener(this);
@@ -110,6 +115,12 @@ TvnServer::TvnServer(LogInitListener *logInitListener,
     AutoLock l(&m_mutex);
 
     restartControlServer();
+  }
+
+  StringStorage autoConnectHost;
+  m_srvConfig->getAutoConnectHost(&autoConnectHost);
+  if (!connectHost(autoConnectHost, false)) {
+    throw Exception(_T("AutoConnectHost not specified."));
   }
 }
 
@@ -170,6 +181,7 @@ void TvnServer::afterFirstClientConnect()
 
 void TvnServer::afterLastClientDisconnect()
 {
+  generateExternalShutdownSignal();
 }
 
 void TvnServer::restartControlServer()
@@ -222,4 +234,35 @@ void TvnServer::changeLogProps()
     logLevel = m_srvConfig->getLogLevel();
   }
   m_logInitListener->onChangeLogProps(logDir.getString(), logLevel);
+}
+
+bool TvnServer::connectHost(StringStorage connectString, bool viewOnly)
+{
+  //
+  // Parse host and port from connection string.
+  //
+  AnsiStringStorage connectStringAnsi(&connectString);
+  HostPath hp(connectStringAnsi.getString(), 5500);
+
+  if (!hp.isValid()) {
+    return false;
+  }
+
+  StringStorage host;
+  AnsiStringStorage ansiHost(hp.getVncHost());
+  ansiHost.toStringStorage(&host);
+
+  //
+  // Make outgoing connection in separate thread.
+  //
+  OutgoingRfbConnectionThread *newConnectionThread =
+    new OutgoingRfbConnectionThread(host.getString(),
+    hp.getVncPort(), viewOnly,
+    m_rfbClientManager, &m_log);
+
+  newConnectionThread->resume();
+
+  ZombieKiller::getInstance()->addZombie(newConnectionThread);
+
+  return true;
 }

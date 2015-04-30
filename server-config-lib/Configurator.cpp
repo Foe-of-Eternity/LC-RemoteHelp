@@ -212,6 +212,10 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   if (!sm->setBoolean(_T("AlwaysShared"), m_serverConfig.isAlwaysShared())) {
     saveResult = false;
   }
+  m_serverConfig.getAutoConnectHost(&stringVal);
+  if (!sm->setString(_T("AutoConnectHost"), stringVal.getString())) {
+    saveResult = false;
+  }
   if (!sm->setBoolean(_T("DisconnectClients"), m_serverConfig.isDisconnectingExistingClients())) {
     saveResult = false;
   }
@@ -264,6 +268,13 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.setAlwaysShared(boolVal);
+  }
+  if (!sm->getString(_T("AutoConnectHost"), &stringVal)) {
+    loadResult = false;
+  }
+  else {
+    m_isConfigLoadedPartly = true;
+    m_serverConfig.setAutoConnectHost(stringVal.getString());
   }
   if (!sm->getBoolean(_T("DisconnectClients"), &boolVal)) {
     loadResult = false;
