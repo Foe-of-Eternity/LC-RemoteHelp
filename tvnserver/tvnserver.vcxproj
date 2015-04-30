@@ -476,10 +476,6 @@
       <Project>{5f629934-ed68-4d38-9ba5-cf3a139a44a1}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\tvncontrol-app\tvncontrol-app.vcxproj">
-      <Project>{fc19ffe8-6294-4f1a-8d7a-281c93c5c040}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\tvnserver-app\tvnserver-app.vcxproj">
       <Project>{ebfc3125-72a4-4029-9941-3be9ee6444d5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

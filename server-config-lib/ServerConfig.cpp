@@ -37,7 +37,6 @@ ServerConfig::ServerConfig()
   m_disconnectClients(true), m_pollingInterval(1000), m_localInputPriorityTimeout(3),
   m_blockLocalInput(false), m_blockRemoteInput(false), m_localInputPriority(false),
   m_grabTransparentWindows(true),
-  m_showTrayIcon(true),
   m_logFilePath(_T(".\\"))
 {
 }
@@ -65,8 +64,6 @@ void ServerConfig::serialize(DataOutputStream *output)
 
   output->writeInt8(m_grabTransparentWindows ? 1 : 0);
 
-  output->writeInt8(m_showTrayIcon ? 1 : 0);
-
   output->writeUTF8(m_autoConnectHost.getString());
   output->writeUTF8(m_logFilePath.getString());
 }
@@ -90,24 +87,8 @@ void ServerConfig::deserialize(DataInputStream *input)
 
   m_grabTransparentWindows = input->readInt8() == 1;
 
-  m_showTrayIcon = input->readInt8() == 1;
-
   input->readUTF8(&m_autoConnectHost);
   input->readUTF8(&m_logFilePath);
-}
-
-bool ServerConfig::getShowTrayIconFlag()
-{
-  AutoLock l(this);
-
-  return m_showTrayIcon;
-}
-
-void ServerConfig::setShowTrayIconFlag(bool val)
-{
-  AutoLock l(this);
-
-  m_showTrayIcon = val;
 }
 
 void ServerConfig::getLogFileDir(StringStorage *logFilePath)

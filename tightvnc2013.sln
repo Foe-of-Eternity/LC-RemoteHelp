@@ -34,7 +34,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "desktop", "desktop\desktop.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rfb", "rfb\rfb.vcxproj", "{CEA92B3A-5467-4CC7-80A6-227891F96C05}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tvnserver-app", "tvnserver-app\tvnserver-app.vcxproj", "{EBFC3125-72A4-4029-9941-3BE9EE6444D5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rhserver-app", "tvnserver-app\tvnserver-app.vcxproj", "{EBFC3125-72A4-4029-9941-3BE9EE6444D5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "screenhooks", "screen-hooks\screenhooks.vcxproj", "{E8D778F5-2397-479F-AA43-67F5C067CDC8}"
 EndProject
@@ -46,9 +46,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fb-update-sender", "fb-upda
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rfb-sconn", "rfb-sconn\rfb-sconn.vcxproj", "{5EA5D675-A827-4CC5-8B2A-5639119E3185}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tvncontrol-app", "tvncontrol-app\tvncontrol-app.vcxproj", "{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tvnserver", "tvnserver\tvnserver.vcxproj", "{D622BCC0-80B6-452E-8C34-9E7A27633C8F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rhserver", "tvnserver\tvnserver.vcxproj", "{D622BCC0-80B6-452E-8C34-9E7A27633C8F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log-server", "log-server\log-server.vcxproj", "{7D22B0DC-D240-47DB-AC6B-165AE3C0C54D}"
 EndProject
@@ -700,34 +698,6 @@ Global
 		{5EA5D675-A827-4CC5-8B2A-5639119E3185}.ReleaseNoUnicode|x64.ActiveCfg = ReleaseNoUnicode|x64
 		{5EA5D675-A827-4CC5-8B2A-5639119E3185}.ReleaseNoUnicode|x64.Build.0 = ReleaseNoUnicode|x64
 		{5EA5D675-A827-4CC5-8B2A-5639119E3185}.ReleaseNoUnicode|x86.ActiveCfg = ReleaseNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|Win32.Build.0 = Debug|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|x64.ActiveCfg = Debug|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|x64.Build.0 = Debug|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Debug|x86.ActiveCfg = Debug|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|Mixed Platforms.ActiveCfg = DebugNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|Mixed Platforms.Build.0 = DebugNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|Win32.ActiveCfg = DebugNoUnicode|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|Win32.Build.0 = DebugNoUnicode|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|x64.ActiveCfg = DebugNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|x64.Build.0 = DebugNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.DebugNoUnicode|x86.ActiveCfg = DebugNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|Mixed Platforms.ActiveCfg = Release|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|Mixed Platforms.Build.0 = Release|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|Win32.ActiveCfg = Release|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|Win32.Build.0 = Release|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|x64.ActiveCfg = Release|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|x64.Build.0 = Release|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.Release|x86.ActiveCfg = Release|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|Mixed Platforms.ActiveCfg = ReleaseNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|Mixed Platforms.Build.0 = ReleaseNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|Win32.ActiveCfg = ReleaseNoUnicode|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|Win32.Build.0 = ReleaseNoUnicode|Win32
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|x64.ActiveCfg = ReleaseNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|x64.Build.0 = ReleaseNoUnicode|x64
-		{FC19FFE8-6294-4F1A-8D7A-281C93C5C040}.ReleaseNoUnicode|x86.ActiveCfg = ReleaseNoUnicode|x64
 		{D622BCC0-80B6-452E-8C34-9E7A27633C8F}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{D622BCC0-80B6-452E-8C34-9E7A27633C8F}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{D622BCC0-80B6-452E-8C34-9E7A27633C8F}.Debug|Win32.ActiveCfg = Debug|Win32

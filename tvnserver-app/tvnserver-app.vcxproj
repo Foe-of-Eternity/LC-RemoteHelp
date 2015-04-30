@@ -289,44 +289,28 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdditionalActionApplication.cpp" />
     <ClCompile Include="AuthTracker.cpp" />
-    <ClCompile Include="ControlClient.cpp" />
-    <ClCompile Include="ControlServer.cpp" />
-    <ClCompile Include="DesktopServerApplication.cpp" />
-    <ClCompile Include="DesktopServerCommandLine.cpp" />
     <ClCompile Include="NamingDefs.cpp" />
     <ClCompile Include="OutgoingRfbConnectionThread.cpp" />
     <ClCompile Include="RfbClientManager.cpp" />
     <ClCompile Include="RfbClientManagerEventListener.cpp" />
     <ClCompile Include="RfbServer.cpp" />
-    <ClCompile Include="ServerCommandLine.cpp" />
     <ClCompile Include="SessionChangesWatcher.cpp" />
     <ClCompile Include="TvnServer.cpp" />
     <ClCompile Include="TvnServerApplication.cpp" />
-    <ClCompile Include="TvnServerHelp.cpp" />
     <ClCompile Include="TvnServerListener.cpp" />
-    <ClCompile Include="WsConfigRunner.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AdditionalActionApplication.h" />
     <ClInclude Include="AuthTracker.h" />
-    <ClInclude Include="ControlClient.h" />
-    <ClInclude Include="ControlServer.h" />
-    <ClInclude Include="DesktopServerApplication.h" />
-    <ClInclude Include="DesktopServerCommandLine.h" />
     <ClInclude Include="NamingDefs.h" />
     <ClInclude Include="OutgoingRfbConnectionThread.h" />
     <ClInclude Include="RfbClientManager.h" />
     <ClInclude Include="RfbClientManagerEventListener.h" />
     <ClInclude Include="RfbServer.h" />
-    <ClInclude Include="ServerCommandLine.h" />
     <ClInclude Include="SessionChangesWatcher.h" />
     <ClInclude Include="TvnServer.h" />
     <ClInclude Include="TvnServerApplication.h" />
-    <ClInclude Include="TvnServerHelp.h" />
     <ClInclude Include="TvnServerListener.h" />
-    <ClInclude Include="WsConfigRunner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

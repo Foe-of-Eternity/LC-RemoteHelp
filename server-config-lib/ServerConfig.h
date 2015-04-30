@@ -144,9 +144,6 @@ public:
   void setGrabTransparentWindowsFlag(bool grab);
   bool getGrabTransparentWindowsFlag();
 
-  bool getShowTrayIconFlag();
-  void setShowTrayIconFlag(bool val);
-
   void getLogFileDir(StringStorage *logFileDir);
   void setLogFileDir(const TCHAR *logFileDir);
 protected:
@@ -211,9 +208,6 @@ protected:
 
   StringStorage m_autoConnectHost;
   bool m_grabTransparentWindows;
-
-  // Run control interface with TightVNC server or not.
-  bool m_showTrayIcon;
 
   StringStorage m_logFilePath;
 private:

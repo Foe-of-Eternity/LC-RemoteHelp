@@ -28,10 +28,12 @@ OutgoingRfbConnectionThread::OutgoingRfbConnectionThread(const TCHAR *connectHos
                                                          unsigned int connectPort,
                                                          bool viewOnly,
                                                          RfbClientManager *clientManager,
-                                                         LogWriter *log)
+                                                         LogWriter *log,
+                                                         TvnServer *server)
 : m_connectHost(connectHost), m_connectPort(connectPort), m_viewOnly(viewOnly),
   m_clientManager(clientManager),
-  m_log(log)
+  m_log(log),
+  m_server(server)
 {
 }
 
@@ -50,6 +52,7 @@ void OutgoingRfbConnectionThread::execute()
     m_log->error(_T("Failed to connect to %s:%d with reason: '%s'"),
                m_connectHost.getString(), m_connectPort, someEx.getMessage());
     delete socket;
+    m_server->generateExternalShutdownSignal();
     return ;
   }
 

@@ -241,9 +241,6 @@ bool Configurator::saveServerConfig(SettingsManager *sm)
   if (!sm->setBoolean(_T("RemoveWallpaper"), m_serverConfig.isRemovingDesktopWallpaperEnabled())) {
     saveResult = false;
   }
-  if (!sm->setBoolean(_T("ShowTrayIcon"), m_serverConfig.getShowTrayIconFlag())) {
-    saveResult = false;
-  }
   if (!sm->setBoolean(_T("UseMirrorDriver"), m_serverConfig.getMirrorIsAllowed())) {
     saveResult = false;
   }
@@ -330,13 +327,6 @@ bool Configurator::loadServerConfig(SettingsManager *sm, ServerConfig *config)
   } else {
     m_isConfigLoadedPartly = true;
     m_serverConfig.enableRemovingDesktopWallpaper(boolVal);
-  }
-  if (!sm->getBoolean(_T("ShowTrayIcon"), &boolVal)) {
-    loadResult = false;
-  }
-  else {
-    m_isConfigLoadedPartly = true;
-    m_serverConfig.setShowTrayIconFlag(boolVal);
   }
   if (!sm->getBoolean(_T("UseMirrorDriver"), &boolVal)) {
     loadResult = false;

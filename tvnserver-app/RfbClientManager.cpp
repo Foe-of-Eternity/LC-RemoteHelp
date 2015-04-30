@@ -335,22 +335,6 @@ void RfbClientManager::addNewConnection(SocketIPv4 *socket,
   m_nextClientId++;
 }
 
-void RfbClientManager::getClientsInfo(RfbClientInfoList *list)
-{
-  AutoLock al(&m_clientListLocker);
-
-  for (ClientListIter it = m_clientList.begin(); it != m_clientList.end(); it++) {
-    RfbClient *each = *it;
-    if (each->getClientState() == IN_NORMAL_PHASE) {
-      StringStorage peerHost;
-
-      each->getPeerHost(&peerHost);
-
-      list->push_back(RfbClientInfo(each->getId(), peerHost.getString()));
-    }
-  }
-}
-
 void RfbClientManager::setDynViewPort(const ViewPortState *dynViewPort)
 {
   AutoLock al(&m_clientListLocker);

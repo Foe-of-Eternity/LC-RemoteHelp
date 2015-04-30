@@ -11,22 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AdditionalActionApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AuthTracker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DesktopServerApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DesktopServerCommandLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutgoingRfbConnectionThread.cpp">
@@ -41,9 +26,6 @@
     <ClCompile Include="RfbServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerCommandLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SessionChangesWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,13 +35,7 @@
     <ClCompile Include="TvnServerApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TvnServerHelp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TvnServerListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WsConfigRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NamingDefs.cpp">
@@ -67,22 +43,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AdditionalActionApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AuthTracker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ControlClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ControlServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DesktopServerApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DesktopServerCommandLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OutgoingRfbConnectionThread.h">
@@ -97,9 +58,6 @@
     <ClInclude Include="RfbServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerCommandLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SessionChangesWatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,13 +67,7 @@
     <ClInclude Include="TvnServerApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TvnServerHelp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TvnServerListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WsConfigRunner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NamingDefs.h">

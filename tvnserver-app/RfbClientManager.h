@@ -43,7 +43,6 @@
 #include "desktop/AbnormDeskTermListener.h"
 #include "desktop/UpdateSendingListener.h"
 #include "rfb-sconn/ClientAuthListener.h"
-#include "tvncontrol-app/RfbClientInfo.h"
 
 typedef std::list<RfbClient *> ClientList;
 typedef std::list<RfbClient *>::iterator ClientListIter;
@@ -74,10 +73,6 @@ public:
                    LogWriter *log,
                    DesktopFactory *desktopFactory);
   virtual ~RfbClientManager();
-
-  // Adds rfb clients info to specified rfb client info list.
-  // FIXME: This method needed only for control server.
-  void getClientsInfo(RfbClientInfoList *list);
 
   // Disconnects all connected clients.
   virtual void disconnectAllClients();

@@ -52,68 +52,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menu
-//
-
-IDR_TRAYMENU MENU
-BEGIN
-    POPUP "tray"
-    BEGIN
-        MENUITEM "Attach Listening Viewer...",  ID_OUTGOING_CONN
-        MENUITEM "Disconnect All Viewers",      ID_KILLCLIENTS
-        MENUITEM SEPARATOR
-        MENUITEM "About...",                    ID_ABOUT_TIGHTVNC_MENUITEM
-        MENUITEM SEPARATOR
-        MENUITEM "Shutdown LC RemoteHelp Server", ID_SHUTDOWN_SERVICE
-        MENUITEM "Close Control Interface",     ID_CLOSE_CONTROL_INTERFACE
-    END
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_ABOUT_DIALOG DIALOGEX 0, 0, 309, 100
-STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "About LC RemoteHelp Server"
-FONT 8, "Ms Shell Dlg 2", 0, 0, 0x0
-BEGIN
-    CONTROL         IDB_LOGO_BIG,IDC_STATIC,"Static",SS_BITMAP | WS_GROUP,24,14,60,55
-    LTEXT           "LC RemoteHelp Server for Windows",IDC_STATIC,107,12,189,10
-    LTEXT           "Version unknown, build time unknown",IDC_STATIC_VERSION,107,20,189,10
-    LTEXT           "Copyright (C) 2015 Lacon Computer\nCopyright (C) 2008-2013 GlavSoft LLC.\nAll Rights Reserved.",IDC_STATIC,107,35,189,43
-    LTEXT           "",IDC_STATIC_LICENSING,107,64,189,10
-    DEFPUSHBUTTON   "Visit the Web Site",IDC_VISIT_WEB_SITE_BUTTON,7,78,94,15,WS_GROUP
-    PUSHBUTTON      "Close This Window",IDCANCEL,208,78,94,15
-END
-
-IDD_OUTGOING_CONN DIALOGEX 0, 0, 257, 107
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "Attach Listening Viewer"
-FONT 8, "Ms Shell Dlg 2", 0, 0, 0x0
-BEGIN
-    LTEXT           "Here you can attach a TightVNC Viewer running in the Listening Mode.\nThis is called a reverse connection, since the server connects to a client.",IDC_STATIC,7,7,243,18
-    LTEXT           "To specify a TCP port, append it after two colons (myhost::443).  A number up to 99 after just one colon specifies an offset from the default port 5500.",IDC_STATIC,7,27,240,18,NOT WS_GROUP
-    LTEXT           "Host name or IP address of the viewer:",IDC_STATIC,7,51,127,10,NOT WS_GROUP
-    COMBOBOX        IDC_HOSTNAME_COMBO,138,49,110,55,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_HASSTRINGS | WS_GROUP | WS_TABSTOP
-    CONTROL         "Restricted view-only access",IDC_VIEW_ONLY_CHECKBOX,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,77,67,108,10
-    DEFPUSHBUTTON   "&Attach",IDOK,75,85,50,15,WS_GROUP
-    PUSHBUTTON      "&Cancel",IDCANCEL,132,85,50,15
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_LOGO_BIG            BITMAP                  ".\\res\\laconcomputer.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Icon
 //
 
@@ -162,41 +100,11 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_ABOUT_DIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 302
-        VERTGUIDE, 107
-        VERTGUIDE, 296
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 93
-        HORZGUIDE, 78
-    END
-
-    IDD_OUTGOING_CONN, DIALOG
-    BEGIN
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
 STRINGTABLE
 BEGIN
-    IDS_CONTROL_SERVER_RAISE_EXCEPTION 
-                            "LC RemoteHelp Server has reported an error:\n%s"
-    IDS_CONTROL_CONNECTION_LOST 
-                            "Connection to the LC RemoteHelp Server has been lost."
     IDS_SERVER_ALREADY_RUNNING 
                             "Another copy of LC RemoteHelp Server is already running."
 END
@@ -204,56 +112,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_MBC_TVNSERVER       "LC RemoteHelp Server"
-    IDS_MBC_TVNCONTROL      "LC RemoteHelp Control Interface"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_TVNSERVER_USAGE     "LC RemoteHelp Server supports the following command-line options:\n\ntvnserver\t-help\ntvnserver\t[ -run ]\ntvnserver\t{ -controlapp }\ntvnserver\t{ -controlapp }\n\t   { -connect HOST | -disconnectall | -reload | -shutdown }\ntvnserver\t{ -configapp }"
-    IDS_SERVER_NOT_LISTENING "not listening"
-    IDS_FAILED_TO_CONNECT_TO_CONTROL_SERVER 
-                            "Failed to connect to LC RemoteHelp Server."
-    IDS_MBC_TVNSERVER_USAGE "LC RemoteHelp Server Usage Help"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_FAILED_TO_OPEN_URL_FORMAT 
-                            "Failed to open Web resource for the following reason:\n%s"
-    IDS_PRODUCT_VERSION_FORMAT "Version %s (built on %s)"
-    IDS_ADMIN_RIGHTS_NEEDED "You need administrator privileges to run the application."
-    IDS_URL_PRODUCT_FSA     "https://laconcomputer.com/"
-    IDS_SERVICE_STOP_TIMEOUT "Timed out waiting for service shutdown"
-    IDS_SERVICE_START_TIMEOUT "Timed out waiting for service startup"
-    IDS_SERVICE_ALREADY_RUNNING "Service is already running"
-    IDS_SERVICE_ALREADY_STOPPED "Service is not running"
-    IDS_CONTROL_CLIENT_NOT_CONNECTED "Not connected"
-    IDS_FAILED_TO_INSTALL_SERVICE_FORMAT 
-                            "Failed to register LC RemoteHelp service for the following reason:\n%s."
-END
-
-STRINGTABLE
-BEGIN
-    IDS_FAILED_TO_REMOVE_SERVICE_FORMAT 
-                            "Failed to unregister LC RemoteHelp service for the following reason:\n%s."
-    IDS_FAILED_TO_START_SERVICE_FORMAT 
-                            "Failed to start LC RemoteHelp service for the following reason:\n%s."
-    IDS_FAILED_TO_STOP_SERVICE_FORMAT 
-                            "Failed to stop LC RemoteHelp service for the following reason:\n%s."
-    IDS_SERVICE_INSTALLED   "LC RemoteHelp service has been registered."
-    IDS_SERVICE_REMOVED     "LC RemoteHelp service has been unregistered."
-    IDS_SERVICE_REINSTALLED "LC RemoteHelp service has been reinstalled."
-    IDS_TVNSERVER_SERVICE   "LC RemoteHelp Service"
-    IDS_1060_ERROR_DESCRIPTION "Service is not registered"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_TVNSERVER_APP       "LC RemoteHelp Server"
-    IDS_1073_ERROR_DESCRIPTION "Service is already registered"
-    IDS_SHUTDOWN_NOTIFICATION_FORMAT 
-                            "This will disconnect all clients and they will not be able to reconnect until the LC RemoteHelp Server is restarted.\n\nAre you sure you want to shutdown the %s?"
-    IDS_LICENSING_INFO      "Licensing Terms: GNU General Public License version 2"
 END
 
 #endif    // English (United States) resources

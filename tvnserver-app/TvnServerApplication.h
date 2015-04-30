@@ -32,7 +32,6 @@
 
 #include "TvnServer.h"
 #include "TvnServerListener.h"
-#include "WsConfigRunner.h"
 #include "log-writer/FileLogger.h"
 #include "LogInitListener.h"
 
@@ -95,10 +94,6 @@ private:
    * TightVNC server.
    */
   TvnServer *m_tvnServer;
-  /**
-   * TvnControl application watcher.
-   */
-  WsConfigRunner *m_tvnControlRunner;
 };
 
 #endif

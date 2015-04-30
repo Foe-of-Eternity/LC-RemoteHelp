@@ -23,8 +23,6 @@
 //
 
 #include "TvnServerApplication.h"
-#include "ServerCommandLine.h"
-#include "TvnServerHelp.h"
 
 #include "thread/GlobalMutex.h"
 
@@ -51,20 +49,6 @@ TvnServerApplication::~TvnServerApplication()
 
 int TvnServerApplication::run()
 {
-  // FIXME: May be an unhandled exception.
-  // Check wrong command line and situation when we need to show help.
-
-  try {
-    ServerCommandLine parser;
-    WinCommandLineArgs cmdArgs(m_commandLine.getString());
-    if (!parser.parse(&cmdArgs) || parser.showHelp()) {
-      throw Exception(_T("Wrong command line argument"));
-    }
-  } catch (...) {
-    TvnServerHelp::showUsage();
-    return 0;
-  }
-
   // Reject 2 instances of TightVNC server application.
 
   GlobalMutex *appInstanceMutex;
@@ -79,15 +63,15 @@ int TvnServerApplication::run()
     return 1;
   }
 
-  // Start TightVNC server and TightVNC control application.
+  // Start TightVNC server
   try {
     m_tvnServer = new TvnServer(this, &m_fileLogger);
     m_tvnServer->addListener(this);
-    m_tvnControlRunner = new WsConfigRunner(&m_fileLogger);
+
+    m_tvnServer->doConnect();
 
     int exitCode = WindowsApplication::run();
 
-    delete m_tvnControlRunner;
     m_tvnServer->removeListener(this);
     delete m_tvnServer;
     delete appInstanceMutex;

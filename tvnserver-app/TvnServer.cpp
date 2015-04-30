@@ -23,8 +23,6 @@
 //
 
 #include "TvnServer.h"
-#include "WsConfigRunner.h"
-#include "AdditionalActionApplication.h"
 #include "win-system/CurrentConsoleProcess.h"
 #include "win-system/Environment.h"
 
@@ -42,10 +40,6 @@
 
 #include "file-lib/File.h"
 
-// FIXME: Bad dependency on tvncontrol-app.
-#include "tvncontrol-app/TransportFactory.h"
-#include "tvncontrol-app/ControlPipeName.h"
-
 #include "rfb/HostPath.h"
 #include "tvnserver-app/OutgoingRfbConnectionThread.h"
 
@@ -60,7 +54,6 @@ TvnServer::TvnServer(LogInitListener *logInitListener,
 ListenerContainer<TvnServerListener *>(),
 m_logInitListener(logInitListener),
 m_rfbClientManager(0),
-m_controlServer(0),
 m_config(false),
 m_log(logger)
 {
@@ -108,27 +101,11 @@ m_log(logger)
   // FIXME: No good to act as a listener before completing the object
   //        construction.
   Configurator::getInstance()->addListener(this);
-
-  {
-    // FIXME: Protect only primitive operations.
-    // FIXME: Nested lock in protected code (congifuration locking).
-    AutoLock l(&m_mutex);
-
-    restartControlServer();
-  }
-
-  StringStorage autoConnectHost;
-  m_srvConfig->getAutoConnectHost(&autoConnectHost);
-  if (!connectHost(autoConnectHost, false)) {
-    throw Exception(_T("AutoConnectHost not specified."));
-  }
 }
 
 TvnServer::~TvnServer()
 {
   Configurator::getInstance()->removeListener(this);
-
-  stopControlServer();
 
   ZombieKiller *zombieKiller = ZombieKiller::getInstance();
 
@@ -155,14 +132,6 @@ void TvnServer::onConfigReload(ServerConfig *serverConfig)
   changeLogProps();
 }
 
-void TvnServer::getServerInfo(TvnServerInfo *info)
-{
-  info->m_statusText.format(_T("%s - %s"),
-                            StringTable::getString(IDS_TVNSERVER_APP),
-                            StringTable::getString(IDS_SERVER_NOT_LISTENING));
-  info->m_acceptFlag = false;
-}
-
 void TvnServer::generateExternalShutdownSignal()
 {
   AutoLock l(&m_listeners);
@@ -184,46 +153,6 @@ void TvnServer::afterLastClientDisconnect()
   generateExternalShutdownSignal();
 }
 
-void TvnServer::restartControlServer()
-{
-  // FIXME: Memory leaks.
-  // FIXME: Errors are critical here, they should not be ignored.
-
-  stopControlServer();
-
-  m_log.message(_T("Starting control server"));
-
-  try {
-    StringStorage pipeName;
-    ControlPipeName::createPipeName(&pipeName, &m_log);
-
-    // FIXME: Memory leak
-    SecurityAttributes *pipeSecurity = new SecurityAttributes();
-    pipeSecurity->setInheritable();
-    pipeSecurity->shareToAllUsers();
-
-    PipeServer *pipeServer = new PipeServer(pipeName.getString(), pipeSecurity);
-    m_controlServer = new ControlServer(pipeServer , m_rfbClientManager, &m_log);
-  } catch (Exception &ex) {
-    m_log.error(_T("Failed to start control server: \"%s\""), ex.getMessage());
-  }
-}
-
-void TvnServer::stopControlServer()
-{
-  m_log.message(_T("Stopping control server"));
-
-  ControlServer *controlServer = 0;
-  {
-    AutoLock l(&m_mutex);
-    controlServer = m_controlServer;
-    m_controlServer = 0;
-  }
-  if (controlServer != 0) {
-    delete controlServer;
-  }
-}
-
 void TvnServer::changeLogProps()
 {
   StringStorage logDir;
@@ -236,16 +165,23 @@ void TvnServer::changeLogProps()
   m_logInitListener->onChangeLogProps(logDir.getString(), logLevel);
 }
 
-bool TvnServer::connectHost(StringStorage connectString, bool viewOnly)
+void TvnServer::doConnect()
 {
+  StringStorage autoConnectHost;
+  m_srvConfig->getAutoConnectHost(&autoConnectHost);
+
+  if (autoConnectHost.getLength() == 0) {
+    throw Exception(_T("AutoConnectHost not specified."));
+  }
+
   //
   // Parse host and port from connection string.
   //
-  AnsiStringStorage connectStringAnsi(&connectString);
+  AnsiStringStorage connectStringAnsi(&autoConnectHost);
   HostPath hp(connectStringAnsi.getString(), 5500);
 
   if (!hp.isValid()) {
-    return false;
+    throw Exception(_T("Invalid AutoConnectHost specified."));
   }
 
   StringStorage host;
@@ -257,12 +193,11 @@ bool TvnServer::connectHost(StringStorage connectString, bool viewOnly)
   //
   OutgoingRfbConnectionThread *newConnectionThread =
     new OutgoingRfbConnectionThread(host.getString(),
-    hp.getVncPort(), viewOnly,
-    m_rfbClientManager, &m_log);
+    hp.getVncPort(), false,
+    m_rfbClientManager, &m_log,
+    this);
 
   newConnectionThread->resume();
 
   ZombieKiller::getInstance()->addZombie(newConnectionThread);
-
-  return true;
 }

@@ -30,7 +30,6 @@
 #include "desktop/ApplicationDesktopFactory.h"
 #include "RfbClientManager.h"
 #include "RfbServer.h"
-#include "ControlServer.h"
 #include "TvnServerListener.h"
 
 #include "thread/ZombieKiller.h"
@@ -42,7 +41,6 @@
 
 #include "server-config-lib/Configurator.h"
 
-#include "tvncontrol-app/TvnServerInfo.h"
 #include "LogInitListener.h"
 
 /**
@@ -50,8 +48,6 @@
  *   1) Zombie killer singleton.
  *   2) Configurator singleton.
  *   3) Log singleton.
- *   4) Rfb servers (main rfb server and extra servers).
- *   6) Control server.
  *   7) Other features:
      1) Do action when last client disconnects.
  */
@@ -84,14 +80,6 @@ public:
    * @remark don't generate shutdown signal(like shutdown() method does) for listeners.
    */
   virtual ~TvnServer();
-
-  /**
-   * Fills structure with information of current state of TvnServer.
-   * @param info [out] output parameter that will contain TightVNC server information
-   * after call of this method.
-   * @fixme place extended information to server info.
-   */
-  void getServerInfo(TvnServerInfo *info);
 
   /**
    * Inherited from ConfigReloadListener interface to catch configuration reload event.
@@ -133,15 +121,11 @@ public:
    */
   virtual void afterLastClientDisconnect();
 
+  virtual void doConnect();
+
 protected:
-  void restartControlServer();
-
-  void stopControlServer();
-
   // Calls a callback function to change update log properties.
   void changeLogProps();
-
-  bool connectHost(StringStorage connectString, bool viewOnly);
 
 protected:
   LogWriter m_log;
@@ -164,10 +148,6 @@ protected:
    * rfb clients, control server and control clients.
    */
   RfbClientManager *m_rfbClientManager;
-  /**
-   * Control server.
-   */
-  ControlServer *m_controlServer;
 
   LogInitListener *m_logInitListener;
 };
