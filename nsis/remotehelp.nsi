@@ -16,14 +16,22 @@ SetCompressor /solid lzma
 !include macros.nsh
 
 Section
+${IfNot} ${AtLeastWinXP}
+ MessageBox MB_ICONSTOP|MB_OK "Windows XP or newer is required. Sorry"
+ Goto skip_all
+${EndIf}
+
 ${IfNot} ${UAC_IsInnerInstance}
  MessageBox MB_ICONQUESTION|MB_YESNO "This will allow Lacon Computer to see your screen$\nand interact with your computer.$\n$\nAre you sure you want to do this?" IDNO skip_all
 ${EndIf} 
+
 !insertmacro Init "application"
 InitPluginsDir
 SetOutPath "$PLUGINSDIR"
+
 ${!defineifexist} HAVE_DFMIRAGE_1_1 dfmirage_1.1.68.0
 ${!defineifexist} HAVE_DFMIRAGE_2_0 dfmirage_2.0.105.0
+
 !ifdef HAVE_DFMIRAGE_1_1
  File /r "dfmirage_1.1.68.0"
 !endif
@@ -57,16 +65,16 @@ File "rhserver.ini"
  StrCmp $0 "Mirage Driver" skip_driver_install
  ${If} ${AtLeastWinVista}
   !ifdef HAVE_DFMIRAGE_2_0
-   nsExec::ExecToStack '"$devcon" install dfmirage_2.0.105.0/dfmirage.inf dfmirage'
+   nsExec::ExecToStack '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
   !endif
  ${Else}
   ${If} ${RunningX64}
    !ifdef HAVE_DFMIRAGE_2_0
-    nsExec::Exec '"$devcon" install dfmirage_2.0.105.0/dfmirage.inf dfmirage'
+    nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
    !endif
   ${Else}
    !ifdef HAVE_DFMIRAGE_1_1
-    nsExec::Exec '"$devcon" install dfmirage_1.1.68.0/dfmirage.inf dfmirage'
+    nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_1.1.68.0\dfmirage.inf" dfmirage'
    !endif
   ${EndIf}
  ${EndIf}
