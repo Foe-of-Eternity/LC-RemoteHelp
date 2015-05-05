@@ -51,34 +51,36 @@ File "rhserver.ini"
 !endif
 
 !ifdef HAVE_DFMIRAGE_1_1 | HAVE_DFMIRAGE_2_0
- var /global devcon
- ${If} ${RunningX64}
-  StrCpy $devcon "$PLUGINSDIR\devcon64.exe"
- ${Else}
-  StrCpy $devcon "$PLUGINSDIR\devcon.exe"
- ${EndIf}
-
- nsExec::ExecToStack '"$devcon" find dfmirage'
- Pop $0
- Pop $1
- ${StrContains} $0 "Mirage Driver" $1
- StrCmp $0 "Mirage Driver" skip_driver_install
- ${If} ${AtLeastWinVista}
-  !ifdef HAVE_DFMIRAGE_2_0
-   nsExec::ExecToStack '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
-  !endif
- ${Else}
+ ${IfNot} ${AtLeastWin8}
+  var /global devcon
   ${If} ${RunningX64}
+   StrCpy $devcon "$PLUGINSDIR\devcon64.exe"
+  ${Else}
+   StrCpy $devcon "$PLUGINSDIR\devcon.exe"
+  ${EndIf}
+
+  nsExec::ExecToStack '"$devcon" find dfmirage'
+  Pop $0
+  Pop $1
+  ${StrContains} $0 "Mirage Driver" $1
+  StrCmp $0 "Mirage Driver" skip_driver_install
+  ${If} ${AtLeastWinVista}
    !ifdef HAVE_DFMIRAGE_2_0
-    nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
+    nsExec::ExecToStack '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
    !endif
   ${Else}
-   !ifdef HAVE_DFMIRAGE_1_1
-    nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_1.1.68.0\dfmirage.inf" dfmirage'
-   !endif
+   ${If} ${RunningX64}
+    !ifdef HAVE_DFMIRAGE_2_0
+     nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_2.0.105.0\dfmirage.inf" dfmirage'
+    !endif
+   ${Else}
+    !ifdef HAVE_DFMIRAGE_1_1
+     nsExec::Exec '"$devcon" install "$PLUGINSDIR\dfmirage_1.1.68.0\dfmirage.inf" dfmirage'
+    !endif
+   ${EndIf}
   ${EndIf}
+  skip_driver_install:
  ${EndIf}
- skip_driver_install:
 !endif
 
 ExecWait "rhserver.exe"
