@@ -220,4 +220,12 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\tightvnc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tightvnc48.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
